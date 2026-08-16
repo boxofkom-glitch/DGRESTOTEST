@@ -636,6 +636,28 @@ body{overflow-x:hidden;}
       </div>`;
     }
 
+    if (a.financial_diagnosis) {
+      const fd = a.financial_diagnosis;
+      const leverColor = (over) => over ? '#ff5c5c' : '#7ed957';
+      html += `<div class="section-block reveal in-view">
+        <div class="section-tag">Diagnostic financier</div>
+        <h2>Rentabilité vs cibles métier</h2>
+        <div class="stat-grid stat-grid-4" style="margin-top:16px;margin-bottom:14px;">
+          <div class="stat-card"><div class="stat-card-head"><span>EBITDA estimé</span></div><b style="color:${leverColor(!fd.healthy)};">${fd.ebitda_pct}<span class="unit">%</span></b><span class="sub">Cible : ${fd.ebitda_target}%</span></div>
+          <div class="stat-card"><div class="stat-card-head"><span>Food cost</span></div><b style="color:${leverColor(fd.levers[0].over)};">${fd.levers[0].actual}<span class="unit">%</span></b><span class="sub">Cible : 28-30%</span></div>
+          <div class="stat-card"><div class="stat-card-head"><span>Masse salariale</span></div><b style="color:${leverColor(fd.levers[1].over)};">${fd.levers[1].actual}<span class="unit">%</span></b><span class="sub">Cible : ~30%</span></div>
+          <div class="stat-card"><div class="stat-card-head"><span>Charges fixes</span></div><b>${fd.levers[2].actual}<span class="unit">%</span></b><span class="sub">Part du CA</span></div>
+        </div>
+        ${fd.top_lever ? `<div class="card glow-card" style="border-color:rgba(255,80,80,.25);background:rgba(255,60,60,.05);">
+          <h3 style="color:#ff8a8a;margin-bottom:8px;">Priorité n°1 : ${esc(fd.top_lever.label)}</h3>
+          <p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(fd.top_lever.label)} est à ${fd.top_lever.actual}%, au-dessus de la cible (${fd.top_lever.target}%), soit un écart de +${fd.top_lever.gap}${'%'} de CA parti dans ce poste. C'est le premier levier travaillé dans votre plan d'action.</p>
+        </div>` : `<div class="card glow-card" style="border-color:rgba(126,217,87,.25);background:rgba(126,217,87,.05);">
+          <h3 style="color:#7ed957;margin-bottom:8px;">Structure de coûts dans les clous</h3>
+          <p style="font-size:14px;color:#EDE4D6;margin:0;">Food cost et masse salariale sont dans les cibles métier. Le plan d'action se concentre sur les autres leviers de croissance.</p>
+        </div>`}
+      </div>`;
+    }
+
     if (prod.name) {
       html += `<div class="section-block reveal in-view">
         <div class="section-tag">Offre phare</div>
