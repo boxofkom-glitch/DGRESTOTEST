@@ -405,7 +405,11 @@ body{overflow-x:hidden;}
         <!-- AUDIT -->
         <section class="view" id="view-audit">
           <div class="page-title-row"><div><h1>Votre audit</h1><p>Le diagnostic complet de votre activité.</p></div></div>
-          <div class="empty-state" id="auditEmpty" style="padding:60px 0;">
+          <div id="auditLoading" style="padding:60px 0;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);">
+            <span style="width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--lime);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;"></span>
+            Chargement de votre audit…
+          </div>
+          <div class="empty-state" id="auditEmpty" style="padding:60px 0;display:none;">
             <p style="margin-bottom:18px;">Pas encore d'audit ? Répondez à quelques questions sur votre restaurant, on s'occupe du reste.</p>
             <a href="audit-form.html" class="btn-primary magnetic">Faire mon auto-audit →</a>
           </div>
@@ -421,7 +425,11 @@ body{overflow-x:hidden;}
               Synchroniser le plan
             </button>
           </div>
-          <div class="empty-state" id="planEmpty" style="padding:60px 0;">
+          <div id="planLoading" style="padding:60px 0;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);">
+            <span style="width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--lime);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;"></span>
+            Chargement de votre plan…
+          </div>
+          <div class="empty-state" id="planEmpty" style="padding:60px 0;display:none;">
             <p style="margin-bottom:18px;">Votre plan se génère automatiquement dès que vous avez complété votre auto-audit.</p>
             <a href="audit-form.html" class="btn-primary magnetic">Faire mon auto-audit →</a>
           </div>
@@ -1066,6 +1074,7 @@ body{overflow-x:hidden;}
 
     const audit = await loadAudit();
     auditData = audit;
+    document.getElementById('auditLoading').style.display = 'none';
     if (audit) {
       renderAudit(audit);
       if ((audit.pillars || []).length) {
@@ -1077,12 +1086,17 @@ body{overflow-x:hidden;}
             <div class="progress-bar"${last ? ' style="margin-bottom:0;"' : ''}><div class="progress-bar-fill" style="width:${pct}%"></div></div>`;
         }).join('');
       }
+    } else {
+      document.getElementById('auditEmpty').style.display = 'block';
     }
 
     planRow = await loadPlan();
+    document.getElementById('planLoading').style.display = 'none';
     if (planRow) {
       if (auditData) document.getElementById('syncPlanBtn').style.display = 'inline-flex';
       renderPlan(planRow.data);
+    } else {
+      document.getElementById('planEmpty').style.display = 'block';
     }
     renderOverview(planRow ? planRow.data : null);
 
