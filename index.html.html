@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DG Resto — Le Directeur Général IA de votre restaurant.</title>
+<meta name="description" content="Vos factures se lisent seules, vos marges se calculent au centime, et votre plan d'action avance chaque semaine vers vos objectifs. DG Resto travaille pendant que vous êtes en salle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.hero{position:relative;padding:64px 16px 32px;overflow:hidden;}
+.hero .glow-a{width:520px;height:520px;background:radial-gradient(circle,rgba(212,255,0,.14),transparent 70%);top:-160px;right:-120px;}
+.hero .glow-b{width:420px;height:420px;background:radial-gradient(circle,rgba(167,255,0,.10),transparent 70%);bottom:-140px;left:-100px;}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;text-align:center;}
+.hero h1{font-size:clamp(38px,7vw,76px);font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:22px;}
+.hero p.lead{font-size:clamp(16px,2vw,19px);max-width:56ch;margin:0 auto 32px;color:var(--muted);}
+.cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;}
+
+.video-section{padding:64px 16px 24px;}
+
+/* Une journée avec votre DG */
+.day-section{padding:24px 16px 40px;}
+.day-timeline{max-width:760px;margin:40px auto 0;position:relative;padding-left:32px;}
+.day-timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line);}
+.day-item{position:relative;padding-bottom:34px;}
+.day-item:last-child{padding-bottom:0;}
+.day-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);}
+.day-time{font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;font-weight:700;color:var(--lime);letter-spacing:.04em;display:block;margin-bottom:6px;}
+.day-item h4{font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;}
+.day-item p{font-size:14.5px;max-width:56ch;}
+
+.pillars{padding:16px 16px 24px;}
+
+.strip{padding:28px 16px;}
+.strip-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
+.strip-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-dim);width:100%;text-align:center;}
+@media (min-width:700px){.strip-label{width:auto;text-align:left;}}
+
+.problem{background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;position:relative;border:1px solid var(--line);}
+.problem .glow-a{width:400px;height:400px;background:radial-gradient(circle,rgba(212,255,0,.16),transparent 70%);top:-100px;right:-60px;}
+.problem-inner{position:relative;z-index:1;padding:52px 26px;}
+.problem-grid{display:flex;flex-wrap:wrap;gap:16px;}
+.problem-card{flex:1 1 260px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 22px;}
+.problem-card .icon{width:42px;height:42px;border-radius:var(--r-sm);background:var(--lime-dim);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.problem-card .icon svg{width:21px;height:21px;stroke:var(--lime);}
+.problem-card h3{font-weight:800;font-size:16.5px;margin-bottom:8px;color:#fff;}
+.problem-card p{font-size:14px;}
+
+.proof-banner{max-width:1120px;margin:0 auto;background:linear-gradient(120deg,var(--lime),var(--lime-2));border-radius:var(--r-xl);padding:34px 28px;color:var(--ink);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;box-shadow:0 20px 40px -14px rgba(212,255,0,.35);}
+.proof-banner h3{font-size:20px;margin-bottom:6px;color:var(--ink);}
+.proof-banner p{color:rgba(13,13,13,.72);font-size:13.5px;}
+.proof-banner .big{font-weight:900;font-size:38px;color:var(--ink);white-space:nowrap;}
+@media (max-width:560px){.proof-banner{grid-template-columns:1fr;}}
+
+.final{position:relative;background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;padding:56px 26px;text-align:center;border:1px solid var(--line);}
+.final-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.final h2{font-size:clamp(26px,4vw,42px);margin-bottom:14px;color:#fff;}
+.final p{font-size:15.5px;margin-bottom:26px;}
+.btn-primary.on-lime{background:#fff;color:var(--ink);}
+
+/* Vidéo d'intro plein écran, jouée une fois par session puis retirée */
+#introOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background 1s ease .3s;}
+#introOverlay.zoom-out{background:transparent;pointer-events:none;}
+#introVideo{width:100%;height:100%;object-fit:cover;transform-origin:50% 42%;transition:transform 1.3s cubic-bezier(.7,0,.3,1),opacity 1s ease .2s;}
+#introOverlay.zoom-out #introVideo{transform:scale(10);opacity:0;}
+#introOverlay.zoom-out #introSkip,#introOverlay.zoom-out #introUnmute{opacity:0;transition:opacity .3s ease;}
+#introSkip{position:absolute;bottom:28px;right:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:inherit;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;cursor:pointer;backdrop-filter:blur(8px);transition:background .2s;}
+#introSkip:hover{background:rgba(255,255,255,.18);}
+#introUnmute{position:absolute;bottom:28px;left:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background .2s;}
+#introUnmute:hover{background:rgba(255,255,255,.18);}
+#introUnmute svg{width:18px;height:18px;stroke:#fff;}
+body.intro-lock{overflow:hidden;}
+</style>
+</head>
+<body>
+
+<div id="introOverlay">
+  <video id="introVideo" autoplay muted playsinline preload="auto" src="intro.mp4"></video>
+  <button type="button" id="introUnmute" aria-label="Activer le son">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  </button>
+  <button type="button" id="introSkip">Passer →</button>
+</div>
+<script>
+(function () {
+  var overlay = document.getElementById('introOverlay');
+  var video = document.getElementById('introVideo');
+  var unmuteBtn = document.getElementById('introUnmute');
+
+  // Ne joue qu'une fois par session (pas à chaque page vue si le visiteur revient sur l'accueil).
+  if (sessionStorage.getItem('dgIntroSeen')) {
+    overlay.remove();
+    return;
+  }
+  sessionStorage.setItem('dgIntroSeen', '1');
+  document.body.classList.add('intro-lock');
+
+  function closeIntro() {
+    // Zoom dramatique sur la vidéo (comme si la caméra rentrait dans l'écran du
+    // téléphone) pendant que le fond devient transparent et révèle le vrai site.
+    overlay.classList.add('zoom-out');
+    document.body.classList.remove('intro-lock');
+    setTimeout(function () { overlay.remove(); }, 1400);
+  }
+
+  video.addEventListener('ended', closeIntro);
+  video.addEventListener('error', closeIntro);
+  document.getElementById('introSkip').addEventListener('click', closeIntro);
+  unmuteBtn.addEventListener('click', function () {
+    video.muted = !video.muted;
+    unmuteBtn.style.opacity = video.muted ? '1' : '.5';
+  });
+})();
+</script>
+
+<div class="nav-outer">
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><span class="dg-badge">DG</span> Resto</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="methode.html">Méthode</a>
+      <a href="offre.html">Offre</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a class="nav-cta" href="portail/login.html">Espace client</a>
+    <div class="nav-burger" id="navBurger" aria-label="Menu"><span></span></div>
+    <div class="nav-menu" id="navMenu">
+      <a href="index.html">Accueil</a>
+      <a href="methode.html">Méthode</a>
+      <a href="offre.html">Offre</a>
+      <a href="contact.html">Contact</a>
+      <a href="portail/login.html" class="menu-cta">Espace client</a>
+    </div>
+  </nav>
+</div>
+
+<section class="hero">
+  <span class="glow glow-a"></span><span class="glow glow-b"></span>
+  <div class="hero-inner">
+    <div class="eyebrow reveal in-view">Le compte est bon.</div>
+    <h1 class="reveal in-view">Le <em class="grad-text">Directeur Général IA</em> de votre restaurant.</h1>
+    <p class="lead reveal in-view">Vos factures se lisent seules, vos marges se calculent au centime, vos hausses de prix se repèrent avant de faire mal — et votre plan d'action avance chaque semaine vers vos objectifs. Chaque matin à 8h, votre DG a déjà travaillé. Vous, vous faites la salle et la cuisine.</p>
+    <div class="cta-row reveal in-view">
+      <a class="btn-primary magnetic" href="contact.html">Démarrer un audit gratuit</a>
+      <a class="btn-ghost" href="methode.html">Voir la méthode →</a>
+    </div>
+  </div>
+  <div class="stat-strip reveal in-view">
+    <div><b>40 s</b><span>pour lire une facture, lignes et TVA comprises</span></div>
+    <div><b>8h00</b><span>votre DG se réveille avant vous, tous les jours</span></div>
+    <div><b class="lime cnt" data-target="8">0</b><span>points de marge gagnés en 90 jours</span></div>
+    <div><b>24/7</b><span>vos boîtes mail relevées, vos prix surveillés</span></div>
+  </div>
+</section>
+
+<section class="video-section">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:560px;">
+      <div class="eyebrow">La méthode en vidéo</div>
+      <h2>2 minutes pour comprendre comment ça marche.</h2>
+    </div>
+    <div class="video-block reveal in-view"></div>
+  </div>
+</section>
+
+<section class="day-section">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:640px;">
+      <div class="eyebrow">Une journée avec votre DG</div>
+      <h2>Il travaille pendant que vous servez.</h2>
+    </div>
+    <div class="day-timeline">
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:00</span>
+        <h4>Votre DG se réveille</h4>
+        <p>Il relève vos boîtes Gmail et Outlook, lit chaque facture arrivée dans la nuit — lignes, TVA, consignes, accises — et range tout au bon endroit.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:02</span>
+        <h4>Le rapport du matin</h4>
+        <p>Sur WhatsApp : le chiffre d'hier, le bénéfice net, et les deux ou trois choses qui méritent votre attention. Rien de plus.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:05</span>
+        <h4>Les alertes qui comptent</h4>
+        <p>« Red Bull +15,9 % chez votre grossiste, surcoût estimé 118 €/an. » Une hausse par format, jamais de bruit, avec le surcoût annuel calculé.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">12:00</span>
+        <h4>Le coût du plat du jour</h4>
+        <p>Chaque recette connaît son coût de revient. Votre carte affiche marge, multiplicateur et gain par vente — et signale un plat vendu à perte.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">17:00</span>
+        <h4>Le point sur votre plan d'action</h4>
+        <p>Votre DG vérifie où en est votre semaine : quick win coché, tâche en retard, objectif du mois à ajuster. Il vous relance avant que ça traîne.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">23:00</span>
+        <h4>Le compte est bon</h4>
+        <p>CA du jour, coût matière, personnel, break-even : la journée est bouclée, chiffrée, comparée. Demain, on recommence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars">
+  <div class="pillars-grid">
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><h4>Facturation en pilote automatique</h4><p>Gmail, Outlook ou une simple photo : chaque facture est lue ligne à ligne, avec un score de précision par document. Vous ne ressaisissez plus rien.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6"/></svg></div><h4>Un plan d'action piloté par votre DG</h4><p>Objectifs 12 mois, priorités du trimestre, tâches de la semaine : votre DG traduit vos vrais chiffres en quick wins concrets, semaine après semaine.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5M13 5h6v6"/></svg></div><h4>Suivi en continu</h4><p>Votre espace client suit chaque tâche cochée, chaque alerte réglée et chaque point d'attention, pour ne plus jamais perdre le fil.</p></div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="strip-inner" style="flex-direction:column;align-items:stretch;">
+    <span class="strip-label">Pourquoi DG Resto</span>
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="chip">Factures lues automatiquement</span><span class="chip">Marges au centime</span><span class="chip">Alertes prix fournisseurs</span><span class="chip">Rapport WhatsApp chaque matin</span><span class="chip">Plan d'action piloté</span><span class="chip">Suivi hebdo</span><span class="chip">Sans engagement</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="constat">
+  <div class="problem">
+    <span class="glow glow-a"></span>
+    <div class="problem-inner">
+      <div class="section-head left reveal" style="max-width:640px;">
+        <div class="eyebrow">Le constat</div>
+        <h2>Vous travaillez plus que jamais. La marge, elle, ne suit pas.</h2>
+        <p>Trois blocages qu'on retrouve dans la quasi-totalité des restaurants qu'on audite.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 4 4-6 6 6"/></svg></div><h3>L'effet ciseaux</h3><p>Vos prix montent, vos couverts baissent. Le CA tient sur le papier — la rentabilité, elle, recule.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 3"/></svg></div><h3>La marge fantôme</h3><p>2 points de food cost qui dérivent, 3% de masse salariale en plus : la marge s'évapore sans que vous le voyiez venir — jusqu'à ce que votre DG le repère.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>Personne pour piloter</h3><p>Vous n'avez ni le temps ni un directeur général pour lire les chiffres tous les jours et transformer ça en plan d'action. DG Resto, si.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof-banner reveal">
+      <div><h3>La marge d'un restaurant ne pardonne rien</h3><p>En France, la marge nette moyenne d'un restaurant tourne entre 2 et 6%. Deux points de food cost qui dérivent, et toute la rentabilité de l'année s'évapore.</p></div>
+      <div class="big">2-6%</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="final reveal">
+    <span class="glow glow-a" style="width:420px;height:420px;background:radial-gradient(circle,rgba(212,255,0,.18),transparent 70%);top:-140px;left:50%;transform:translateX(-50%);"></span>
+    <div class="final-inner">
+      <h2>Allez, on regarde où votre marge s'échappe ?</h2>
+      <p>Pas de rapport de 40 pages. Un audit direct, un plan d'action concret piloté par votre DG, dès la première semaine.</p>
+      <a href="contact.html" class="btn-primary on-lime magnetic">Démarrer un audit gratuit</a>
+    </div>
+  </div>
+</section>
+
+<footer>DG Resto — Le Directeur Général IA de votre restaurant</footer>
+<script src="video-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
