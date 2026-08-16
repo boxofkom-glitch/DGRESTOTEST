@@ -40,6 +40,11 @@ body{overflow-x:hidden;}
 .status-dot.on::before{background:var(--lime);}
 .status-dot.off{color:var(--muted-dim);}
 .table-scroll{overflow-x:auto;}
+.attention-banner{display:flex;align-items:center;gap:10px;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.25);border-radius:var(--r-md);padding:13px 16px;margin-bottom:16px;font-size:13.5px;color:#ff8a8a;font-weight:700;}
+.attention-banner svg{width:16px;height:16px;flex:0 0 auto;}
+.client-row.critical{background:rgba(255,60,60,.04);}
+.client-row.critical:hover{background:rgba(255,60,60,.08);}
+.critical-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#ff8a8a;background:rgba(255,60,60,.12);border-radius:999px;padding:3px 9px;margin-left:8px;}
 </style>
 </head>
 <body>
@@ -59,6 +64,11 @@ body{overflow-x:hidden;}
   <div class="admin-main">
     <div class="page-title-row">
       <div><h1>Vos clients</h1><p>Cliquez sur un client pour voir son audit, construire son plan, répondre à ses messages.</p></div>
+    </div>
+
+    <div class="attention-banner" id="attentionBanner" style="display:none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span id="attentionText"></span>
     </div>
 
     <div class="search-row">
@@ -107,12 +117,13 @@ body{overflow-x:hidden;}
     const [{ data: profiles }, { data: audits }, { data: plans }, { data: calls }] = await Promise.all([
       supabaseClient.from('profiles').select('*').order('created_at', { ascending: false }),
       supabaseClient.from('audits').select('user_id'),
-      supabaseClient.from('plans').select('user_id'),
+      supabaseClient.from('plans').select('user_id, data'),
       supabaseClient.from('calls').select('user_id, status, scheduled_at, created_at'),
     ]);
 
     const auditSet = new Set((audits || []).map(a => a.user_id));
     const planSet = new Set((plans || []).map(p => p.user_id));
+    const criticalSet = new Set((plans || []).filter(p => p.data && p.data.status_critical).map(p => p.user_id));
     const lastCallByUser = {};
     (calls || []).forEach(c => {
       const existing = lastCallByUser[c.user_id];
@@ -128,8 +139,12 @@ body{overflow-x:hidden;}
       email: p.email || '',
       hasAudit: auditSet.has(p.id),
       hasPlan: planSet.has(p.id),
+      critical: criticalSet.has(p.id),
       lastCall: lastCallByUser[p.id] || null,
     }));
+    // Les clients en situation critique remontent en haut de la liste,
+    // pour que le coach les voie sans avoir à cliquer sur chacun.
+    clients.sort((a, b) => (b.critical ? 1 : 0) - (a.critical ? 1 : 0));
   }
 
   function callLabel(lastCall) {
@@ -143,14 +158,24 @@ body{overflow-x:hidden;}
   function render(list) {
     const body = document.getElementById('clientsBody');
     const empty = document.getElementById('clientsEmpty');
+    const banner = document.getElementById('attentionBanner');
+    const criticalCount = list.filter(c => c.critical).length;
+    if (criticalCount) {
+      document.getElementById('attentionText').textContent = criticalCount === 1
+        ? '1 client en situation critique nécessite votre attention.'
+        : `${criticalCount} clients en situation critique nécessitent votre attention.`;
+      banner.style.display = 'flex';
+    } else {
+      banner.style.display = 'none';
+    }
     if (!list.length) {
       body.innerHTML = '';
       empty.style.display = 'block';
       return;
     }
     empty.style.display = 'none';
-    body.innerHTML = list.map(c => `<tr class="client-row" data-id="${esc(c.id)}">
-        <td><div class="client-name">${esc(c.company)}</div><div class="client-email">${esc(c.email)}</div></td>
+    body.innerHTML = list.map(c => `<tr class="client-row${c.critical ? ' critical' : ''}" data-id="${esc(c.id)}">
+        <td><div class="client-name">${esc(c.company)}${c.critical ? '<span class="critical-badge">⚠ Critique</span>' : ''}</div><div class="client-email">${esc(c.email)}</div></td>
         <td><span class="status-dot ${c.hasAudit ? 'on' : 'off'}">${c.hasAudit ? 'Fait' : 'À faire'}</span></td>
         <td><span class="status-dot ${c.hasPlan ? 'on' : 'off'}">${c.hasPlan ? 'Créé' : 'Aucun'}</span></td>
         <td>${callLabel(c.lastCall)}</td>
