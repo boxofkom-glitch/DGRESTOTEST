@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Client — Espace coach ScaleX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+body{overflow-x:hidden;}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(20,20,20,.92);backdrop-filter:blur(14px);z-index:20;gap:12px;flex-wrap:wrap;}
+.admin-topbar .back{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;min-width:0;}
+.admin-topbar .back svg{width:18px;height:18px;stroke:var(--muted);flex:0 0 auto;}
+.admin-topbar .client-title{font-weight:800;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.admin-topbar .client-email{font-size:12px;color:var(--muted-dim);}
+.icon-btn{background:transparent;border:1px solid var(--line);color:var(--muted);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:color .2s,border-color .2s;}
+.icon-btn:hover{color:#fff;border-color:var(--muted);}
+.icon-btn svg{width:16px;height:16px;}
+
+.tab-nav{display:flex;gap:6px;overflow-x:auto;padding:14px 24px 0;max-width:1080px;margin:0 auto;}
+.tab-btn{flex:0 0 auto;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:999px;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.tab-btn.active{background:var(--lime-dim);border-color:transparent;color:var(--lime);}
+
+.admin-main{max-width:1080px;margin:0 auto;padding:22px 24px 80px;}
+.view{display:none;}
+.view.active{display:block;}
+.empty-state{font-size:13.5px;color:var(--muted-dim);text-align:center;padding:34px 0;}
+.section-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;}
+
+/* ---- Audit tab ---- */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+@media (max-width:640px){.stat-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 16px 14px;}
+.stat-card span{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:8px;}
+.stat-card b{font-size:21px;font-weight:900;color:#fff;}
+.journey-mini{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;margin-bottom:14px;}
+.journey-mini h5{font-size:12px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
+.journey-mini p{font-size:14px;color:#EDE4D6;line-height:1.6;}
+.raw-toggle{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;margin-top:6px;}
+.raw-json{width:100%;min-height:260px;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;color:#EDE4D6;font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;margin-top:12px;white-space:pre;}
+.raw-json:focus{outline:none;border-color:var(--lime);}
+
+/* ---- Plan editor ---- */
+.plan-block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;margin-bottom:20px;}
+.plan-block h4{font-size:15px;color:#fff;margin-bottom:14px;}
+.repeat-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+.repeat-row input,.repeat-row textarea{flex:1;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:#fff;font-family:inherit;font-size:13.5px;}
+.repeat-row input:focus,.repeat-row textarea:focus{outline:none;border-color:var(--lime);}
+.chip-remove{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
+.chip-remove:hover{color:#ff8a8a;border-color:#ff8a8a;}
+.add-row-btn{background:transparent;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:var(--r-sm);cursor:pointer;width:100%;text-align:center;margin-top:4px;}
+.add-row-btn:hover{color:var(--lime);border-color:var(--lime);}
+.inline-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none;}
+.inline-check input{accent-color:var(--D4FF00,#D4FF00);accent-color:#D4FF00;width:16px;height:16px;}
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.quick-actions button{background:var(--surface);border:1px solid var(--line);color:#fff;font-size:13px;font-weight:700;padding:11px 16px;border-radius:999px;cursor:pointer;}
+.quick-actions button:hover{border-color:var(--lime);color:var(--lime);}
+
+.axis-card{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;}
+.axis-card:last-of-type{margin-bottom:0;}
+.axis-card-head{display:flex;justify-content:flex-end;margin-bottom:8px;}
+.cycle-card{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;background:var(--ink);}
+.cycle-card:last-child{margin-bottom:0;}
+.cycle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.cycle-head h5{font-size:14.5px;color:#fff;}
+.month-card{border-left:2px solid var(--lime-dim);padding-left:16px;margin-bottom:16px;margin-top:10px;}
+.month-card:last-child{margin-bottom:0;}
+.month-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.week-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:10px;}
+.week-card:last-child{margin-bottom:0;}
+.week-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;}
+.week-head input[type="text"]{background:transparent;border:none;color:#fff;font-weight:700;font-size:13.5px;padding:2px 0;flex:1;}
+.week-head input[type="text"]:focus{outline:none;}
+.save-bar{position:sticky;bottom:0;background:rgba(20,20,20,.95);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:14px 0;margin-top:10px;display:flex;justify-content:flex-end;}
+
+/* ---- Messages ---- */
+.msg-list{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;margin-bottom:14px;padding-right:2px;}
+.msg-item{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;max-width:78%;align-self:flex-start;}
+.msg-item.mine{background:var(--lime-dim);border-color:rgba(212,255,0,.25);align-self:flex-end;}
+.msg-item b{color:var(--lime);font-size:11px;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em;}
+.msg-item.mine b{color:#fff;}
+
+/* ---- Calls ---- */
+.call-row{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:12px;background:var(--ink);}
+.call-row:last-child{margin-bottom:0;}
+.call-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.call-row select{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;color:#fff;font-family:inherit;font-size:13px;}
+</style>
+</head>
+<body>
+
+<div id="authGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);">
+  <span style="width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--lime);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;"></span>
+  Chargement…
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg);}}</style>
+
+<div id="adminPage" style="display:none;">
+  <div class="admin-topbar">
+    <a href="index.html" class="back">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      <div><div class="client-title" id="clientTitle">Chargement…</div><div class="client-email" id="clientEmail"></div></div>
+    </a>
+    <button type="button" class="icon-btn" id="logoutBtn" aria-label="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
+  </div>
+
+  <div class="tab-nav">
+    <button type="button" class="tab-btn active" data-tab="audit">Audit</button>
+    <button type="button" class="tab-btn" data-tab="plan">Plan d'action</button>
+    <button type="button" class="tab-btn" data-tab="messages">Messages</button>
+    <button type="button" class="tab-btn" data-tab="calls">Calls</button>
+  </div>
+
+  <div class="admin-main">
+
+    <!-- AUDIT -->
+    <section class="view active" id="view-audit">
+      <div id="auditRoot"></div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="view" id="view-plan">
+      <div class="quick-actions">
+        <button type="button" id="unlockWeekBtn">🔓 Débloquer la semaine suivante</button>
+        <button type="button" id="activateCycleBtn">▶️ Activer le cycle suivant</button>
+      </div>
+      <div id="planEditorRoot"></div>
+      <div class="save-bar" id="planSaveBar" style="display:none;">
+        <button type="button" class="btn-primary magnetic" id="savePlanBtn">💾 Enregistrer le plan</button>
+      </div>
+    </section>
+
+    <!-- MESSAGES -->
+    <section class="view" id="view-messages">
+      <div class="card glow-card reveal in-view">
+        <div class="msg-list" id="msgList"></div>
+        <form id="msgForm" style="display:flex;gap:8px;">
+          <input id="msgInput" placeholder="Répondre au client..." style="flex:1;background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:#fff;font-family:inherit;">
+          <button class="btn-primary magnetic" type="submit" style="padding:10px 16px;">→</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CALLS -->
+    <section class="view" id="view-calls">
+      <div id="callsRoot"></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="../../script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-client.js"></script>
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const clientId = params.get('id');
+
+  const { data: sessData } = await supabaseClient.auth.getSession();
+  if (!sessData.session) { window.location.href = '../login.html'; return; }
+  const me = sessData.session.user;
+
+  const { data: adminRow } = await supabaseClient.from('admins').select('user_id').eq('user_id', me.id).maybeSingle();
+  if (!adminRow) { window.location.href = '../dashboard.html'; return; }
+  if (!clientId) { window.location.href = 'index.html'; return; }
+
+  document.getElementById('authGate').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+
+  const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmtEuro = (n) => n == null ? '—' : Number(n).toLocaleString('fr-FR') + ' €';
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = '../login.html';
+  });
+
+  // ---- Tabs ----
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + btn.dataset.tab));
+    });
+  });
+
+  // ---- Profile header ----
+  const { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', clientId).maybeSingle();
+  document.getElementById('clientTitle').textContent = profile?.company_name || '(sans nom)';
+  document.getElementById('clientEmail').textContent = profile?.email || '';
+
+  // =========================================================
+  // AUDIT (lecture + JSON brut éditable)
+  // =========================================================
+  let auditRow = null;
+  async function loadAudit() {
+    const { data } = await supabaseClient.from('audits').select('*').eq('user_id', clientId).maybeSingle();
+    auditRow = data || null;
+  }
+
+  function renderAuditTab() {
+    const root = document.getElementById('auditRoot');
+    if (!auditRow) {
+      root.innerHTML = '<div class="empty-state">Ce client n\'a pas encore fait son audit.</div>';
+      return;
+    }
+    const a = auditRow.data || {};
+    const ov = a.overview || {};
+    const gj = a.growth_journey || {};
+    root.innerHTML = `
+      <div class="stat-grid">
+        <div class="stat-card"><span>Chiffre d'affaires</span><b>${fmtEuro(ov.revenue)}</b></div>
+        <div class="stat-card"><span>Marge nette</span><b>${ov.margin_pct ?? '—'}%</b></div>
+        <div class="stat-card"><span>Collaborateurs</span><b>${ov.employees ?? '—'}</b></div>
+        <div class="stat-card"><span>Charges fixes</span><b>${fmtEuro(ov.fixed_costs)}</b></div>
+        <div class="stat-card"><span>Vente moyenne</span><b>${fmtEuro(ov.avg_sale)}</b></div>
+        <div class="stat-card"><span>Trésorerie</span><b>${fmtEuro(ov.cash)}</b></div>
+      </div>
+      ${gj.vision_12m ? `<div class="journey-mini"><h5>Vision à 12 mois (dite par le client)</h5><p>${esc(gj.vision_12m)}</p></div>` : ''}
+      ${gj.objective_4m ? `<div class="journey-mini"><h5>Objectif à 4 mois</h5><p>${esc(gj.objective_4m)}</p></div>` : ''}
+      ${gj.blocker ? `<div class="journey-mini"><h5>Blocage identifié</h5><p>${esc(gj.blocker)}</p></div>` : ''}
+      <button type="button" class="raw-toggle" id="toggleRawAudit">Voir / modifier le JSON complet</button>
+      <div id="rawAuditWrap" style="display:none;">
+        <textarea class="raw-json" id="rawAuditText">${esc(JSON.stringify(a, null, 2))}</textarea>
+        <div style="margin-top:10px;"><button type="button" class="btn-primary magnetic" id="saveRawAudit">Enregistrer ce JSON</button></div>
+      </div>
+    `;
+    document.getElementById('toggleRawAudit').addEventListener('click', () => {
+      const wrap = document.getElementById('rawAuditWrap');
+      wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+    });
+    document.getElementById('saveRawAudit').addEventListener('click', async () => {
+      let parsed;
+      try { parsed = JSON.parse(document.getElementById('rawAuditText').value); }
+      catch (e) { if (window.toast) toast('JSON invalide : ' + e.message, 'error'); return; }
+      const { error } = await supabaseClient.from('audits').upsert({ user_id: clientId, data: parsed }, { onConflict: 'user_id' });
+      if (error) { if (window.toast) toast(error.message, 'error'); return; }
+      if (window.toast) toast('Audit enregistré', 'ok');
+      await loadAudit();
+      renderAuditTab();
+    });
+  }
+
+  // =========================================================
+  // PLAN D'ACTION (éditeur structuré)
+  // =========================================================
+  let planData = null;
+
+  function blankPlan() {
+    return {
+      contract_months: 4,
+      vision_12m: { title: 'Objectifs pour les 12 prochains mois', items: [] },
+      priorities_4m: { title: 'Objectifs pour les 4 prochains mois', items: [] },
+      axes: [],
+      cycles: [
+        { name: 'Cycle 1', active: true, months: [] },
+        { name: 'Cycle 2', active: false, months: [] },
+        { name: 'Cycle 3', active: false, months: [] },
+      ],
+    };
+  }
+  function blankMonth(n) { return { name: 'Mois ' + n, current: n === 1, objective: '', weeks: [], kpis: [] }; }
+  function blankWeek(n) { return { label: 'Semaine ' + n, locked: n > 1, tasks: [] }; }
+
+  async function loadPlan() {
+    const { data } = await supabaseClient.from('plans').select('*').eq('user_id', clientId).maybeSingle();
+    planData = data ? data.data : null;
+  }
+
+  async function savePlan(silent) {
+    const { error } = await supabaseClient.from('plans').upsert({ user_id: clientId, data: planData }, { onConflict: 'user_id' });
+    if (error) { if (window.toast) toast(error.message, 'error'); return false; }
+    if (!silent && window.toast) toast('Plan enregistré', 'ok');
+    return true;
+  }
+
+  function getAtPath(obj, path) {
+    const parts = path.match(/[^.[\]]+/g);
+    return parts.reduce((o, k) => (o == null ? undefined : o[k]), obj);
+  }
+  function setAtPath(obj, path, value) {
+    const parts = path.match(/[^.[\]]+/g);
+    let o = obj;
+    for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+    o[parts[parts.length - 1]] = value;
+  }
+
+  function renderTextObjList(items, basePath, placeholder) {
+    return `<div>${(items || []).map((it, i) => `
+      <div class="repeat-row">
+        <input type="text" value="${esc(it.text || '')}" data-path="${basePath}[${i}].text" placeholder="${esc(placeholder)}">
+        <button type="button" class="chip-remove" data-remove-path="${basePath}" data-remove-index="${i}">✕</button>
+      </div>`).join('')}
+      <button type="button" class="add-row-btn" data-add-path="${basePath}" data-add-kind="objitem">+ Ajouter</button>
+    </div>`;
+  }
+  function renderStringList(items, basePath, placeholder) {
+    return `<div>${(items || []).map((s, i) => `
+      <div class="repeat-row">
+        <input type="text" value="${esc(s)}" data-path="${basePath}[${i}]" placeholder="${esc(placeholder)}">
+        <button type="button" class="chip-remove" data-remove-path="${basePath}" data-remove-index="${i}">✕</button>
+      </div>`).join('')}
+      <button type="button" class="add-row-btn" data-add-path="${basePath}" data-add-kind="string">+ Ajouter</button>
+    </div>`;
+  }
+
+  function renderAxes() {
+    return (planData.axes || []).map((ax, ai) => `
+      <div class="axis-card">
+        <div class="axis-card-head"><button type="button" class="chip-remove" data-remove-path="axes" data-remove-index="${ai}">✕</button></div>
+        <div class="field"><label>Nom de l'axe</label><input type="text" value="${esc(ax.name || '')}" data-path="axes[${ai}].name"></div>
+        <div class="field"><label>Sous-titre</label><input type="text" value="${esc(ax.subtitle || '')}" data-path="axes[${ai}].subtitle"></div>
+        <div class="field"><label>Situation actuelle</label><textarea rows="2" data-path="axes[${ai}].situation">${esc(ax.situation || '')}</textarea></div>
+        <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin-bottom:7px;">Actions clés</label>
+        ${renderStringList(ax.actions, `axes[${ai}].actions`, 'Ex: Mettre à jour la fiche Google Business')}
+      </div>`).join('') +
+      `<button type="button" class="add-row-btn" data-add-axis="1">+ Ajouter un axe</button>`;
+  }
+
+  function renderWeek(week, ci, mi, wi) {
+    return `<div class="week-card">
+      <div class="week-head">
+        <input type="text" value="${esc(week.label || '')}" data-path="cycles[${ci}].months[${mi}].weeks[${wi}].label">
+        <label class="inline-check"><input type="checkbox" ${week.locked ? '' : 'checked'} data-week-unlock="1" data-ci="${ci}" data-mi="${mi}" data-wi="${wi}"> Débloquée</label>
+        <button type="button" class="chip-remove" data-remove-path="cycles[${ci}].months[${mi}].weeks" data-remove-index="${wi}">✕</button>
+      </div>
+      ${renderTextObjList(week.tasks, `cycles[${ci}].months[${mi}].weeks[${wi}].tasks`, 'Tâche à faire cette semaine...')}
+    </div>`;
+  }
+
+  function renderMonth(month, ci, mi) {
+    return `<div class="month-card">
+      <div class="month-head">
+        <input type="text" value="${esc(month.name || '')}" data-path="cycles[${ci}].months[${mi}].name" style="max-width:160px;">
+        <label class="inline-check"><input type="radio" name="current-c${ci}" ${month.current ? 'checked' : ''} data-current-cycle="${ci}" data-current-month="${mi}"> Mois affiché par défaut</label>
+        <button type="button" class="chip-remove" data-remove-path="cycles[${ci}].months" data-remove-index="${mi}">✕</button>
+      </div>
+      <div class="field"><label>Objectif du mois</label><textarea rows="2" data-path="cycles[${ci}].months[${mi}].objective">${esc(month.objective || '')}</textarea></div>
+      <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin-bottom:7px;">Semaines</label>
+      ${(month.weeks || []).map((w, wi) => renderWeek(w, ci, mi, wi)).join('')}
+      <button type="button" class="add-row-btn" data-add-week="1" data-ci="${ci}" data-mi="${mi}">+ Ajouter une semaine</button>
+      <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin:14px 0 7px;">Indicateurs suivis (KPIs)</label>
+      ${renderStringList(month.kpis, `cycles[${ci}].months[${mi}].kpis`, 'Ex: [HEBDO] Food cost moyen de la semaine')}
+    </div>`;
+  }
+
+  function renderCycle(cycle, ci) {
+    return `<div class="cycle-card">
+      <div class="cycle-head">
+        <input type="text" value="${esc(cycle.name || '')}" data-path="cycles[${ci}].name" style="background:transparent;border:none;color:#fff;font-weight:800;font-size:14.5px;max-width:160px;">
+        <label class="inline-check"><input type="checkbox" ${cycle.active ? 'checked' : ''} data-path="cycles[${ci}].active" data-checkbox="1"> Actif (visible par le client)</label>
+      </div>
+      ${(cycle.months || []).map((m, mi) => renderMonth(m, ci, mi)).join('')}
+      <button type="button" class="add-row-btn" data-add-month="1" data-ci="${ci}">+ Ajouter un mois</button>
+    </div>`;
+  }
+
+  function renderPlanEditor() {
+    const root = document.getElementById('planEditorRoot');
+    const saveBar = document.getElementById('planSaveBar');
+    if (!planData) {
+      root.innerHTML = `<div class="empty-state">Pas encore de plan pour ce client.</div>
+        <button type="button" class="btn-primary magnetic" id="genPlanBtn">Générer une structure de plan vierge</button>`;
+      saveBar.style.display = 'none';
+      document.getElementById('genPlanBtn').addEventListener('click', async () => {
+        planData = blankPlan();
+        await savePlan(true);
+        if (window.toast) toast('Structure créée, complétez-la ci-dessous', 'ok');
+        renderPlanEditor();
+      });
+      return;
+    }
+    saveBar.style.display = 'flex';
+    root.innerHTML = `
+      <div class="field"><label>Durée du contrat (en mois)</label><input type="number" min="1" value="${planData.contract_months ?? 4}" data-path="contract_months"></div>
+
+      <div class="plan-block">
+        <h4>Vision à 12 mois</h4>
+        <div class="field"><label>Titre affiché au client</label><input type="text" value="${esc(planData.vision_12m.title || '')}" data-path="vision_12m.title"></div>
+        ${renderTextObjList(planData.vision_12m.items, 'vision_12m.items', 'Ex: Atteindre 500 000€ de CA annuel...')}
+      </div>
+
+      <div class="plan-block">
+        <h4>Priorités à 4 mois</h4>
+        <div class="field"><label>Titre affiché au client</label><input type="text" value="${esc(planData.priorities_4m.title || '')}" data-path="priorities_4m.title"></div>
+        ${renderTextObjList(planData.priorities_4m.items, 'priorities_4m.items', 'Ex: Mettre en place un suivi du food cost...')}
+      </div>
+
+      <div class="plan-block">
+        <h4>Les 3 axes stratégiques</h4>
+        ${renderAxes()}
+      </div>
+
+      <div class="plan-block">
+        <h4>Cycles, mois et semaines</h4>
+        ${planData.cycles.map((c, ci) => renderCycle(c, ci)).join('')}
+      </div>
+    `;
+  }
+
+  // ---- Delegated events for the plan editor ----
+  document.getElementById('planEditorRoot').addEventListener('input', (e) => {
+    const el = e.target;
+    if (!el.dataset.path || el.type === 'checkbox' || el.type === 'radio') return;
+    if (el.type === 'number') setAtPath(planData, el.dataset.path, el.value === '' ? null : Number(el.value));
+    else setAtPath(planData, el.dataset.path, el.value);
+  });
+  document.getElementById('planEditorRoot').addEventListener('change', (e) => {
+    const el = e.target;
+    if (el.dataset.checkbox && el.dataset.path) { setAtPath(planData, el.dataset.path, el.checked); }
+    if (el.dataset.weekUnlock) {
+      const ci = +el.dataset.ci, mi = +el.dataset.mi, wi = +el.dataset.wi;
+      planData.cycles[ci].months[mi].weeks[wi].locked = !el.checked;
+    }
+    if (el.dataset.currentCycle !== undefined) {
+      const ci = +el.dataset.currentCycle, mi = +el.dataset.currentMonth;
+      planData.cycles[ci].months.forEach((m, i) => { m.current = (i === mi); });
+    }
+  });
+  document.getElementById('planEditorRoot').addEventListener('click', (e) => {
+    const el = e.target;
+    if (el.dataset.removePath !== undefined) {
+      const arr = getAtPath(planData, el.dataset.removePath);
+      arr.splice(+el.dataset.removeIndex, 1);
+      renderPlanEditor();
+    } else if (el.dataset.addPath !== undefined) {
+      const arr = getAtPath(planData, el.dataset.addPath);
+      arr.push(el.dataset.addKind === 'string' ? '' : { text: '', done: false });
+      renderPlanEditor();
+    } else if (el.dataset.addAxis) {
+      planData.axes.push({ name: '', subtitle: '', situation: '', actions: [] });
+      renderPlanEditor();
+    } else if (el.dataset.addMonth) {
+      const ci = +el.dataset.ci;
+      planData.cycles[ci].months.push(blankMonth(planData.cycles[ci].months.length + 1));
+      renderPlanEditor();
+    } else if (el.dataset.addWeek) {
+      const ci = +el.dataset.ci, mi = +el.dataset.mi;
+      planData.cycles[ci].months[mi].weeks.push(blankWeek(planData.cycles[ci].months[mi].weeks.length + 1));
+      renderPlanEditor();
+    }
+  });
+
+  document.getElementById('savePlanBtn').addEventListener('click', () => savePlan());
+
+  document.getElementById('unlockWeekBtn').addEventListener('click', async () => {
+    if (!planData) { if (window.toast) toast('Générez d\'abord une structure de plan', 'error'); return; }
+    let found = null;
+    outer:
+    for (const cycle of planData.cycles) {
+      for (const month of (cycle.months || [])) {
+        for (const week of (month.weeks || [])) {
+          if (week.locked) { found = week; break outer; }
+        }
+      }
+    }
+    if (!found) { if (window.toast) toast('Toutes les semaines sont déjà débloquées', 'ok'); return; }
+    found.locked = false;
+    await savePlan(true);
+    if (window.toast) toast('Semaine débloquée : ' + found.label, 'ok');
+    renderPlanEditor();
+  });
+
+  document.getElementById('activateCycleBtn').addEventListener('click', async () => {
+    if (!planData) { if (window.toast) toast('Générez d\'abord une structure de plan', 'error'); return; }
+    const next = planData.cycles.find(c => !c.active);
+    if (!next) { if (window.toast) toast('Tous les cycles sont déjà actifs', 'ok'); return; }
+    next.active = true;
+    await savePlan(true);
+    if (window.toast) toast('Cycle activé : ' + next.name, 'ok');
+    renderPlanEditor();
+  });
+
+  // =========================================================
+  // MESSAGES
+  // =========================================================
+  async function loadMessages() {
+    const { data } = await supabaseClient.from('messages').select('*').eq('user_id', clientId).order('created_at', { ascending: true });
+    return data || [];
+  }
+  function renderMessages(list) {
+    const box = document.getElementById('msgList');
+    box.innerHTML = list.map(m => `<div class="msg-item ${m.sender === 'coach' ? 'mine' : ''}">
+        <b>${m.sender === 'coach' ? 'Vous' : (profile?.company_name || 'Client')}</b>${esc(m.text)}
+      </div>`).join('') || '<div class="empty-state">Pas encore de messages.</div>';
+    box.scrollTop = box.scrollHeight;
+  }
+  document.getElementById('msgForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('msgInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    const { error } = await supabaseClient.from('messages').insert({ user_id: clientId, sender: 'coach', text });
+    if (error) { if (window.toast) toast(error.message, 'error'); return; }
+    renderMessages(await loadMessages());
+  });
+
+  // =========================================================
+  // CALLS
+  // =========================================================
+  async function loadCalls() {
+    const { data } = await supabaseClient.from('calls').select('*').eq('user_id', clientId).order('created_at', { ascending: false });
+    return data || [];
+  }
+  function toLocalInputValue(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    const pad = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  function renderCalls(list) {
+    const root = document.getElementById('callsRoot');
+    if (!list.length) { root.innerHTML = '<div class="empty-state">Aucune demande de call pour ce client.</div>'; return; }
+    root.innerHTML = list.map(c => `
+      <div class="call-row" data-id="${c.id}">
+        <div class="call-row-top">
+          <select data-field="status">
+            <option value="requested" ${c.status === 'requested' ? 'selected' : ''}>Demandé</option>
+            <option value="confirmed" ${c.status === 'confirmed' ? 'selected' : ''}>Confirmé</option>
+            <option value="done" ${c.status === 'done' ? 'selected' : ''}>Terminé</option>
+          </select>
+          <input type="datetime-local" data-field="scheduled_at" value="${toLocalInputValue(c.scheduled_at)}" style="background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;color:#fff;font-family:inherit;font-size:13px;">
+        </div>
+        <div class="field"><label>Notes</label><textarea rows="2" data-field="notes">${esc(c.notes || '')}</textarea></div>
+        <button type="button" class="btn-primary magnetic save-call-btn" style="padding:9px 16px;font-size:13px;">Enregistrer</button>
+      </div>`).join('');
+    root.querySelectorAll('.call-row').forEach(row => {
+      row.querySelector('.save-call-btn').addEventListener('click', async () => {
+        const id = row.dataset.id;
+        const status = row.querySelector('[data-field="status"]').value;
+        const scheduledRaw = row.querySelector('[data-field="scheduled_at"]').value;
+        const notes = row.querySelector('[data-field="notes"]').value;
+        const { error } = await supabaseClient.from('calls').update({
+          status,
+          scheduled_at: scheduledRaw ? new Date(scheduledRaw).toISOString() : null,
+          notes,
+        }).eq('id', id);
+        if (error) { if (window.toast) toast(error.message, 'error'); return; }
+        if (window.toast) toast('Call mis à jour', 'ok');
+      });
+    });
+  }
+
+  // ---- Init ----
+  await loadAudit(); renderAuditTab();
+  await loadPlan(); renderPlanEditor();
+  renderMessages(await loadMessages());
+  renderCalls(await loadCalls());
+})();
+</script>
+</body>
+</html>

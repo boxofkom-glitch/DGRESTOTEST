@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Espace coach — ScaleX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+body{overflow-x:hidden;}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(20,20,20,.92);backdrop-filter:blur(14px);z-index:20;}
+.admin-topbar .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;text-decoration:none;color:#fff;}
+.admin-topbar .logo .tag{font-size:11px;font-weight:700;color:var(--muted-dim);background:var(--surface);border:1px solid var(--line);padding:3px 9px;border-radius:999px;margin-left:6px;}
+.icon-btn{background:transparent;border:1px solid var(--line);color:var(--muted);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .2s,border-color .2s;}
+.icon-btn:hover{color:#fff;border-color:var(--muted);}
+.icon-btn svg{width:16px;height:16px;}
+
+.admin-main{max-width:1080px;margin:0 auto;padding:30px 24px 70px;}
+.page-title-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:22px;}
+.page-title-row h1{font-size:clamp(22px,3vw,30px);}
+.page-title-row p{margin-top:4px;font-size:14px;color:var(--muted);}
+.empty-state{font-size:13.5px;color:var(--muted-dim);text-align:center;padding:40px 0;}
+
+.search-row{margin-bottom:18px;}
+.search-row input{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;color:#fff;font-family:inherit;font-size:14px;}
+.search-row input:focus{outline:none;border-color:var(--lime);}
+
+.client-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+.client-table th{text-align:left;padding:10px 14px;color:var(--muted-dim);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--line);}
+.client-table td{padding:14px;border-bottom:1px solid var(--line);color:#EDE4D6;vertical-align:middle;}
+.client-table tr:last-child td{border-bottom:none;}
+.client-table tr.client-row{cursor:pointer;transition:background .15s;}
+.client-table tr.client-row:hover{background:rgba(255,255,255,.03);}
+.client-name{font-weight:700;color:#fff;}
+.client-email{font-size:12px;color:var(--muted-dim);}
+.status-dot{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;}
+.status-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted-dim);flex:0 0 auto;}
+.status-dot.on{color:var(--lime);}
+.status-dot.on::before{background:var(--lime);}
+.status-dot.off{color:var(--muted-dim);}
+.table-scroll{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<div id="authGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);">
+  <span style="width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--lime);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;"></span>
+  Chargement…
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg);}}</style>
+
+<div id="adminPage" style="display:none;">
+  <div class="admin-topbar">
+    <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span><span class="tag">Espace coach</span></a>
+    <button type="button" class="icon-btn" id="logoutBtn" aria-label="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
+  </div>
+
+  <div class="admin-main">
+    <div class="page-title-row">
+      <div><h1>Vos clients</h1><p>Cliquez sur un client pour voir son audit, construire son plan, répondre à ses messages.</p></div>
+    </div>
+
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="Rechercher un établissement ou un email...">
+    </div>
+
+    <div class="card glow-card reveal in-view">
+      <div class="table-scroll">
+        <table class="client-table">
+          <thead>
+            <tr><th>Établissement</th><th>Audit</th><th>Plan</th><th>Dernier call</th></tr>
+          </thead>
+          <tbody id="clientsBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-state" id="clientsEmpty" style="display:none;">Aucun client pour l'instant. Dès qu'un client crée son compte, il apparaît ici automatiquement.</div>
+    </div>
+  </div>
+</div>
+
+<script src="../../script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-client.js"></script>
+<script>
+(async function () {
+  const { data: sessData } = await supabaseClient.auth.getSession();
+  if (!sessData.session) { window.location.href = '../login.html'; return; }
+  const user = sessData.session.user;
+
+  const { data: adminRow } = await supabaseClient.from('admins').select('user_id').eq('user_id', user.id).maybeSingle();
+  if (!adminRow) { window.location.href = '../dashboard.html'; return; }
+
+  document.getElementById('authGate').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+
+  const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = '../login.html';
+  });
+
+  let clients = [];
+
+  async function loadClients() {
+    const [{ data: profiles }, { data: audits }, { data: plans }, { data: calls }] = await Promise.all([
+      supabaseClient.from('profiles').select('*').order('created_at', { ascending: false }),
+      supabaseClient.from('audits').select('user_id'),
+      supabaseClient.from('plans').select('user_id'),
+      supabaseClient.from('calls').select('user_id, status, scheduled_at, created_at'),
+    ]);
+
+    const auditSet = new Set((audits || []).map(a => a.user_id));
+    const planSet = new Set((plans || []).map(p => p.user_id));
+    const lastCallByUser = {};
+    (calls || []).forEach(c => {
+      const existing = lastCallByUser[c.user_id];
+      const ts = c.scheduled_at || c.created_at;
+      if (!existing || new Date(ts) > new Date(existing.ts)) {
+        lastCallByUser[c.user_id] = { ts, status: c.status };
+      }
+    });
+
+    clients = (profiles || []).map(p => ({
+      id: p.id,
+      company: p.company_name || '(sans nom)',
+      email: p.email || '',
+      hasAudit: auditSet.has(p.id),
+      hasPlan: planSet.has(p.id),
+      lastCall: lastCallByUser[p.id] || null,
+    }));
+  }
+
+  function callLabel(lastCall) {
+    if (!lastCall) return '<span style="color:var(--muted-dim);">Aucun</span>';
+    const d = new Date(lastCall.ts);
+    const dateStr = isNaN(d) ? '' : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+    const statusLabels = { requested: 'Demandé', confirmed: 'Confirmé', done: 'Terminé' };
+    return `${esc(dateStr)} — ${esc(statusLabels[lastCall.status] || lastCall.status)}`;
+  }
+
+  function render(list) {
+    const body = document.getElementById('clientsBody');
+    const empty = document.getElementById('clientsEmpty');
+    if (!list.length) {
+      body.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    body.innerHTML = list.map(c => `<tr class="client-row" data-id="${esc(c.id)}">
+        <td><div class="client-name">${esc(c.company)}</div><div class="client-email">${esc(c.email)}</div></td>
+        <td><span class="status-dot ${c.hasAudit ? 'on' : 'off'}">${c.hasAudit ? 'Fait' : 'À faire'}</span></td>
+        <td><span class="status-dot ${c.hasPlan ? 'on' : 'off'}">${c.hasPlan ? 'Créé' : 'Aucun'}</span></td>
+        <td>${callLabel(c.lastCall)}</td>
+      </tr>`).join('');
+    body.querySelectorAll('.client-row').forEach(row => {
+      row.addEventListener('click', () => { window.location.href = 'client.html?id=' + row.dataset.id; });
+    });
+  }
+
+  await loadClients();
+  render(clients);
+
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { render(clients); return; }
+    render(clients.filter(c => c.company.toLowerCase().includes(q) || c.email.toLowerCase().includes(q)));
+  });
+})();
+</script>
+</body>
+</html>
