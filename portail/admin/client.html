@@ -250,6 +250,12 @@ body{overflow-x:hidden;}
   function blankPlan() {
     return {
       contract_months: 4,
+      client_name: '',
+      start_date: '',
+      status_critical: false,
+      status_critical_reason: '',
+      difficulties: '',
+      next_missions: [],
       vision_12m: { title: 'Objectifs pour les 12 prochains mois', items: [] },
       priorities_4m: { title: 'Objectifs pour les 4 prochains mois', items: [] },
       axes: [],
@@ -318,6 +324,17 @@ body{overflow-x:hidden;}
       `<button type="button" class="add-row-btn" data-add-axis="1">+ Ajouter un axe</button>`;
   }
 
+  function renderNextMissions() {
+    return (planData.next_missions || []).map((m, i) => `
+      <div class="axis-card">
+        <div class="axis-card-head"><button type="button" class="chip-remove" data-remove-path="next_missions" data-remove-index="${i}">✕</button></div>
+        <div class="field"><label>Titre de la mission</label><input type="text" value="${esc(m.title || '')}" data-path="next_missions[${i}].title" placeholder="Ex: Mettre à jour la fiche Google Business"></div>
+        <div class="field"><label>Comment faire</label><textarea rows="2" data-path="next_missions[${i}].how" placeholder="Étapes concrètes...">${esc(m.how || '')}</textarea></div>
+        <div class="field"><label>Pourquoi c'est important</label><textarea rows="2" data-path="next_missions[${i}].why" placeholder="Le bénéfice pour le client...">${esc(m.why || '')}</textarea></div>
+      </div>`).join('') +
+      `<button type="button" class="add-row-btn" data-add-mission="1">+ Ajouter une mission</button>`;
+  }
+
   function renderWeek(week, ci, mi, wi) {
     return `<div class="week-card">
       <div class="week-head">
@@ -373,7 +390,20 @@ body{overflow-x:hidden;}
     }
     saveBar.style.display = 'flex';
     root.innerHTML = `
-      <div class="field"><label>Durée du contrat (en mois)</label><input type="number" min="1" value="${planData.contract_months ?? 4}" data-path="contract_months"></div>
+      <div class="plan-block">
+        <h4>Informations générales</h4>
+        <div class="field"><label>Durée du contrat (en mois)</label><input type="number" min="1" value="${planData.contract_months ?? 4}" data-path="contract_months"></div>
+        <div class="field"><label>Nom du client (affiché "Bienvenue, ...")</label><input type="text" value="${esc(planData.client_name || '')}" data-path="client_name" placeholder="Ex: Julien Martin — laisser vide pour afficher le nom de l'établissement"></div>
+        <div class="field"><label>Date d'entrée en accompagnement</label><input type="date" value="${esc(planData.start_date || '')}" data-path="start_date"></div>
+        <label class="inline-check" style="margin-bottom:10px;"><input type="checkbox" ${planData.status_critical ? 'checked' : ''} data-path="status_critical" data-checkbox="1"> Situation critique (alerte affichée au client)</label>
+        <div class="field"><label>Pourquoi (affiché si situation critique)</label><textarea rows="2" data-path="status_critical_reason" placeholder="Ex: Le food cost dérive depuis 2 mois sans action corrective.">${esc(planData.status_critical_reason || '')}</textarea></div>
+        <div class="field"><label>Difficultés actuelles du client</label><textarea rows="3" data-path="difficulties" placeholder="Ex: Manque de temps pour former l'équipe, trésorerie tendue...">${esc(planData.difficulties || '')}</textarea></div>
+      </div>
+
+      <div class="plan-block">
+        <h4>Prochaines missions (2 affichées sur le tableau de bord)</h4>
+        ${renderNextMissions()}
+      </div>
 
       <div class="plan-block">
         <h4>Vision à 12 mois</h4>
@@ -430,6 +460,10 @@ body{overflow-x:hidden;}
       renderPlanEditor();
     } else if (el.dataset.addAxis) {
       planData.axes.push({ name: '', subtitle: '', situation: '', actions: [] });
+      renderPlanEditor();
+    } else if (el.dataset.addMission) {
+      planData.next_missions = planData.next_missions || [];
+      planData.next_missions.push({ title: '', how: '', why: '' });
       renderPlanEditor();
     } else if (el.dataset.addMonth) {
       const ci = +el.dataset.ci;
