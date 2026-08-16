@@ -57,11 +57,14 @@ body{overflow-x:hidden;}
 
 .grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start;}
 @media (max-width:760px){.grid-2{grid-template-columns:1fr;}}
+.grid-2-equal{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;}
+@media (max-width:760px){.grid-2-equal{grid-template-columns:1fr;}}
 
 /* reusable stat-card grid (audit financials + plan KPIs) */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch;}
+.stat-grid-4{grid-template-columns:repeat(4,1fr);}
 @media (max-width:640px){.stat-grid{grid-template-columns:1fr 1fr;}}
-.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 18px 16px;}
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 18px 16px;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;}
 .stat-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .stat-card-head span{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-dim);}
 .stat-card-icon{width:26px;height:26px;border-radius:7px;background:var(--lime-dim);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
@@ -208,6 +211,10 @@ body{overflow-x:hidden;}
 .objectif-list .task-title{counter-increment:none;}
 
 /* plan: axes */
+.axes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;}
+@media (max-width:900px){.axes-grid{grid-template-columns:1fr;}}
+.axis-card-solo{position:relative;overflow:hidden;}
+.axis-card-solo::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--axis-color,var(--lime));}
 .axis-card{margin-bottom:16px;}
 .axis-card:last-child{margin-bottom:0;}
 .axis-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -233,11 +240,11 @@ body{overflow-x:hidden;}
 
 .month-dash{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:20px;}
 @media (max-width:760px){.month-dash{grid-template-columns:1fr;}}
-.week-bars{display:flex;justify-content:space-around;align-items:flex-end;height:100px;gap:10px;margin-bottom:10px;}
-.week-bar-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;}
-.week-bar-track{width:100%;max-width:34px;height:80px;background:var(--ink);border-radius:6px;display:flex;align-items:flex-end;overflow:hidden;}
-.week-bar-fill{width:100%;background:linear-gradient(180deg,var(--lime-2),var(--lime));border-radius:6px 6px 0 0;transition:height .8s cubic-bezier(.16,.9,.3,1);}
-.week-bar-col span{font-size:11px;color:var(--muted-dim);font-weight:700;}
+.week-bars{display:flex;justify-content:center;align-items:flex-end;height:100px;gap:14px;margin-bottom:10px;}
+.week-bar-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1 1 0;max-width:60px;}
+.week-bar-track{width:100%;max-width:34px;height:80px;margin:0 auto;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;display:flex;align-items:flex-end;overflow:hidden;box-sizing:border-box;}
+.week-bar-fill{width:100%;min-height:4px;background:linear-gradient(180deg,var(--lime-2),var(--lime));border-radius:6px 6px 0 0;transition:height .8s cubic-bezier(.16,.9,.3,1);}
+.week-bar-col span{font-size:11px;color:var(--muted-dim);font-weight:700;text-align:center;}
 .week-recap-row{display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-top:1px solid var(--line);}
 .week-recap-row:first-of-type{border-top:none;}
 
@@ -351,12 +358,22 @@ body{overflow-x:hidden;}
         <section class="view active" id="view-overview">
           <div class="page-title-row">
             <div>
-              <h1>Bienvenue, <span id="companyName" style="color:var(--lime);">—</span></h1>
-              <p>Voici où en est votre accompagnement ScaleX.</p>
+              <h1>Bienvenue, <span id="welcomeName" style="color:var(--lime);">—</span></h1>
+              <p id="clientSinceText">Voici où en est votre accompagnement ScaleX.</p>
             </div>
           </div>
 
-          <div class="grid-2">
+          <div class="stat-grid stat-grid-4" style="margin-bottom:24px;" id="overviewStats"></div>
+
+          <div class="card glow-card reveal in-view" id="statusCard" style="margin-bottom:24px;display:none;"></div>
+
+          <div class="section-block reveal in-view">
+            <div class="section-tag">À faire</div>
+            <h2>Vos prochaines missions</h2>
+            <div id="overviewMissions" style="margin-top:16px;"></div>
+          </div>
+
+          <div class="grid-2" style="margin-top:24px;">
             <div class="dash-col" style="display:flex;flex-direction:column;gap:20px;">
 
               <div class="card glow-card ring-card reveal">
@@ -368,35 +385,7 @@ body{overflow-x:hidden;}
                   <div class="ring-label"><b id="ringPct">0%</b><span>global</span></div>
                 </div>
                 <div style="flex:1;min-width:180px;" id="overviewRows">
-                  <div class="progress-row"><span>Diagnostic</span><span>100%</span></div>
-                  <div class="progress-bar"><div class="progress-bar-fill" data-fill="100"></div></div>
-                  <div class="progress-row"><span>Stratégie</span><span>75%</span></div>
-                  <div class="progress-bar"><div class="progress-bar-fill" data-fill="75"></div></div>
-                  <div class="progress-row"><span>Exécution</span><span>40%</span></div>
-                  <div class="progress-bar"><div class="progress-bar-fill" data-fill="40"></div></div>
-                  <div class="progress-row" style="margin-bottom:0;"><span>Scale</span><span>10%</span></div>
-                  <div class="progress-bar" style="margin-bottom:0;"><div class="progress-bar-fill" data-fill="10"></div></div>
-                </div>
-              </div>
-
-              <div class="card glow-card reveal">
-                <h3>Croissance MRR — 6 derniers mois</h3>
-                <div class="chart-box-lg">
-                  <svg viewBox="0 0 400 150" preserveAspectRatio="none">
-                    <defs><linearGradient id="areaFill2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D4FF00" stop-opacity="0.3"/><stop offset="100%" stop-color="#D4FF00" stop-opacity="0"/></linearGradient></defs>
-                    <path d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10 L400,150 L0,150 Z" fill="url(#areaFill2)"/>
-                    <path class="draw-path" d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10" fill="none" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="400" cy="10" r="5" fill="#D4FF00"/>
-                  </svg>
-                </div>
-              </div>
-
-              <div class="card glow-card reveal">
-                <h3>Vos indicateurs</h3>
-                <div class="kpi-mini">
-                  <div><b class="lime cnt" data-target="18">0</b><span>% MRR ce mois</span></div>
-                  <div id="tasksKpi"><b class="cnt" data-target="3">0</b><span>/ 5 actions faites</span></div>
-                  <div><b id="nextCallKpi">Jeu. 14h</b><span>prochain point</span></div>
+                  <div class="empty-state">Votre progression par pilier apparaîtra ici après votre auto-audit.</div>
                 </div>
               </div>
             </div>
@@ -425,7 +414,13 @@ body{overflow-x:hidden;}
 
         <!-- PLAN D'ACTION -->
         <section class="view" id="view-plan">
-          <div class="page-title-row"><div><h1>Plan d'action</h1><p>Vos objectifs et vos tâches, semaine par semaine.</p></div></div>
+          <div class="page-title-row">
+            <div><h1>Plan d'action</h1><p>Vos objectifs et vos tâches, semaine par semaine.</p></div>
+            <button type="button" class="magnetic" id="syncPlanBtn" style="text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13px;padding:11px 18px;border-radius:999px;display:none;align-items:center;gap:8px;white-space:nowrap;">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+              Synchroniser le plan
+            </button>
+          </div>
           <div class="empty-state" id="planEmpty" style="padding:60px 0;">
             <p style="margin-bottom:18px;">Votre plan se génère automatiquement dès que vous avez complété votre auto-audit.</p>
             <a href="audit-form.html" class="btn-primary magnetic">Faire mon auto-audit →</a>
@@ -503,15 +498,15 @@ body{overflow-x:hidden;}
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
+<script src="playbooks.js"></script>
 <script>
 (async function () {
   const { data } = await supabaseClient.auth.getSession();
   if (!data.session) { window.location.href = 'login.html'; return; }
 
   const user = data.session.user;
-  const company = user.user_metadata?.company_name || 'votre établissement';
+  let company = user.user_metadata?.company_name || 'votre établissement';
 
-  document.getElementById('companyName').textContent = company;
   document.getElementById('sideCompanyName').textContent = company;
   document.getElementById('sideUserEmail').textContent = user.email;
   document.getElementById('settingsCompany').value = company;
@@ -542,6 +537,62 @@ body{overflow-x:hidden;}
   const axisColors = { 'Structure & opérations': '#e07b39', 'Acquisition & Vente': '#3b6fe0', 'Vision & Pilotage': '#2fae6b' };
   const axisIconKey = { 'Structure & opérations': 'structure', 'Acquisition & Vente': 'acquisition', 'Vision & Pilotage': 'vision' };
   const statusClass = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-');
+
+  // =========================================================
+  // OVERVIEW — bienvenue, score /20, statut, difficultés,
+  // prochaines missions. Champs coach (client_name, start_date,
+  // status_critical, status_critical_reason, difficulties,
+  // next_missions) vivent dans plans.data — voir README.md.
+  // =========================================================
+  function renderOverview(plan) {
+    document.getElementById('welcomeName').textContent = (plan && plan.client_name) || company;
+
+    const startRaw = (plan && plan.start_date) || (user.created_at ? user.created_at.slice(0, 10) : null);
+    if (startRaw) {
+      const d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(startRaw) ? startRaw + 'T00:00:00' : startRaw);
+      const dateText = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+      document.getElementById('clientSinceText').textContent = `Client ScaleX depuis le ${dateText}.`;
+    }
+
+    const all = plan ? allTasksFlat(plan) : [];
+    const doneCount = all.filter(t => t.done).length;
+    const score20 = all.length ? Math.round(doneCount / all.length * 20) : 0;
+    const pct = all.length ? Math.round(doneCount / all.length * 100) : 0;
+    const critical = !!(plan && plan.status_critical);
+
+    setRing(document.getElementById('ringFill'), pct);
+    document.getElementById('ringPct').textContent = pct + '%';
+
+    document.getElementById('overviewStats').innerHTML = `
+      <div class="stat-card"><div class="stat-card-head"><span>Score objectifs</span></div><b>${score20}<span class="unit">/ 20</span></b><span class="sub">${doneCount}/${all.length} actions réalisées</span></div>
+      <div class="stat-card"><div class="stat-card-head"><span>Total actions</span></div><b>${doneCount}<span class="unit">/ ${all.length}</span></b><span class="sub">${all.length - doneCount} restantes</span></div>
+      <div class="stat-card"><div class="stat-card-head"><span>Statut</span></div><b style="font-size:16px;color:${critical ? '#ff5c5c' : '#7ed957'};">${critical ? 'Critique' : 'Sur la bonne voie'}</b></div>
+      <div class="stat-card"><div class="stat-card-head"><span>Contrat</span></div><b>${(plan && plan.contract_months) ?? '—'}<span class="unit">mois</span></b></div>
+    `;
+
+    const statusCard = document.getElementById('statusCard');
+    const difficulties = plan && plan.difficulties;
+    if (critical || difficulties) {
+      statusCard.style.display = 'block';
+      statusCard.style.borderColor = critical ? 'rgba(255,80,80,.3)' : '';
+      statusCard.style.background = critical ? 'rgba(255,60,60,.05)' : '';
+      let html = '';
+      if (critical) html += `<h3 style="color:#ff8a8a;margin-bottom:8px;">⚠ Situation jugée critique par votre coach</h3><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(plan.status_critical_reason || 'Votre coach vous en parlera lors du prochain point.')}</p>`;
+      if (difficulties) html += `<div${critical ? ' style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);"' : ''}><b style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:6px;">Difficultés actuelles</b><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(difficulties)}</p></div>`;
+      statusCard.innerHTML = html;
+    } else {
+      statusCard.style.display = 'none';
+    }
+
+    const missions = (plan && plan.next_missions) || [];
+    const missionsEl = document.getElementById('overviewMissions');
+    missionsEl.innerHTML = missions.length ? missions.slice(0, 2).map(m => `<div class="card glow-card" style="margin-bottom:14px;">
+        <h4 style="font-size:15.5px;color:#fff;margin-bottom:12px;">${esc(m.title || '')}</h4>
+        ${m.how ? `<div class="axis-sub"><b>Comment faire</b><p>${esc(m.how)}</p></div>` : ''}
+        ${m.why ? `<div class="axis-sub"><b>Pourquoi c'est important</b><p>${esc(m.why)}</p></div>` : ''}
+      </div>`).join('') : `<div class="empty-state">Votre coach n'a pas encore défini vos prochaines missions.</div>`;
+  }
+  renderOverview(null);
 
   // =========================================================
   // AUDIT — table Supabase "audits" (une ligne par client,
@@ -707,6 +758,7 @@ body{overflow-x:hidden;}
   // colonne "data" en JSON). Voir README.md.
   // =========================================================
   let planRow = null;
+  let auditData = null;
 
   async function loadPlan() {
     try {
@@ -721,6 +773,23 @@ body{overflow-x:hidden;}
     const { error } = await supabaseClient.from('plans').update({ data: planRow.data }).eq('id', planRow.id);
     if (error && window.toast) toast(error.message, 'error');
   }
+
+  // ---- Synchroniser le plan : reconstruit le mois 1 depuis playbooks.js
+  // (utile après une mise à jour du contenu des semaines), en gardant les
+  // cases déjà cochées par le client. ----
+  document.getElementById('syncPlanBtn').addEventListener('click', async () => {
+    if (!planRow || !auditData) return;
+    const plan = planRow.data;
+    plan.cycles = plan.cycles && plan.cycles.length ? plan.cycles : [{ name: 'Cycle 1', active: true, months: [] }];
+    plan.cycles[0].months = plan.cycles[0].months || [];
+    const newMonth1 = syncMonth1FromPlaybook(auditData, plan.cycles[0].months[0]);
+    if (!newMonth1) { if (window.toast) toast('Synchronisation impossible : audit incomplet.', 'error'); return; }
+    plan.cycles[0].months[0] = newMonth1;
+    await savePlan();
+    if (window.toast) toast('Plan synchronisé avec les dernières tâches !', 'ok');
+    renderPlan(plan);
+    renderOverview(plan);
+  });
 
   function allTasksFlat(plan) {
     const out = [];
@@ -760,7 +829,7 @@ body{overflow-x:hidden;}
     currentCycleIdx = Math.min(currentCycleIdx, cycles.length - 1);
     if (currentCycleIdx < 0) currentCycleIdx = activeCycleIdx;
 
-    let html = `<div class="stat-grid reveal in-view" style="margin-bottom:30px;">
+    let html = `<div class="stat-grid stat-grid-4 reveal in-view" style="margin-bottom:30px;">
       <div class="stat-card" style="display:flex;align-items:center;gap:14px;">
         <div class="ring-wrap sm"><svg viewBox="0 0 76 76"><circle class="ring-track" cx="38" cy="38" r="31" stroke-width="7"/><circle class="ring-fill" id="planRing" cx="38" cy="38" r="31" stroke-width="7" style="stroke-dasharray:195;stroke-dashoffset:195;"/></svg><div class="ring-label sm"><b id="planRingPct">0%</b></div></div>
         <div><span style="font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;">Progression globale</span><br><b style="font-size:15px;color:#fff;">${all.length ? Math.round(doneCount / all.length * 100) : 0}%</b></div>
@@ -775,7 +844,7 @@ body{overflow-x:hidden;}
         <div class="section-tag">Objectifs stratégiques</div>
         <h2>Vos objectifs</h2>
         <p class="sub">Des cibles précises et mesurables pour guider chaque décision.</p>
-        <div class="grid-2">
+        <div class="grid-2-equal">
           ${plan.vision_12m ? `<div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.vision_12m.title || 'Vision 12 mois')}</h4></div><div id="visionList" class="objectif-list"></div></div>` : '<div></div>'}
           ${plan.priorities_4m ? `<div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.priorities_4m.title || 'Priorités 4 mois')}</h4></div><div id="prioritiesList" class="objectif-list"></div></div>` : ''}
         </div>
@@ -786,8 +855,8 @@ body{overflow-x:hidden;}
       html += `<div class="section-block reveal in-view">
         <div class="section-tag">Analyse & plan d'action</div>
         <h2>Trois axes stratégiques</h2>
-        <div class="card glow-card" style="margin-top:16px;">
-          ${plan.axes.map(ax => `<div class="axis-card">
+        <div class="axes-grid" style="margin-top:16px;">
+          ${plan.axes.map(ax => `<div class="card glow-card axis-card-solo" style="--axis-color:${axisColors[ax.name] || 'var(--lime)'};">
             <div class="axis-head"><div class="icon" style="background:${axisColors[ax.name] || 'var(--lime)'};"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${svgIcon(axisIconKey[ax.name])}</svg></div><div><h4>${esc(ax.name)}</h4><span>${esc(ax.subtitle || '')}</span></div></div>
             ${ax.situation ? `<div class="axis-sub"><b>Situation actuelle / blocages</b><p>${esc(ax.situation)}</p></div>` : ''}
             ${(ax.actions || []).length ? `<div class="axis-sub"><b>Actions à mettre en place</b><ul>${ax.actions.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>` : ''}
@@ -817,13 +886,13 @@ body{overflow-x:hidden;}
       const list = document.getElementById('visionList');
       const d = plan.vision_12m.items.filter(t => t.done).length;
       document.querySelector('#visionList').closest('.card').querySelector('.objectif-card-head').insertAdjacentHTML('beforeend', `<span>${d}/${plan.vision_12m.items.length} complétés</span>`);
-      plan.vision_12m.items.forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => renderPlan(plan)); list.appendChild(el); });
+      plan.vision_12m.items.forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => { renderPlan(plan); renderOverview(plan); }); list.appendChild(el); });
     }
     if (plan.priorities_4m) {
       const list = document.getElementById('prioritiesList');
       const d = plan.priorities_4m.items.filter(t => t.done).length;
       document.querySelector('#prioritiesList').closest('.card').querySelector('.objectif-card-head').insertAdjacentHTML('beforeend', `<span>${d}/${plan.priorities_4m.items.length} complétés</span>`);
-      plan.priorities_4m.items.forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => renderPlan(plan)); list.appendChild(el); });
+      plan.priorities_4m.items.forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => { renderPlan(plan); renderOverview(plan); }); list.appendChild(el); });
     }
 
     if (cycles.length) {
@@ -865,7 +934,7 @@ body{overflow-x:hidden;}
 
     let html = `<div class="month-dash">
       <div class="card glow-card">
-        <h3>Actions par semaine</h3>
+        <h3 style="margin-bottom:16px;">Actions par semaine</h3>
         <div class="week-bars">
           ${weekTotals.map(w => `<div class="week-bar-col"><div class="week-bar-track"><div class="week-bar-fill" style="height:${w.total ? (w.done / w.total * 100) : 0}%"></div></div><span>${w.done}/${w.total}</span></div>`).join('')}
         </div>
@@ -901,7 +970,7 @@ body{overflow-x:hidden;}
     weeks.forEach((w, wi) => {
       if (w.locked) return;
       const body = container.querySelector(`.week-card-body[data-week-idx="${wi}"]`);
-      (w.tasks || []).forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => renderPlan(plan)); body.appendChild(el); });
+      (w.tasks || []).forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => { renderPlan(plan); renderOverview(plan); }); body.appendChild(el); });
     });
   }
 
@@ -940,10 +1009,6 @@ body{overflow-x:hidden;}
     document.getElementById('callsEmpty').style.display = 'none';
     list.style.display = 'block';
 
-    const nextConfirmed = calls
-      .filter(c => c.status === 'confirmed' && c.scheduled_at && new Date(c.scheduled_at) > new Date())
-      .sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at))[0];
-    if (nextConfirmed) document.getElementById('nextCallKpi').textContent = formatCallWhen(nextConfirmed.scheduled_at);
   }
 
   function renderBooking() {
@@ -975,11 +1040,10 @@ body{overflow-x:hidden;}
     document.querySelectorAll('.progress-bar-fill').forEach(el => {
       if (el.dataset.fill) el.style.width = el.dataset.fill + '%';
     });
-    setRing(document.getElementById('ringFill'), 56);
-    document.getElementById('ringPct').textContent = '56%';
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
 
     const audit = await loadAudit();
+    auditData = audit;
     if (audit) {
       renderAudit(audit);
       if ((audit.pillars || []).length) {
@@ -995,16 +1059,10 @@ body{overflow-x:hidden;}
 
     planRow = await loadPlan();
     if (planRow) {
+      if (auditData) document.getElementById('syncPlanBtn').style.display = 'inline-flex';
       renderPlan(planRow.data);
-      const all = allTasksFlat(planRow.data);
-      const done = all.filter(t => t.done).length;
-      setRing(document.getElementById('ringFill'), all.length ? done / all.length * 100 : 0);
-      document.getElementById('ringPct').textContent = (all.length ? Math.round(done / all.length * 100) : 0) + '%';
-      const kpi = document.getElementById('tasksKpi');
-      kpi.querySelector('b').classList.remove('cnt');
-      kpi.querySelector('b').textContent = done;
-      kpi.querySelector('span').textContent = '/ ' + all.length + ' actions faites';
     }
+    renderOverview(planRow ? planRow.data : null);
 
     const calls = await loadCalls();
     renderCalls(calls);
@@ -1074,7 +1132,8 @@ body{overflow-x:hidden;}
       return;
     }
     msgEl.className = 'msg ok'; msgEl.textContent = 'Informations mises à jour.';
-    document.getElementById('companyName').textContent = newCompany;
+    company = newCompany;
+    renderOverview(planRow ? planRow.data : null);
     document.getElementById('sideCompanyName').textContent = newCompany;
     document.getElementById('avatarInitials').textContent = newCompany.trim().slice(0, 2).toUpperCase();
     if (window.toast) toast('Profil mis à jour !', 'ok');
