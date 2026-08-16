@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ScaleX — Coaching rentabilité pour restaurateurs</title>
+<meta name="description" content="Audit, plan d'action personnalisé et 4 points par mois pour reprendre la main sur la rentabilité de votre restaurant. 300€/mois, sans engagement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.hero{position:relative;padding:56px 16px 32px;overflow:hidden;}
+.hero .glow-a{width:520px;height:520px;background:radial-gradient(circle,rgba(212,255,0,.14),transparent 70%);top:-160px;right:-120px;}
+.hero .glow-b{width:420px;height:420px;background:radial-gradient(circle,rgba(167,255,0,.10),transparent 70%);bottom:-140px;left:-100px;}
+.hero-grid{position:relative;z-index:1;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:44px;align-items:center;}
+.hero-grid>div:first-child{flex:1 1 480px;}
+.hero-card{flex:1 1 380px;width:100%;}
+.hero h1{font-size:clamp(32px,5.2vw,58px);margin-bottom:18px;}
+.hero p.lead{font-size:17px;max-width:52ch;margin-bottom:28px;color:var(--muted);}
+.hero-stats{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+.stat-pill{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 16px;box-shadow:var(--shadow);flex:1 1 100px;min-width:96px;}
+.stat-pill b{font-weight:900;font-size:21px;display:block;color:#fff;}
+.stat-pill span{font-size:11.5px;color:var(--muted);}
+.cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.hero-card{position:relative;background:linear-gradient(160deg,var(--surface-2),#0a0a0a);border-radius:var(--r-xl);padding:24px 22px 20px;box-shadow:0 30px 60px -18px rgba(0,0,0,.6);overflow:hidden;border:1px solid var(--line);}
+.hero-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(212,255,0,.10), transparent 55%);}
+.panel-head{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.ph-title{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+.ph-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.kpi-row{position:relative;z-index:1;display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.kpi{flex:1 1 80px;}
+.kpi b{display:block;font-size:23px;font-weight:900;}
+.kpi b.lime{color:var(--lime);}
+.kpi span{font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;}
+.chart-box{position:relative;z-index:1;height:140px;}
+.chart-box svg{width:100%;height:100%;}
+.float-badge{position:absolute;top:14px;right:14px;z-index:2;background:var(--lime);color:var(--ink);font-size:11px;font-weight:800;padding:7px 12px;border-radius:20px;box-shadow:var(--shadow-lime);animation:float 4s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+
+.video-section{padding:16px 16px 56px;}
+
+.pillars{padding:16px 16px 24px;}
+
+.strip{padding:28px 16px;}
+.strip-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
+.strip-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-dim);width:100%;text-align:center;}
+@media (min-width:700px){.strip-label{width:auto;text-align:left;}}
+
+.problem{background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;position:relative;border:1px solid var(--line);}
+.problem .glow-a{width:400px;height:400px;background:radial-gradient(circle,rgba(212,255,0,.16),transparent 70%);top:-100px;right:-60px;}
+.problem-inner{position:relative;z-index:1;padding:52px 26px;}
+.problem-grid{display:flex;flex-wrap:wrap;gap:16px;}
+.problem-card{flex:1 1 260px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 22px;}
+.problem-card .icon{width:42px;height:42px;border-radius:var(--r-sm);background:var(--lime-dim);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.problem-card .icon svg{width:21px;height:21px;stroke:var(--lime);}
+.problem-card h3{font-weight:800;font-size:16.5px;margin-bottom:8px;color:#fff;}
+.problem-card p{font-size:14px;}
+
+.proof-banner{max-width:1120px;margin:0 auto;background:linear-gradient(120deg,var(--lime),var(--lime-2));border-radius:var(--r-xl);padding:34px 28px;color:var(--ink);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;box-shadow:0 20px 40px -14px rgba(212,255,0,.35);}
+.proof-banner h3{font-size:20px;margin-bottom:6px;color:var(--ink);}
+.proof-banner p{color:rgba(13,13,13,.72);font-size:13.5px;}
+.proof-banner .big{font-weight:900;font-size:38px;color:var(--ink);white-space:nowrap;}
+@media (max-width:560px){.proof-banner{grid-template-columns:1fr;}}
+
+.final{position:relative;background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;padding:56px 26px;text-align:center;border:1px solid var(--line);}
+.final-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.final h2{font-size:clamp(26px,4vw,42px);margin-bottom:14px;color:#fff;}
+.final p{font-size:15.5px;margin-bottom:26px;}
+.btn-primary.on-lime{background:#fff;color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="nav-outer">
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="methode.html">Méthode</a>
+      <a href="offre.html">Offre</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a class="nav-cta" href="portail/login.html">Espace client</a>
+    <div class="nav-burger" id="navBurger" aria-label="Menu"><span></span></div>
+    <div class="nav-menu" id="navMenu">
+      <a href="index.html">Accueil</a>
+      <a href="methode.html">Méthode</a>
+      <a href="offre.html">Offre</a>
+      <a href="contact.html">Contact</a>
+      <a href="portail/login.html" class="menu-cta">Espace client</a>
+    </div>
+  </nav>
+</div>
+
+<section class="hero">
+  <span class="glow glow-a"></span><span class="glow glow-b"></span>
+  <div class="hero-grid">
+    <div class="reveal in-view">
+      <div class="eyebrow">Coaching rentabilité restaurants</div>
+      <h1>Reprenez la main sur <em class="grad-text">la marge</em> de votre restaurant.</h1>
+      <p class="lead">Audit, plan d'action personnalisé et 4 points par mois pour transformer chaque semaine en quick win mesurable — sans bouleverser votre carte ni votre équipe.</p>
+      <div class="hero-stats">
+        <div class="stat-pill"><b>15 ans</b><span>d'expérience terrain</span></div>
+        <div class="stat-pill"><b>300€/mois</b><span>tout compris</span></div>
+        <div class="stat-pill"><b>4 calls</b><span>+ plan d'action / mois</span></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn-primary magnetic" href="contact.html">Démarrer un audit gratuit</a>
+        <a class="btn-ghost" href="methode.html">Voir la méthode →</a>
+      </div>
+    </div>
+    <div class="hero-card tilt reveal in-view">
+      <div class="float-badge">▲ +8 pts de marge</div>
+      <div class="panel-head"><span class="ph-title">Rentabilité — Vue d'ensemble</span><span class="ph-dot"></span></div>
+      <div class="kpi-row">
+        <div class="kpi"><b class="lime cnt" data-target="8">0</b><span>pts de marge en 90j</span></div>
+        <div class="kpi"><b class="cnt" data-target="30">0</b><span>jours au 1er quick win</span></div>
+        <div class="kpi"><b>4.8</b><span>satisfaction coaching</span></div>
+      </div>
+      <div class="chart-box">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="none">
+          <defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D4FF00" stop-opacity="0.32"/><stop offset="100%" stop-color="#D4FF00" stop-opacity="0"/></linearGradient></defs>
+          <path d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10 L400,150 L0,150 Z" fill="url(#areaFill)"/>
+          <path class="draw-path" d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10" fill="none" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="400" cy="10" r="5" fill="#D4FF00"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="video-section">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:560px;">
+      <div class="eyebrow">La méthode en vidéo</div>
+      <h2>2 minutes pour comprendre comment ça marche.</h2>
+    </div>
+    <div class="video-block reveal in-view"></div>
+  </div>
+</section>
+
+<section class="pillars">
+  <div class="pillars-grid">
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6-6 6 6M12 3v14"/></svg></div><h4>Audit terrain</h4><p>On dissèque votre carte, votre food cost, votre staff et votre trafic pour trouver ce qui bride vraiment votre marge.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6"/></svg></div><h4>Quick wins hebdo</h4><p>Un plan d'action semaine par semaine, pensé pour du concret que vous appliquez dès le lendemain du call.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5M13 5h6v6"/></svg></div><h4>Suivi en continu</h4><p>Votre espace client suit chaque tâche cochée et chaque call, pour ne plus jamais perdre le fil.</p></div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="strip-inner" style="flex-direction:column;align-items:stretch;">
+    <span class="strip-label">Pourquoi ScaleX</span>
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="chip">15 ans d'expérience terrain</span><span class="chip">Sans engagement</span><span class="chip">Audit offert</span><span class="chip">Suivi hebdo</span><span class="chip">4 calls / mois</span><span class="chip">Espace client inclus</span><span class="chip">300€/mois tout compris</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="constat">
+  <div class="problem">
+    <span class="glow glow-a"></span>
+    <div class="problem-inner">
+      <div class="section-head left reveal" style="max-width:640px;">
+        <div class="eyebrow">Le constat</div>
+        <h2>Vous travaillez plus que jamais. La marge, elle, ne suit pas.</h2>
+        <p>Trois blocages qu'on retrouve dans la quasi-totalité des restaurants qu'on audite.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 4 4-6 6 6"/></svg></div><h3>L'effet ciseaux</h3><p>Vos prix montent, vos couverts baissent. Le CA tient sur le papier — la rentabilité, elle, recule.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 3"/></svg></div><h3>La marge fantôme</h3><p>2 points de food cost qui dérivent, 3% de masse salariale en plus : la marge s'évapore sans que vous le voyiez venir.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>Le plafond de verre du recrutement</h3><p>Ce n'est plus le manque de clients qui freine votre croissance. C'est l'impossibilité de recruter et garder une équipe stable.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof-banner reveal">
+      <div><h3>La marge d'un restaurant ne pardonne rien</h3><p>En France, la marge nette moyenne d'un restaurant tourne entre 2 et 6%. Deux points de food cost qui dérivent, et toute la rentabilité de l'année s'évapore.</p></div>
+      <div class="big">2-6%</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="final reveal">
+    <span class="glow glow-a" style="width:420px;height:420px;background:radial-gradient(circle,rgba(212,255,0,.18),transparent 70%);top:-140px;left:50%;transform:translateX(-50%);"></span>
+    <div class="final-inner">
+      <h2>Allez, on regarde où votre marge s'échappe ?</h2>
+      <p>Pas de rapport de 40 pages. Un audit direct, un plan d'action concret, dès la première semaine.</p>
+      <a href="contact.html" class="btn-primary on-lime magnetic">Démarrer un audit gratuit</a>
+    </div>
+  </div>
+</section>
+
+<footer>ScaleX — Coaching rentabilité pour restaurateurs · 15 ans d'expérience terrain</footer>
+<script src="video-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
