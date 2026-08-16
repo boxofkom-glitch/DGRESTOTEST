@@ -3,42 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ScaleX — Coaching rentabilité pour restaurateurs</title>
-<meta name="description" content="Audit, plan d'action personnalisé et 4 points par mois pour reprendre la main sur la rentabilité de votre restaurant. 300€/mois, sans engagement.">
+<title>DG Resto — Le Directeur Général IA de votre restaurant.</title>
+<meta name="description" content="Vos factures se lisent seules, vos marges se calculent au centime, et votre plan d'action avance chaque semaine vers vos objectifs. DG Resto travaille pendant que vous êtes en salle.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-.hero{position:relative;padding:56px 16px 32px;overflow:hidden;}
+.dg-badge{background:var(--lime);color:var(--ink);font-weight:900;border-radius:8px;padding:3px 8px;font-size:15px;letter-spacing:-.01em;margin-right:1px;}
+
+.hero{position:relative;padding:64px 16px 32px;overflow:hidden;}
 .hero .glow-a{width:520px;height:520px;background:radial-gradient(circle,rgba(212,255,0,.14),transparent 70%);top:-160px;right:-120px;}
 .hero .glow-b{width:420px;height:420px;background:radial-gradient(circle,rgba(167,255,0,.10),transparent 70%);bottom:-140px;left:-100px;}
-.hero-grid{position:relative;z-index:1;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;gap:44px;align-items:center;}
-.hero-grid>div:first-child{flex:1 1 480px;}
-.hero-card{flex:1 1 380px;width:100%;}
-.hero h1{font-size:clamp(32px,5.2vw,58px);margin-bottom:18px;}
-.hero p.lead{font-size:17px;max-width:52ch;margin-bottom:28px;color:var(--muted);}
-.hero-stats{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
-.stat-pill{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 16px;box-shadow:var(--shadow);flex:1 1 100px;min-width:96px;}
-.stat-pill b{font-weight:900;font-size:21px;display:block;color:#fff;}
-.stat-pill span{font-size:11.5px;color:var(--muted);}
-.cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.hero-card{position:relative;background:linear-gradient(160deg,var(--surface-2),#0a0a0a);border-radius:var(--r-xl);padding:24px 22px 20px;box-shadow:0 30px 60px -18px rgba(0,0,0,.6);overflow:hidden;border:1px solid var(--line);}
-.hero-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%, rgba(212,255,0,.10), transparent 55%);}
-.panel-head{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.ph-title{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
-.ph-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
-.kpi-row{position:relative;z-index:1;display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
-.kpi{flex:1 1 80px;}
-.kpi b{display:block;font-size:23px;font-weight:900;}
-.kpi b.lime{color:var(--lime);}
-.kpi span{font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;}
-.chart-box{position:relative;z-index:1;height:140px;}
-.chart-box svg{width:100%;height:100%;}
-.float-badge{position:absolute;top:14px;right:14px;z-index:2;background:var(--lime);color:var(--ink);font-size:11px;font-weight:800;padding:7px 12px;border-radius:20px;box-shadow:var(--shadow-lime);animation:float 4s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;text-align:center;}
+.hero h1{font-size:clamp(38px,7vw,76px);font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:22px;}
+.hero p.lead{font-size:clamp(16px,2vw,19px);max-width:56ch;margin:0 auto 32px;color:var(--muted);}
+.cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;}
 
-.video-section{padding:16px 16px 56px;}
+.stat-strip{position:relative;z-index:1;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;}
+.stat-strip>div{background:var(--surface);padding:26px 14px;text-align:center;}
+.stat-strip b{display:block;font-size:clamp(26px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:6px;}
+.stat-strip span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block;}
+@media (max-width:700px){.stat-strip{grid-template-columns:1fr 1fr;}}
+
+.video-section{padding:64px 16px 24px;}
+
+/* Une journée avec votre DG */
+.day-section{padding:24px 16px 40px;}
+.day-timeline{max-width:760px;margin:40px auto 0;position:relative;padding-left:32px;}
+.day-timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line);}
+.day-item{position:relative;padding-bottom:34px;}
+.day-item:last-child{padding-bottom:0;}
+.day-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);}
+.day-time{font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;font-weight:700;color:var(--lime);letter-spacing:.04em;display:block;margin-bottom:6px;}
+.day-item h4{font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;}
+.day-item p{font-size:14.5px;max-width:56ch;}
 
 .pillars{padding:16px 16px 24px;}
 
@@ -74,7 +72,7 @@
 
 <div class="nav-outer">
   <nav class="nav">
-    <a href="index.html" class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span></a>
+    <a href="index.html" class="nav-logo"><span class="dg-badge">DG</span> Resto</a>
     <div class="nav-links">
       <a href="index.html" class="active">Accueil</a>
       <a href="methode.html">Méthode</a>
@@ -95,38 +93,20 @@
 
 <section class="hero">
   <span class="glow glow-a"></span><span class="glow glow-b"></span>
-  <div class="hero-grid">
-    <div class="reveal in-view">
-      <div class="eyebrow">Coaching rentabilité restaurants</div>
-      <h1>Reprenez la main sur <em class="grad-text">la marge</em> de votre restaurant.</h1>
-      <p class="lead">Audit, plan d'action personnalisé et 4 points par mois pour transformer chaque semaine en quick win mesurable — sans bouleverser votre carte ni votre équipe.</p>
-      <div class="hero-stats">
-        <div class="stat-pill"><b>15 ans</b><span>d'expérience terrain</span></div>
-        <div class="stat-pill"><b>300€/mois</b><span>tout compris</span></div>
-        <div class="stat-pill"><b>4 calls</b><span>+ plan d'action / mois</span></div>
-      </div>
-      <div class="cta-row">
-        <a class="btn-primary magnetic" href="contact.html">Démarrer un audit gratuit</a>
-        <a class="btn-ghost" href="methode.html">Voir la méthode →</a>
-      </div>
+  <div class="hero-inner">
+    <div class="eyebrow reveal in-view">Le compte est bon.</div>
+    <h1 class="reveal in-view">Le <em class="grad-text">Directeur Général IA</em> de votre restaurant.</h1>
+    <p class="lead reveal in-view">Vos factures se lisent seules, vos marges se calculent au centime, vos hausses de prix se repèrent avant de faire mal — et votre plan d'action avance chaque semaine vers vos objectifs. Chaque matin à 8h, votre DG a déjà travaillé. Vous, vous faites la salle et la cuisine.</p>
+    <div class="cta-row reveal in-view">
+      <a class="btn-primary magnetic" href="contact.html">Démarrer un audit gratuit</a>
+      <a class="btn-ghost" href="methode.html">Voir la méthode →</a>
     </div>
-    <div class="hero-card tilt reveal in-view">
-      <div class="float-badge">▲ +8 pts de marge</div>
-      <div class="panel-head"><span class="ph-title">Rentabilité — Vue d'ensemble</span><span class="ph-dot"></span></div>
-      <div class="kpi-row">
-        <div class="kpi"><b class="lime cnt" data-target="8">0</b><span>pts de marge en 90j</span></div>
-        <div class="kpi"><b class="cnt" data-target="30">0</b><span>jours au 1er quick win</span></div>
-        <div class="kpi"><b>4.8</b><span>satisfaction coaching</span></div>
-      </div>
-      <div class="chart-box">
-        <svg viewBox="0 0 400 150" preserveAspectRatio="none">
-          <defs><linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#D4FF00" stop-opacity="0.32"/><stop offset="100%" stop-color="#D4FF00" stop-opacity="0"/></linearGradient></defs>
-          <path d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10 L400,150 L0,150 Z" fill="url(#areaFill)"/>
-          <path class="draw-path" d="M0,125 C50,120 70,98 110,93 C150,89 170,107 210,89 C250,71 270,49 310,43 C340,38 370,22 400,10" fill="none" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="400" cy="10" r="5" fill="#D4FF00"/>
-        </svg>
-      </div>
-    </div>
+  </div>
+  <div class="stat-strip reveal in-view">
+    <div><b>40 s</b><span>pour lire une facture, lignes et TVA comprises</span></div>
+    <div><b>8h00</b><span>votre DG se réveille avant vous, tous les jours</span></div>
+    <div><b class="lime cnt" data-target="8">0</b><span>points de marge gagnés en 90 jours</span></div>
+    <div><b>24/7</b><span>vos boîtes mail relevées, vos prix surveillés</span></div>
   </div>
 </section>
 
@@ -140,20 +120,67 @@
   </div>
 </section>
 
+<section class="day-section">
+  <div class="wrap">
+    <div class="section-head reveal" style="max-width:640px;">
+      <div class="eyebrow">Une journée avec votre DG</div>
+      <h2>Il travaille pendant que vous servez.</h2>
+    </div>
+    <div class="day-timeline">
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:00</span>
+        <h4>Votre DG se réveille</h4>
+        <p>Il relève vos boîtes Gmail et Outlook, lit chaque facture arrivée dans la nuit — lignes, TVA, consignes, accises — et range tout au bon endroit.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:02</span>
+        <h4>Le rapport du matin</h4>
+        <p>Sur WhatsApp : le chiffre d'hier, le bénéfice net, et les deux ou trois choses qui méritent votre attention. Rien de plus.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">08:05</span>
+        <h4>Les alertes qui comptent</h4>
+        <p>« Red Bull +15,9 % chez votre grossiste, surcoût estimé 118 €/an. » Une hausse par format, jamais de bruit, avec le surcoût annuel calculé.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">12:00</span>
+        <h4>Le coût du plat du jour</h4>
+        <p>Chaque recette connaît son coût de revient. Votre carte affiche marge, multiplicateur et gain par vente — et signale un plat vendu à perte.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">17:00</span>
+        <h4>Le point sur votre plan d'action</h4>
+        <p>Votre DG vérifie où en est votre semaine : quick win coché, tâche en retard, objectif du mois à ajuster. Il vous relance avant que ça traîne.</p>
+      </div>
+      <div class="day-item reveal">
+        <span class="day-dot"></span>
+        <span class="day-time">23:00</span>
+        <h4>Le compte est bon</h4>
+        <p>CA du jour, coût matière, personnel, break-even : la journée est bouclée, chiffrée, comparée. Demain, on recommence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pillars">
   <div class="pillars-grid">
-    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6-6 6 6M12 3v14"/></svg></div><h4>Audit terrain</h4><p>On dissèque votre carte, votre food cost, votre staff et votre trafic pour trouver ce qui bride vraiment votre marge.</p></div>
-    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6"/></svg></div><h4>Quick wins hebdo</h4><p>Un plan d'action semaine par semaine, pensé pour du concret que vous appliquez dès le lendemain du call.</p></div>
-    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5M13 5h6v6"/></svg></div><h4>Suivi en continu</h4><p>Votre espace client suit chaque tâche cochée et chaque call, pour ne plus jamais perdre le fil.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><h4>Facturation en pilote automatique</h4><p>Gmail, Outlook ou une simple photo : chaque facture est lue ligne à ligne, avec un score de précision par document. Vous ne ressaisissez plus rien.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6"/></svg></div><h4>Un plan d'action piloté par votre DG</h4><p>Objectifs 12 mois, priorités du trimestre, tâches de la semaine : votre DG traduit vos vrais chiffres en quick wins concrets, semaine après semaine.</p></div>
+    <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5M13 5h6v6"/></svg></div><h4>Suivi en continu</h4><p>Votre espace client suit chaque tâche cochée, chaque alerte réglée et chaque point d'attention, pour ne plus jamais perdre le fil.</p></div>
   </div>
 </section>
 
 <section class="strip">
   <div class="strip-inner" style="flex-direction:column;align-items:stretch;">
-    <span class="strip-label">Pourquoi ScaleX</span>
+    <span class="strip-label">Pourquoi DG Resto</span>
     <div class="marquee">
       <div class="marquee-track">
-        <span class="chip">15 ans d'expérience terrain</span><span class="chip">Sans engagement</span><span class="chip">Audit offert</span><span class="chip">Suivi hebdo</span><span class="chip">4 calls / mois</span><span class="chip">Espace client inclus</span><span class="chip">300€/mois tout compris</span>
+        <span class="chip">Factures lues automatiquement</span><span class="chip">Marges au centime</span><span class="chip">Alertes prix fournisseurs</span><span class="chip">Rapport WhatsApp chaque matin</span><span class="chip">Plan d'action piloté</span><span class="chip">Suivi hebdo</span><span class="chip">Sans engagement</span>
       </div>
     </div>
   </div>
@@ -170,8 +197,8 @@
       </div>
       <div class="problem-grid">
         <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 4 4-6 6 6"/></svg></div><h3>L'effet ciseaux</h3><p>Vos prix montent, vos couverts baissent. Le CA tient sur le papier — la rentabilité, elle, recule.</p></div>
-        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 3"/></svg></div><h3>La marge fantôme</h3><p>2 points de food cost qui dérivent, 3% de masse salariale en plus : la marge s'évapore sans que vous le voyiez venir.</p></div>
-        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>Le plafond de verre du recrutement</h3><p>Ce n'est plus le manque de clients qui freine votre croissance. C'est l'impossibilité de recruter et garder une équipe stable.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 3"/></svg></div><h3>La marge fantôme</h3><p>2 points de food cost qui dérivent, 3% de masse salariale en plus : la marge s'évapore sans que vous le voyiez venir — jusqu'à ce que votre DG le repère.</p></div>
+        <div class="problem-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div><h3>Personne pour piloter</h3><p>Vous n'avez ni le temps ni un directeur général pour lire les chiffres tous les jours et transformer ça en plan d'action. DG Resto, si.</p></div>
       </div>
     </div>
   </div>
@@ -191,13 +218,13 @@
     <span class="glow glow-a" style="width:420px;height:420px;background:radial-gradient(circle,rgba(212,255,0,.18),transparent 70%);top:-140px;left:50%;transform:translateX(-50%);"></span>
     <div class="final-inner">
       <h2>Allez, on regarde où votre marge s'échappe ?</h2>
-      <p>Pas de rapport de 40 pages. Un audit direct, un plan d'action concret, dès la première semaine.</p>
+      <p>Pas de rapport de 40 pages. Un audit direct, un plan d'action concret piloté par votre DG, dès la première semaine.</p>
       <a href="contact.html" class="btn-primary on-lime magnetic">Démarrer un audit gratuit</a>
     </div>
   </div>
 </section>
 
-<footer>ScaleX — Coaching rentabilité pour restaurateurs · 15 ans d'expérience terrain</footer>
+<footer>DG Resto — Le Directeur Général IA de votre restaurant</footer>
 <script src="video-config.js"></script>
 <script src="script.js"></script>
 </body>
