@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Tableau de bord — ScaleX</title>
+<title>Tableau de bord — DG Resto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
@@ -297,7 +297,7 @@ body{overflow-x:hidden;}
 <div id="dashboardContent" style="display:none;">
 
   <div class="mobile-topbar">
-    <a href="../index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span></a>
+    <a href="../index.html" class="logo"><span class="dg-badge">DG</span> Resto</a>
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -305,7 +305,7 @@ body{overflow-x:hidden;}
 
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <a href="../index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" width="17" height="17"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span></a>
+      <a href="../index.html" class="logo"><span class="dg-badge">DG</span> Resto</a>
 
       <nav class="side-nav">
         <button class="side-link active" data-view="overview">
@@ -320,17 +320,13 @@ body{overflow-x:hidden;}
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           Plan d'action
         </button>
-        <button class="side-link" data-view="calls">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          Calls
-        </button>
         <button class="side-link" data-view="documents">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
           Documents
         </button>
         <button class="side-link" data-view="messages">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Messages
+          WhatsApp
           <span id="msgBadge" style="margin-left:auto;background:var(--lime);color:var(--ink);font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 7px;display:none;">1</span>
         </button>
         <button class="side-link" data-view="settings">
@@ -359,7 +355,7 @@ body{overflow-x:hidden;}
           <div class="page-title-row">
             <div>
               <h1>Bienvenue, <span id="welcomeName" style="color:var(--lime);">—</span></h1>
-              <p id="clientSinceText">Voici où en est votre accompagnement ScaleX.</p>
+              <p id="clientSinceText">Voici où en est votre restaurant avec votre DG.</p>
             </div>
           </div>
 
@@ -392,7 +388,7 @@ body{overflow-x:hidden;}
 
             <div class="dash-col" style="display:flex;flex-direction:column;gap:20px;">
               <div class="card glow-card reveal">
-                <h3>Échanges avec votre coach</h3>
+                <h3>Échanges avec votre DG</h3>
                 <div class="msg-list" id="msgListPreview">
                   <div class="empty-state">Pas encore de messages.</div>
                 </div>
@@ -436,23 +432,9 @@ body{overflow-x:hidden;}
           <div id="planContent" style="display:none;"></div>
         </section>
 
-        <!-- CALLS -->
-        <section class="view" id="view-calls">
-          <div class="page-title-row"><div><h1>Calls</h1><p>Historique de vos points hebdomadaires et notes de coaching.</p></div></div>
-          <div class="card glow-card reveal in-view">
-            <h3>Historique</h3>
-            <div class="empty-state" id="callsEmpty">Vos calls passés et à venir apparaîtront ici.</div>
-            <div id="callsList" style="display:none;"></div>
-          </div>
-          <div class="card glow-card reveal in-view booking-wrap" id="bookingCard">
-            <h3>Réserver un call</h3>
-            <div id="bookingArea"></div>
-          </div>
-        </section>
-
         <!-- DOCUMENTS -->
         <section class="view" id="view-documents">
-          <div class="page-title-row"><div><h1>Documents</h1><p>Tout ce que votre coach partage avec vous.</p></div></div>
+          <div class="page-title-row"><div><h1>Documents</h1><p>Tout ce que votre DG partage avec vous.</p></div></div>
           <div class="card glow-card reveal in-view">
             <div id="docsList">
               <div class="doc-item">
@@ -464,13 +446,13 @@ body{overflow-x:hidden;}
                 <a href="#">Voir</a>
               </div>
             </div>
-            <div class="empty-state">Les prochains documents ajoutés par votre coach apparaîtront ici.</div>
+            <div class="empty-state">Les prochains documents ajoutés par votre DG apparaîtront ici.</div>
           </div>
         </section>
 
-        <!-- MESSAGES -->
+        <!-- MESSAGES (fil WhatsApp avec le DG) -->
         <section class="view" id="view-messages">
-          <div class="page-title-row"><div><h1>Messages</h1><p>Discutez directement avec votre coach croissance.</p></div></div>
+          <div class="page-title-row"><div><h1>WhatsApp</h1><p>Le fil de discussion avec votre DG.</p></div></div>
           <div class="card glow-card reveal in-view">
             <div class="msg-list" id="msgList" style="max-height:420px;"></div>
             <form id="msgForm" style="display:flex;gap:8px;">
@@ -559,7 +541,7 @@ body{overflow-x:hidden;}
     if (startRaw) {
       const d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(startRaw) ? startRaw + 'T00:00:00' : startRaw);
       const dateText = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-      document.getElementById('clientSinceText').textContent = `Client ScaleX depuis le ${dateText}.`;
+      document.getElementById('clientSinceText').textContent = `Avec DG Resto depuis le ${dateText}.`;
     }
 
     const all = plan ? allTasksFlat(plan) : [];
@@ -585,7 +567,7 @@ body{overflow-x:hidden;}
       statusCard.style.borderColor = critical ? 'rgba(255,80,80,.3)' : '';
       statusCard.style.background = critical ? 'rgba(255,60,60,.05)' : '';
       let html = '';
-      if (critical) html += `<h3 style="color:#ff8a8a;margin-bottom:8px;">⚠ Situation jugée critique par votre coach</h3><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(plan.status_critical_reason || 'Votre coach vous en parlera lors du prochain point.')}</p>`;
+      if (critical) html += `<h3 style="color:#ff8a8a;margin-bottom:8px;">⚠ Situation jugée critique par votre DG</h3><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(plan.status_critical_reason || 'Votre DG vous en parlera au prochain point.')}</p>`;
       if (difficulties) html += `<div${critical ? ' style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);"' : ''}><b style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:6px;">Difficultés actuelles</b><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(difficulties)}</p></div>`;
       statusCard.innerHTML = html;
     } else {
@@ -598,7 +580,7 @@ body{overflow-x:hidden;}
         <h4 style="font-size:15.5px;color:#fff;margin-bottom:12px;">${esc(m.title || '')}</h4>
         ${m.how ? `<div class="axis-sub"><b>Comment faire</b><p>${esc(m.how)}</p></div>` : ''}
         ${m.why ? `<div class="axis-sub"><b>Pourquoi c'est important</b><p>${esc(m.why)}</p></div>` : ''}
-      </div>`).join('') : `<div class="empty-state">Votre coach n'a pas encore défini vos prochaines missions.</div>`;
+      </div>`).join('') : `<div class="empty-state">Votre DG n'a pas encore défini vos prochaines missions.</div>`;
   }
   renderOverview(null);
 
@@ -930,7 +912,7 @@ body{overflow-x:hidden;}
       cycleTabs.innerHTML = cycles.map((cy, i) => `<button class="cycle-tab${i === currentCycleIdx ? ' current' : ''}${!cy.active ? ' locked' : ''}" data-idx="${i}">${cy.active ? '<span class="dot"></span>' : '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'}${esc(cy.name)}</button>`).join('');
       cycleTabs.querySelectorAll('.cycle-tab').forEach(btn => btn.addEventListener('click', () => {
         const idx = Number(btn.dataset.idx);
-        if (!cycles[idx].active) { if (window.toast) toast('Ce cycle sera débloqué par votre coach.', 'error'); return; }
+        if (!cycles[idx].active) { if (window.toast) toast('Ce cycle sera débloqué par votre DG.', 'error'); return; }
         currentCycleIdx = idx; currentMonthIdx = 0; renderPlan(plan);
       }));
 
@@ -1004,67 +986,6 @@ body{overflow-x:hidden;}
     });
   }
 
-  // ---- Calls : table Supabase "calls" (colonnes : id, user_id, scheduled_at,
-  // status, notes, created_at). Statuts : requested / confirmed / done. ----
-  async function loadCalls() {
-    try {
-      const { data, error } = await supabaseClient
-        .from('calls').select('*').eq('user_id', user.id)
-        .order('scheduled_at', { ascending: false });
-      if (error || !data) return [];
-      return data;
-    } catch (e) { return []; }
-  }
-
-  function formatCallWhen(iso) {
-    if (!iso) return 'Créneau à confirmer';
-    const d = new Date(iso);
-    const s = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).format(d);
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
-
-  const statusLabels = { requested: 'Demandé', confirmed: 'Confirmé', done: 'Terminé' };
-
-  function renderCalls(calls) {
-    if (!calls.length) return;
-    const list = document.getElementById('callsList');
-    list.innerHTML = calls.map(c => `
-      <div class="call-item">
-        <div>
-          <div class="call-when">${formatCallWhen(c.scheduled_at)}</div>
-          ${c.notes ? `<div class="call-notes">${esc(c.notes)}</div>` : ''}
-        </div>
-        <span class="call-badge ${c.status || 'requested'}">${statusLabels[c.status] || c.status}</span>
-      </div>`).join('');
-    document.getElementById('callsEmpty').style.display = 'none';
-    list.style.display = 'block';
-
-  }
-
-  function renderBooking() {
-    const area = document.getElementById('bookingArea');
-    if (CALCOM_BOOKING_URL && CALCOM_BOOKING_URL.indexOf('REMPLACEZ') !== 0) {
-      area.innerHTML = `<iframe class="booking-frame" src="${CALCOM_BOOKING_URL}?theme=dark" loading="lazy" title="Réserver un call"></iframe>`;
-      return;
-    }
-    area.innerHTML = `
-      <p style="font-size:13.5px;margin-bottom:16px;">Indiquez vos disponibilités, votre coach confirme le créneau par email.</p>
-      <form id="requestCallForm">
-        <div class="field"><label for="callWhen">Créneau souhaité</label><input id="callWhen" placeholder="Ex : Jeudi 14h ou vendredi matin" required></div>
-        <button class="btn-primary magnetic" type="submit">Envoyer la demande</button>
-      </form>`;
-    document.getElementById('requestCallForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const input = document.getElementById('callWhen');
-      const { error } = await supabaseClient.from('calls').insert({ user_id: user.id, status: 'requested', notes: 'Créneau souhaité : ' + input.value });
-      if (error) { if (window.toast) toast(error.message, 'error'); return; }
-      input.value = '';
-      if (window.toast) toast('Demande envoyée à votre coach !', 'ok');
-      const calls = await loadCalls();
-      renderCalls(calls);
-    });
-  }
-
   // Animate progress bars + ring + counters now that the page is visible
   requestAnimationFrame(async () => {
     document.querySelectorAll('.progress-bar-fill').forEach(el => {
@@ -1099,10 +1020,6 @@ body{overflow-x:hidden;}
       document.getElementById('planEmpty').style.display = 'block';
     }
     renderOverview(planRow ? planRow.data : null);
-
-    const calls = await loadCalls();
-    renderCalls(calls);
-    renderBooking();
   });
 
   // ---- Sidebar navigation between views ----
@@ -1131,7 +1048,7 @@ body{overflow-x:hidden;}
   }
   function renderMessageList(el, list) {
     if (!list.length) { el.innerHTML = '<div class="empty-state">Pas encore de messages.</div>'; return; }
-    el.innerHTML = list.map(m => `<div class="msg-item${m.sender === 'client' ? ' me' : ''}"><b>${m.sender === 'client' ? 'Vous' : 'Équipe ScaleX'}</b>${esc(m.text)}</div>`).join('');
+    el.innerHTML = list.map(m => `<div class="msg-item${m.sender === 'client' ? ' me' : ''}"><b>${m.sender === 'client' ? 'Vous' : 'Votre DG'}</b>${esc(m.text)}</div>`).join('');
     el.scrollTop = el.scrollHeight;
   }
   async function refreshMessages() {
