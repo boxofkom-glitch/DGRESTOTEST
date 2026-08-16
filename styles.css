@@ -127,6 +127,16 @@ footer{text-align:center;padding:30px 16px 40px;color:var(--muted-dim);font-size
 body{animation:pageIn .5s ease both;}
 @keyframes pageIn{from{opacity:0;}to{opacity:1;}}
 
+/* DG Resto brand mark (nav logo badge, used on every public page) */
+.dg-badge{background:var(--lime);color:var(--ink);font-weight:900;border-radius:8px;padding:3px 8px;font-size:15px;letter-spacing:-.01em;margin-right:1px;}
+
+/* reusable "wow" stat strip (used on home + méthode) */
+.stat-strip{position:relative;z-index:1;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;}
+.stat-strip>div{background:var(--surface);padding:26px 14px;text-align:center;}
+.stat-strip b{display:block;font-size:clamp(26px,4vw,38px);font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:6px;}
+.stat-strip span{font-size:12.5px;color:var(--muted);line-height:1.4;display:block;}
+@media (max-width:700px){.stat-strip{grid-template-columns:1fr 1fr;}}
+
 /* reusable icon-card grid (used on home + méthode) */
 .pillars-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .pillar-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 22px;}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Contact — ScaleX Coaching Restaurateurs</title>
+<title>Contact — DG Resto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -15,7 +15,7 @@
 <body>
 <div class="nav-outer">
   <nav class="nav">
-    <a href="index.html" class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span></a>
+    <a href="index.html" class="nav-logo"><span class="dg-badge">DG</span> Resto</a>
     <div class="nav-links">
       <a href="index.html">Accueil</a><a href="methode.html">Méthode</a><a href="offre.html">Offre</a><a href="contact.html" class="active">Contact</a>
     </div>
@@ -44,10 +44,10 @@
       <button class="btn-primary magnetic" type="submit" style="width:100%;">Envoyer</button>
     </form>
   </div>
-  <p style="text-align:center;margin-top:24px;">ou directement par mail : <a href="mailto:contact@scalex.fr" style="color:var(--lime);text-decoration:none;font-weight:700;">contact@scalex.fr</a></p>
+  <p style="text-align:center;margin-top:24px;">ou directement par mail : <a href="mailto:contact@dgresto.fr" style="color:var(--lime);text-decoration:none;font-weight:700;">contact@dgresto.fr</a></p>
 </section>
 
-<footer>ScaleX — Coaching rentabilité pour restaurateurs · 15 ans d'expérience terrain</footer>
+<footer>DG Resto — Le Directeur Général IA de votre restaurant</footer>
 <script src="script.js"></script>
 <script>
 // Formulaire simple : ouvre le client mail avec les infos pré-remplies.
@@ -59,7 +59,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e){
   const email = document.getElementById('email').value;
   const message = document.getElementById('message').value;
   const body = encodeURIComponent(`De : ${name} (${email})\n\n${message}`);
-  window.location.href = `mailto:contact@scalex.fr?subject=Nouveau message depuis le site&body=${body}`;
+  window.location.href = `mailto:contact@dgresto.fr?subject=Nouveau message depuis le site&body=${body}`;
   const msg = document.getElementById('formMsg');
   msg.className = 'msg ok';
   msg.textContent = 'Votre messagerie va s\'ouvrir avec le message pré-rempli.';
