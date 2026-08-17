@@ -136,6 +136,8 @@ body{overflow-x:hidden;}
           <div class="field"><label>Food cost (%)</label><input type="number" step="0.1" id="metricFoodCost"></div>
           <div class="field"><label>Masse salariale (%)</label><input type="number" step="0.1" id="metricPayroll"></div>
           <div class="field"><label>CA du jour (€)</label><input type="number" step="1" id="metricRevenue"></div>
+          <div class="field"><label>Charges fixes (€)</label><input type="number" step="1" id="metricFixedCosts"></div>
+          <div class="field"><label>Charges variables (€)</label><input type="number" step="1" id="metricVarCosts"></div>
           <div class="field"><label>Note Google (/5)</label><input type="number" step="0.1" min="0" max="5" id="metricRating"></div>
           <div class="field" style="grid-column:span 2;"><label>Nombre d'avis Google (total à date)</label><input type="number" step="1" id="metricReviewCount"></div>
           <button type="submit" class="btn-primary magnetic" style="grid-column:span 2;justify-content:center;">Enregistrer</button>
@@ -143,13 +145,29 @@ body{overflow-x:hidden;}
       </div>
       <div class="plan-block">
         <h4>Derniers KPI enregistrés</h4>
-        <div class="table-scroll"><table class="audit-table" id="metricsTable"><thead><tr><th>Date</th><th>Food cost</th><th>Masse sal.</th><th>CA</th><th>Google</th></tr></thead><tbody></tbody></table></div>
+        <div class="table-scroll"><table class="audit-table" id="metricsTable"><thead><tr><th>Date</th><th>Food cost</th><th>Masse sal.</th><th>CA</th><th>Ch. fixes</th><th>Ch. var.</th><th>Google</th></tr></thead><tbody></tbody></table></div>
       </div>
       <div class="plan-block">
-        <h4>Documents à trier pour ce client</h4>
+        <h4>Équipe</h4>
+        <form id="teamForm" style="display:flex;gap:8px;margin-bottom:14px;">
+          <input id="teamName" placeholder="Nom" style="flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+          <input id="teamRole" placeholder="Rôle (ex: Second de cuisine)" style="flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+          <button type="submit" class="btn-primary magnetic">+ Ajouter</button>
+        </form>
+        <div id="teamAdminList"></div>
+      </div>
+      <div class="plan-block">
+        <h4>Documents pour ce client</h4>
         <form id="docForm" style="display:flex;gap:8px;margin-bottom:14px;">
           <input id="docName" placeholder="Nom du document (ex: Facture Metro juillet)" style="flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
-          <input id="docCategory" placeholder="Catégorie" style="width:140px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+          <select id="docCategory" style="width:160px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+            <option value="Food cost">Food cost</option>
+            <option value="RH">RH</option>
+            <option value="Charges fixes">Charges fixes</option>
+            <option value="Charges variables">Charges variables</option>
+            <option value="Juridique">Juridique</option>
+            <option value="Autre">Autre</option>
+          </select>
           <button type="submit" class="btn-primary magnetic">+ Ajouter</button>
         </form>
         <div id="docsAdminList"></div>
@@ -546,8 +564,10 @@ body{overflow-x:hidden;}
         <td>${r.food_cost_pct != null ? r.food_cost_pct + '%' : '—'}</td>
         <td>${r.payroll_pct != null ? r.payroll_pct + '%' : '—'}</td>
         <td>${r.revenue != null ? Number(r.revenue).toLocaleString('fr-FR') + ' €' : '—'}</td>
+        <td>${r.fixed_costs != null ? Number(r.fixed_costs).toLocaleString('fr-FR') + ' €' : '—'}</td>
+        <td>${r.variable_costs != null ? Number(r.variable_costs).toLocaleString('fr-FR') + ' €' : '—'}</td>
         <td>${r.google_rating != null ? r.google_rating + '/5' : '—'}</td>
-      </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted-dim);">Aucun KPI enregistré pour l\'instant.</td></tr>';
+      </tr>`).join('') : '<tr><td colspan="7" style="color:var(--muted-dim);">Aucun KPI enregistré pour l\'instant.</td></tr>';
   }
   document.getElementById('metricForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -557,6 +577,8 @@ body{overflow-x:hidden;}
       food_cost_pct: document.getElementById('metricFoodCost').value || null,
       payroll_pct: document.getElementById('metricPayroll').value || null,
       revenue: document.getElementById('metricRevenue').value || null,
+      fixed_costs: document.getElementById('metricFixedCosts').value || null,
+      variable_costs: document.getElementById('metricVarCosts').value || null,
       google_rating: document.getElementById('metricRating').value || null,
       google_review_count: document.getElementById('metricReviewCount').value || null,
     };
@@ -564,6 +586,34 @@ body{overflow-x:hidden;}
     if (error) { if (window.toast) toast(error.message, 'error'); return; }
     if (window.toast) toast('KPI enregistrés !', 'ok');
     renderMetrics(await loadMetrics());
+  });
+
+  async function loadTeamAdmin() {
+    const { data } = await supabaseClient.from('team_members').select('*').eq('user_id', clientId).order('created_at', { ascending: true });
+    return data || [];
+  }
+  function renderTeamAdmin(list) {
+    const el = document.getElementById('teamAdminList');
+    el.innerHTML = list.length ? list.map(t => `<div class="repeat-row">
+        <div style="flex:1;font-size:13.5px;color:var(--ink);">${esc(t.name)}${t.role ? ` <span style="color:var(--muted-dim);">· ${esc(t.role)}</span>` : ''}</div>
+        <button type="button" class="chip-remove" data-remove-team="${t.id}">✕</button>
+      </div>`).join('') : '<div class="empty-state">Aucun membre d\'équipe pour l\'instant.</div>';
+  }
+  document.getElementById('teamForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('teamName').value.trim();
+    if (!name) return;
+    const role = document.getElementById('teamRole').value.trim();
+    const { error } = await supabaseClient.from('team_members').insert({ user_id: clientId, name, role: role || null });
+    if (error) { if (window.toast) toast(error.message, 'error'); return; }
+    document.getElementById('teamName').value = ''; document.getElementById('teamRole').value = '';
+    renderTeamAdmin(await loadTeamAdmin());
+  });
+  document.getElementById('teamAdminList').addEventListener('click', async (e) => {
+    const id = e.target.dataset.removeTeam;
+    if (!id) return;
+    await supabaseClient.from('team_members').delete().eq('id', id);
+    renderTeamAdmin(await loadTeamAdmin());
   });
 
   async function loadDocs() {
@@ -603,6 +653,7 @@ body{overflow-x:hidden;}
 
   renderMetrics(await loadMetrics());
   renderDocsAdmin(await loadDocs());
+  renderTeamAdmin(await loadTeamAdmin());
 
   // =========================================================
   // MESSAGES
