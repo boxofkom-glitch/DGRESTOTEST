@@ -97,6 +97,26 @@ body{overflow-x:hidden;}
 .chart-tooltip{position:absolute;top:0;transform:translate(-50%,-100%);background:var(--ink);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;z-index:5;margin-top:-8px;}
 .chart-tooltip span{display:block;font-size:10px;font-weight:600;color:rgba(255,255,255,.55);margin-top:2px;}
 .chart-axis-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted-dim);margin-top:6px;}
+
+/* bibliothèque des 30 documents obligatoires (onglet Documents) */
+.doclib-progress{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.doclib-progress-bar{flex:1;height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;}
+.doclib-progress-fill{height:100%;background:linear-gradient(90deg,var(--lime-2),var(--lime));border-radius:999px;transition:width .8s cubic-bezier(.16,.9,.3,1);}
+.doclib-progress-label{font-size:13px;font-weight:800;color:var(--ink);white-space:nowrap;}
+.doclib-group{margin-bottom:26px;}
+.doclib-group:last-child{margin-bottom:0;}
+.doclib-group-title{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-dim);margin-bottom:12px;}
+.doclib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
+.doclib-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,box-shadow .15s;}
+.doclib-card.has{border-color:rgba(31,157,79,.3);background:rgba(31,157,79,.04);}
+.doclib-card .doclib-icon{width:36px;height:36px;border-radius:9px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+.doclib-card.has .doclib-icon{background:rgba(31,157,79,.12);}
+.doclib-card .doclib-icon svg{width:18px;height:18px;stroke:var(--muted);}
+.doclib-card.has .doclib-icon svg{stroke:#1f9d4f;}
+.doclib-card-name{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.3;}
+.doclib-card-status{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;display:flex;align-items:center;gap:5px;}
+.doclib-card-status.has{color:#1f9d4f;}
+.doclib-card-status.missing{color:var(--muted-dim);}
 .kpi-preview-spark{display:flex;align-items:flex-end;}
 
 /* overview ring card */
@@ -576,9 +596,19 @@ body{overflow-x:hidden;}
 
         <!-- DOCUMENTS -->
         <section class="view" id="view-documents">
-          <div class="page-title-row"><div><h1>Documents</h1><p>Tout ce que votre DG partage avec vous.</p></div></div>
-          <div class="card glow-card reveal in-view">
-            <div id="docsList"></div>
+          <div class="page-title-row"><div><h1>Documents</h1><p>Les 30 documents indispensables pour piloter votre restaurant en toute sérénité.</p></div></div>
+          <div class="doclib-progress">
+            <div class="doclib-progress-bar"><div class="doclib-progress-fill" id="doclibProgressFill" style="width:0%;"></div></div>
+            <span class="doclib-progress-label" id="doclibProgressLabel">0 / 30 fournis</span>
+          </div>
+          <div id="doclibGrid"></div>
+
+          <div class="section-block reveal in-view" style="margin-top:34px;">
+            <div class="section-tag">Autres documents</div>
+            <h2>Partagés par votre DG</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <div id="docsList"></div>
+            </div>
           </div>
         </section>
 
@@ -866,13 +896,86 @@ body{overflow-x:hidden;}
       <div style="flex:1;"><b style="color:var(--ink);font-weight:700;">${esc(d.name)}</b>${d.category ? `<span style="color:var(--muted-dim);"> · ${esc(d.category)}</span>` : ''}</div>
     </div>`).join('');
   }
-  function renderAllDocsList(docs) {
+  function renderAllDocsList(allDocuments) {
     const el = document.getElementById('docsList');
+    const docs = allDocuments.filter(d => !d.doc_key);
     if (!docs.length) { el.innerHTML = '<div class="empty-state">Les prochains documents ajoutés par votre DG apparaîtront ici.</div>'; return; }
     el.innerHTML = docs.map(d => `<div class="doc-item">
         <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>${esc(d.name)}${d.category ? `<span style="color:var(--muted-dim);"> · ${esc(d.category)}</span>` : ''}${d.status === 'a_trier' ? ' <span style="font-size:10px;font-weight:800;text-transform:uppercase;color:#c8860a;">à trier</span>' : ''}</span>
         ${d.file_url ? `<a href="${esc(d.file_url)}" target="_blank" rel="noopener">Voir</a>` : ''}
       </div>`).join('');
+  }
+  // ---- Bibliothèque des 30 documents obligatoires pour un restaurant ----
+  const DOCLIB_ICONS = {
+    juridique: '<path d="M12 2v20M5 8l-3 6a4 4 0 0 0 6 0zM19 8l-3 6a4 4 0 0 0 6 0zM3 8h18M9 21h6"/>',
+    rh: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    finances: '<circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 2.5-2h0a2.5 2.5 0 0 1 2.3 3.5M8 12h5m-5 3h4.5a2.5 2.5 0 0 0 2.3-3.5"/>',
+    assurances: '<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="M9 12l2 2 4-4"/>',
+    local: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+    hygiene: '<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="4"/>',
+    operationnel: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  };
+  const REQUIRED_DOCS = [
+    { key: 'kbis', name: 'Extrait KBIS', group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'statuts', name: 'Statuts de la société', group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'bail', name: 'Bail commercial', group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'licence4', name: 'Licence IV (débit de boissons)', group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'permis_exploitation', name: "Permis d'exploitation", group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'courrier_mairie', name: 'Courriers de la mairie (terrasse, affichage...)', group: 'juridique', groupLabel: 'Juridique & administratif' },
+    { key: 'registre_personnel', name: 'Registre unique du personnel', group: 'rh', groupLabel: 'RH & social' },
+    { key: 'contrats_travail', name: 'Contrats de travail', group: 'rh', groupLabel: 'RH & social' },
+    { key: 'dsn', name: 'DSN (déclarations sociales)', group: 'rh', groupLabel: 'RH & social' },
+    { key: 'convention_collective', name: 'Convention collective HCR', group: 'rh', groupLabel: 'RH & social' },
+    { key: 'duerp', name: "Document unique d'évaluation des risques", group: 'rh', groupLabel: 'RH & social' },
+    { key: 'affichage_obligatoire', name: 'Affichages obligatoires', group: 'rh', groupLabel: 'RH & social' },
+    { key: 'rib', name: 'RIB', group: 'finances', groupLabel: 'Finances' },
+    { key: 'bilan_comptable', name: 'Bilan comptable annuel', group: 'finances', groupLabel: 'Finances' },
+    { key: 'liasse_fiscale', name: 'Liasse fiscale', group: 'finances', groupLabel: 'Finances' },
+    { key: 'justificatifs_tva', name: 'Justificatifs TVA', group: 'finances', groupLabel: 'Finances' },
+    { key: 'factures_fournisseurs', name: 'Archive factures fournisseurs', group: 'finances', groupLabel: 'Finances' },
+    { key: 'assurance_rc_pro', name: 'Assurance responsabilité civile pro', group: 'assurances', groupLabel: 'Assurances' },
+    { key: 'assurance_multirisque', name: 'Assurance multirisque locaux', group: 'assurances', groupLabel: 'Assurances' },
+    { key: 'assurance_perte_exploitation', name: 'Assurance perte d\'exploitation', group: 'assurances', groupLabel: 'Assurances' },
+    { key: 'quittances_loyer', name: 'Quittances de loyer', group: 'local', groupLabel: 'Local & immobilier' },
+    { key: 'dpe', name: 'Diagnostic de performance énergétique', group: 'local', groupLabel: 'Local & immobilier' },
+    { key: 'conformite_electrique', name: 'Attestation de conformité électrique', group: 'local', groupLabel: 'Local & immobilier' },
+    { key: 'contrat_entretien_hotte', name: "Contrat d'entretien hotte/extraction", group: 'local', groupLabel: 'Local & immobilier' },
+    { key: 'haccp', name: 'Manuel HACCP / PMS', group: 'hygiene', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'tracabilite', name: 'Registre de traçabilité', group: 'hygiene', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'maintenance_froid', name: 'Carnet de maintenance chaîne du froid', group: 'hygiene', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'formation_hygiene', name: 'Attestation formation hygiène alimentaire', group: 'hygiene', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'registre_nettoyage', name: 'Registre de nettoyage/désinfection', group: 'hygiene', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'manuel_operatoire', name: "Manuel opératoire / livret d'accueil", group: 'operationnel', groupLabel: 'Opérationnel' },
+  ];
+  function renderDoclib(docs) {
+    const haveKeys = new Set(docs.filter(d => d.doc_key).map(d => d.doc_key));
+    const total = REQUIRED_DOCS.length;
+    const done = REQUIRED_DOCS.filter(item => haveKeys.has(item.key)).length;
+    document.getElementById('doclibProgressFill').style.width = (done / total * 100) + '%';
+    document.getElementById('doclibProgressLabel').textContent = `${done} / ${total} fournis`;
+
+    const groups = [];
+    REQUIRED_DOCS.forEach(item => {
+      let g = groups.find(g => g.group === item.group);
+      if (!g) { g = { group: item.group, groupLabel: item.groupLabel, items: [] }; groups.push(g); }
+      g.items.push(item);
+    });
+
+    document.getElementById('doclibGrid').innerHTML = groups.map(g => `
+      <div class="doclib-group">
+        <div class="doclib-group-title">${esc(g.groupLabel)}</div>
+        <div class="doclib-grid">
+          ${g.items.map(item => {
+            const has = haveKeys.has(item.key);
+            return `<div class="doclib-card${has ? ' has' : ''}">
+              <div class="doclib-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${DOCLIB_ICONS[item.group]}</svg></div>
+              <div class="doclib-card-name">${esc(item.name)}</div>
+              <div class="doclib-card-status ${has ? 'has' : 'missing'}">${has ? '✓ Fourni' : 'À fournir'}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    `).join('');
   }
   function renderDocsByCategory(containerId, category, docs) {
     const el = document.getElementById(containerId);
@@ -1431,6 +1534,7 @@ body{overflow-x:hidden;}
     allDocs = await loadAllDocs();
     renderDocsTodo(allDocs);
     renderAllDocsList(allDocs);
+    renderDoclib(allDocs);
     renderDocsByCategory('foodcostDocs', 'Food cost', allDocs);
     renderDocsByCategory('rhDocs', 'RH', allDocs);
     renderDocsByCategory('chargesfixesDocs', 'Charges fixes', allDocs);
