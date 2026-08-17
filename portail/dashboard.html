@@ -88,6 +88,17 @@ body{overflow-x:hidden;}
 .docs-todo-item .icon{width:30px;height:30px;border-radius:8px;background:rgba(255,190,60,.15);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .docs-todo-item .icon svg{width:14px;height:14px;stroke:#c8860a;}
 
+/* interactive SVG trend charts (Overview + Food cost/RH/Charges tabs) */
+.trend-chart{position:relative;}
+.trend-chart svg{width:100%;height:170px;display:block;overflow:visible;cursor:crosshair;}
+.trend-chart .chart-dot{fill:var(--surface);stroke-width:2.5;opacity:0;transition:opacity .15s;}
+.trend-chart .chart-dot.near{opacity:1;}
+.trend-chart .chart-hover-line{opacity:0;transition:opacity .1s;}
+.chart-tooltip{position:absolute;top:0;transform:translate(-50%,-100%);background:var(--ink);color:#fff;padding:7px 11px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;z-index:5;margin-top:-8px;}
+.chart-tooltip span{display:block;font-size:10px;font-weight:600;color:rgba(255,255,255,.55);margin-top:2px;}
+.chart-axis-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted-dim);margin-top:6px;}
+.kpi-preview-spark{display:flex;align-items:flex-end;}
+
 /* overview ring card */
 .ring-card{display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
 .ring-wrap{position:relative;width:132px;height:132px;flex:0 0 auto;}
@@ -336,6 +347,22 @@ body{overflow-x:hidden;}
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           Plan d'action
         </button>
+        <button class="side-link" data-view="foodcost">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+          Food cost
+        </button>
+        <button class="side-link" data-view="rh">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          RH
+        </button>
+        <button class="side-link" data-view="chargesfixes">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Charges fixes
+        </button>
+        <button class="side-link" data-view="chargesvar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-4-4L3 15.5"/></svg>
+          Charges variables
+        </button>
         <button class="side-link" data-view="documents">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
           Documents
@@ -389,6 +416,10 @@ body{overflow-x:hidden;}
             </div>
             <div class="stat-grid stat-grid-4" id="kpiCards"></div>
             <div class="empty-state" id="kpiEmpty" style="display:none;">Vos KPI apparaîtront ici dès que votre DG commence le suivi quotidien (food cost, masse salariale, CA, avis Google).</div>
+            <div class="card glow-card reveal in-view" id="overviewChartCard" style="margin-top:16px;display:none;">
+              <h3 style="margin-bottom:16px;">CA (14 derniers jours)</h3>
+              <div class="trend-chart" id="overviewSpark"></div>
+            </div>
           </div>
 
           <div class="stat-grid stat-grid-4" style="margin-bottom:24px;" id="overviewStats"></div>
@@ -478,21 +509,76 @@ body{overflow-x:hidden;}
           <div id="planContent" style="display:none;"></div>
         </section>
 
+        <!-- FOOD COST -->
+        <section class="view" id="view-foodcost">
+          <div class="page-title-row"><div><h1>Food cost</h1><p>Votre coût matière et vos factures fournisseurs.</p></div></div>
+          <div class="stat-grid stat-grid-4" id="foodcostStats" style="margin-bottom:24px;"></div>
+          <div class="card glow-card reveal in-view" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Évolution (14 derniers jours)</h3>
+            <div class="trend-chart" id="foodcostSpark"></div>
+          </div>
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Factures</div>
+            <h2>Documents food cost</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="foodcostDocs"></div></div>
+          </div>
+        </section>
+
+        <!-- RH -->
+        <section class="view" id="view-rh">
+          <div class="page-title-row"><div><h1>RH</h1><p>Masse salariale, équipe et documents RH.</p></div></div>
+          <div class="stat-grid stat-grid-4" id="rhStats" style="margin-bottom:24px;"></div>
+          <div class="card glow-card reveal in-view" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Évolution (14 derniers jours)</h3>
+            <div class="trend-chart" id="rhSpark"></div>
+          </div>
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Équipe</div>
+            <h2>Votre équipe</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="teamList"></div></div>
+          </div>
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Documents</div>
+            <h2>DSN & documents RH</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="rhDocs"></div></div>
+          </div>
+        </section>
+
+        <!-- CHARGES FIXES -->
+        <section class="view" id="view-chargesfixes">
+          <div class="page-title-row"><div><h1>Charges fixes</h1><p>Loyer, assurances, abonnements — tout ce qui ne bouge pas.</p></div></div>
+          <div class="stat-grid stat-grid-4" id="chargesfixesStats" style="margin-bottom:24px;"></div>
+          <div class="card glow-card reveal in-view" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Évolution (14 derniers jours)</h3>
+            <div class="trend-chart" id="chargesfixesSpark"></div>
+          </div>
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Documents</div>
+            <h2>Justificatifs charges fixes</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="chargesfixesDocs"></div></div>
+          </div>
+        </section>
+
+        <!-- CHARGES VARIABLES -->
+        <section class="view" id="view-chargesvar">
+          <div class="page-title-row"><div><h1>Charges variables</h1><p>Ce qui varie avec votre activité.</p></div></div>
+          <div class="stat-grid stat-grid-4" id="chargesvarStats" style="margin-bottom:24px;"></div>
+          <div class="card glow-card reveal in-view" style="margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Évolution (14 derniers jours)</h3>
+            <div class="trend-chart" id="chargesvarSpark"></div>
+          </div>
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Documents</div>
+            <h2>Justificatifs charges variables</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="chargesvarDocs"></div></div>
+          </div>
+        </section>
+
         <!-- DOCUMENTS -->
         <section class="view" id="view-documents">
           <div class="page-title-row"><div><h1>Documents</h1><p>Tout ce que votre DG partage avec vous.</p></div></div>
           <div class="card glow-card reveal in-view">
-            <div id="docsList">
-              <div class="doc-item">
-                <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Audit initial — Diagnostic complet</span>
-                <a href="#">Voir</a>
-              </div>
-              <div class="doc-item">
-                <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>Plan d'action — Semaine 1 à 6</span>
-                <a href="#">Voir</a>
-              </div>
-            </div>
-            <div class="empty-state">Les prochains documents ajoutés par votre DG apparaîtront ici.</div>
+            <div id="docsList"></div>
           </div>
         </section>
 
@@ -555,7 +641,7 @@ body{overflow-x:hidden;}
   document.getElementById('dashboardContent').style.display = 'block';
 
   const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const fmtEuro = (n) => n == null ? '—' : Number(n).toLocaleString('fr-FR') + ' €';
+  const fmtEuro = (n) => n == null ? '—' : Math.round(Number(n)).toLocaleString('fr-FR') + ' €';
 
   function setRing(el, pct, circumference) {
     circumference = circumference || 377;
@@ -701,10 +787,13 @@ body{overflow-x:hidden;}
     if (!metricsRows.length) {
       empty.style.display = 'block';
       cardsEl.style.display = 'none';
+      document.getElementById('overviewChartCard').style.display = 'none';
       return;
     }
     empty.style.display = 'none';
     cardsEl.style.display = '';
+    document.getElementById('overviewChartCard').style.display = '';
+    renderTrendChart('overviewSpark', metricsRows.slice(-14), 'revenue', '€');
 
     const windowDays = kpiState.gran === 'day' ? 1 : kpiState.gran === 'week' ? 7 : 30;
     const today = isoDaysAgo(0);
@@ -759,20 +848,148 @@ body{overflow-x:hidden;}
     renderKpi();
   });
 
-  // ---- Documents à trier (aperçu sur la vue d'ensemble, table "documents") ----
-  async function loadDocsTodo() {
+  // ---- Documents (table "documents") : chargées une fois, filtrées par
+  // catégorie pour chaque section (Vue d'ensemble, Food cost, RH, Charges...) ----
+  let allDocs = [];
+  async function loadAllDocs() {
     try {
-      const { data } = await supabaseClient.from('documents').select('*').eq('user_id', user.id).eq('status', 'a_trier').order('created_at', { ascending: false });
+      const { data } = await supabaseClient.from('documents').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
       return data || [];
     } catch (e) { return []; }
   }
   function renderDocsTodo(docs) {
     const el = document.getElementById('docsTodoList');
-    if (!docs.length) { el.innerHTML = '<div class="empty-state">Rien à trier pour le moment.</div>'; return; }
-    el.innerHTML = docs.map(d => `<div class="docs-todo-item">
+    const todo = docs.filter(d => d.status === 'a_trier');
+    if (!todo.length) { el.innerHTML = '<div class="empty-state">Rien à trier pour le moment.</div>'; return; }
+    el.innerHTML = todo.map(d => `<div class="docs-todo-item">
       <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       <div style="flex:1;"><b style="color:var(--ink);font-weight:700;">${esc(d.name)}</b>${d.category ? `<span style="color:var(--muted-dim);"> · ${esc(d.category)}</span>` : ''}</div>
     </div>`).join('');
+  }
+  function renderAllDocsList(docs) {
+    const el = document.getElementById('docsList');
+    if (!docs.length) { el.innerHTML = '<div class="empty-state">Les prochains documents ajoutés par votre DG apparaîtront ici.</div>'; return; }
+    el.innerHTML = docs.map(d => `<div class="doc-item">
+        <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>${esc(d.name)}${d.category ? `<span style="color:var(--muted-dim);"> · ${esc(d.category)}</span>` : ''}${d.status === 'a_trier' ? ' <span style="font-size:10px;font-weight:800;text-transform:uppercase;color:#c8860a;">à trier</span>' : ''}</span>
+        ${d.file_url ? `<a href="${esc(d.file_url)}" target="_blank" rel="noopener">Voir</a>` : ''}
+      </div>`).join('');
+  }
+  function renderDocsByCategory(containerId, category, docs) {
+    const el = document.getElementById(containerId);
+    const filtered = docs.filter(d => d.category === category);
+    if (!filtered.length) { el.innerHTML = '<div class="empty-state">Aucun document dans cette catégorie pour le moment.</div>'; return; }
+    el.innerHTML = filtered.map(d => `<div class="doc-item">
+        <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></span>${esc(d.name)}${d.status === 'a_trier' ? ' <span style="font-size:10px;font-weight:800;text-transform:uppercase;color:#c8860a;">à trier</span>' : ''}</span>
+        ${d.file_url ? `<a href="${esc(d.file_url)}" target="_blank" rel="noopener">Voir</a>` : ''}
+      </div>`).join('');
+  }
+
+  // ---- Dashboards par catégorie (Food cost, RH, Charges fixes, Charges variables) ----
+  // Tous réutilisent metricsRows (table "daily_metrics") sur un champ différent.
+  function statCardHtml(label, value, sub) {
+    return `<div class="stat-card"><div class="stat-card-head"><span>${label}</span></div><b>${value}</b>${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
+  }
+  function renderMetricCategory(opts) {
+    const rows = metricsRows.slice(-14);
+    const fmtVal = (v) => v == null ? '—' : (opts.unit === '%' ? Number(v).toFixed(1).replace('.', ',') + '%' : Math.round(Number(v)).toLocaleString('fr-FR') + ' €');
+    const lastRow = metricsRows.slice().reverse().find(r => r[opts.field] != null);
+    const avg7 = avgOf(metricsRows.slice(-7), opts.field);
+    const avg30 = avgOf(metricsRows.slice(-30), opts.field);
+
+    document.getElementById(opts.statsEl).innerHTML =
+      statCardHtml('Dernier relevé', fmtVal(lastRow ? lastRow[opts.field] : null), lastRow ? lastRow.date : '') +
+      statCardHtml('Moyenne 7 jours', fmtVal(avg7)) +
+      statCardHtml('Moyenne 30 jours', fmtVal(avg30)) +
+      statCardHtml('Cible', opts.target || '—');
+
+    renderTrendChart(opts.sparkEl, rows, opts.field, opts.unit);
+  }
+
+  // ---- Graphique interactif (ligne + zone + tooltip au survol) réutilisé
+  // par la Vue d'ensemble et les 4 onglets Food cost / RH / Charges. ----
+  function renderTrendChart(containerId, rows, field, unit) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const points = rows.map((r, i) => ({ i, y: r[field] == null ? null : Number(r[field]), date: r.date }));
+    const known = points.filter(p => p.y != null);
+    if (known.length < 2) {
+      el.innerHTML = '<div class="empty-state" style="padding:20px 0;">Pas encore assez de données pour un graphique.</div>';
+      return;
+    }
+    const W = 600, H = 170, PAD = 6;
+    const n = points.length;
+    const min = Math.min(...known.map(p => p.y));
+    const max = Math.max(...known.map(p => p.y));
+    const range = (max - min) || Math.max(1, max * 0.1) || 1;
+    const xAt = (i) => PAD + (n > 1 ? (i / (n - 1)) * (W - PAD * 2) : 0);
+    const yAt = (v) => H - PAD - ((v - min) / range) * (H - PAD * 2);
+
+    const linePath = known.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${xAt(p.i).toFixed(1)} ${yAt(p.y).toFixed(1)}`).join(' ');
+    const areaPath = `${linePath} L ${xAt(known[known.length - 1].i).toFixed(1)} ${H - PAD} L ${xAt(known[0].i).toFixed(1)} ${H - PAD} Z`;
+    const gradId = 'grad-' + containerId;
+    const dotsHtml = known.map(p => `<circle class="chart-dot" data-i="${p.i}" cx="${xAt(p.i).toFixed(1)}" cy="${yAt(p.y).toFixed(1)}" r="3.5" stroke="var(--lime)"></circle>`).join('');
+
+    el.innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+        <defs><linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--lime)" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="var(--lime)" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="${areaPath}" fill="url(#${gradId})" stroke="none"></path>
+        <line class="chart-hover-line" x1="0" y1="${PAD}" x2="0" y2="${H - PAD}" stroke="var(--line)" stroke-width="1"></line>
+        <path class="chart-line" d="${linePath}" fill="none" stroke="var(--lime-2)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+        ${dotsHtml}
+      </svg>
+      <div class="chart-tooltip"></div>
+      <div class="chart-axis-labels"><span>${points[0].date}</span><span>${points[n - 1].date}</span></div>
+    `;
+
+    const lineEl = el.querySelector('.chart-line');
+    const len = lineEl.getTotalLength();
+    lineEl.style.strokeDasharray = len;
+    lineEl.style.strokeDashoffset = len;
+    requestAnimationFrame(() => {
+      lineEl.style.transition = 'stroke-dashoffset 1s cubic-bezier(.16,.9,.3,1)';
+      lineEl.style.strokeDashoffset = '0';
+    });
+
+    const svg = el.querySelector('svg');
+    const tooltip = el.querySelector('.chart-tooltip');
+    const hoverLine = el.querySelector('.chart-hover-line');
+    const dots = el.querySelectorAll('.chart-dot');
+    const fmtV = (v) => unit === '%' ? v.toFixed(1).replace('.', ',') + '%' : Math.round(v).toLocaleString('fr-FR') + ' €';
+    function showAt(clientX) {
+      const rect = svg.getBoundingClientRect();
+      const relX = ((clientX - rect.left) / rect.width) * W;
+      let nearest = known[0], minDist = Infinity;
+      known.forEach(p => { const d = Math.abs(xAt(p.i) - relX); if (d < minDist) { minDist = d; nearest = p; } });
+      const px = xAt(nearest.i);
+      hoverLine.setAttribute('x1', px); hoverLine.setAttribute('x2', px);
+      hoverLine.style.opacity = '1';
+      dots.forEach(d => d.classList.toggle('near', Number(d.dataset.i) === nearest.i));
+      tooltip.style.opacity = '1';
+      tooltip.style.left = ((px / W) * 100) + '%';
+      tooltip.innerHTML = `<b>${fmtV(nearest.y)}</b><span>${nearest.date}</span>`;
+    }
+    svg.addEventListener('mousemove', (e) => showAt(e.clientX));
+    svg.addEventListener('touchmove', (e) => { if (e.touches[0]) showAt(e.touches[0].clientX); }, { passive: true });
+    svg.addEventListener('mouseleave', () => { hoverLine.style.opacity = '0'; tooltip.style.opacity = '0'; dots.forEach(d => d.classList.remove('near')); });
+  }
+
+  // ---- Équipe (table "team_members", onglet RH) ----
+  async function loadTeam() {
+    try {
+      const { data } = await supabaseClient.from('team_members').select('*').eq('user_id', user.id).order('created_at', { ascending: true });
+      return data || [];
+    } catch (e) { return []; }
+  }
+  function renderTeam(list) {
+    const el = document.getElementById('teamList');
+    if (!list.length) { el.innerHTML = '<div class="empty-state">Votre DG n\'a pas encore renseigné votre équipe.</div>'; return; }
+    el.innerHTML = list.map(t => `<div class="doc-item">
+        <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>${esc(t.name)}</span>
+        ${t.role ? `<span style="color:var(--muted-dim);font-size:13px;">${esc(t.role)}</span>` : ''}
+      </div>`).join('');
   }
 
   // =========================================================
@@ -1211,7 +1428,21 @@ body{overflow-x:hidden;}
 
     metricsRows = await loadMetrics();
     renderKpi();
-    renderDocsTodo(await loadDocsTodo());
+    allDocs = await loadAllDocs();
+    renderDocsTodo(allDocs);
+    renderAllDocsList(allDocs);
+    renderDocsByCategory('foodcostDocs', 'Food cost', allDocs);
+    renderDocsByCategory('rhDocs', 'RH', allDocs);
+    renderDocsByCategory('chargesfixesDocs', 'Charges fixes', allDocs);
+    renderDocsByCategory('chargesvarDocs', 'Charges variables', allDocs);
+
+    renderMetricCategory({ statsEl: 'foodcostStats', sparkEl: 'foodcostSpark', field: 'food_cost_pct', unit: '%', target: '28-30%' });
+    renderMetricCategory({ statsEl: 'rhStats', sparkEl: 'rhSpark', field: 'payroll_pct', unit: '%', target: '~30%' });
+    renderMetricCategory({ statsEl: 'chargesfixesStats', sparkEl: 'chargesfixesSpark', field: 'fixed_costs', unit: '€', target: '—' });
+    renderMetricCategory({ statsEl: 'chargesvarStats', sparkEl: 'chargesvarSpark', field: 'variable_costs', unit: '€', target: '—' });
+
+    const team = await loadTeam();
+    renderTeam(team);
 
     const audit = await loadAudit();
     auditData = audit;
