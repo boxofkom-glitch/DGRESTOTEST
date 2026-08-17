@@ -10,10 +10,10 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 .hero{position:relative;padding:64px 16px 32px;overflow:hidden;}
-.hero .glow-a{width:520px;height:520px;background:radial-gradient(circle,rgba(212,255,0,.14),transparent 70%);top:-160px;right:-120px;}
-.hero .glow-b{width:420px;height:420px;background:radial-gradient(circle,rgba(167,255,0,.10),transparent 70%);bottom:-140px;left:-100px;}
+.hero .glow-a{width:520px;height:520px;background:radial-gradient(circle,rgba(43,75,255,.08),transparent 70%);top:-160px;right:-120px;}
+.hero .glow-b{width:420px;height:420px;background:radial-gradient(circle,rgba(205,255,46,.10),transparent 70%);bottom:-140px;left:-100px;}
 .hero-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;text-align:center;}
-.hero h1{font-size:clamp(38px,7vw,76px);font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:22px;}
+.hero h1{font-size:clamp(38px,7vw,76px);font-weight:900;letter-spacing:-0.03em;color:var(--ink);margin-bottom:22px;}
 .hero p.lead{font-size:clamp(16px,2vw,19px);max-width:56ch;margin:0 auto 32px;color:var(--muted);}
 .cta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:44px;}
 
@@ -25,9 +25,9 @@
 .day-timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:var(--line);}
 .day-item{position:relative;padding-bottom:34px;}
 .day-item:last-child{padding-bottom:0;}
-.day-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);}
-.day-time{font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;font-weight:700;color:var(--lime);letter-spacing:.04em;display:block;margin-bottom:6px;}
-.day-item h4{font-size:17px;font-weight:800;color:#fff;margin-bottom:6px;}
+.day-dot{position:absolute;left:-32px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--lime);border:2px solid var(--bg);}
+.day-time{font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;font-weight:700;color:var(--primary);letter-spacing:.04em;display:block;margin-bottom:6px;}
+.day-item h4{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px;}
 .day-item p{font-size:14.5px;max-width:56ch;}
 
 .pillars{padding:16px 16px 24px;}
@@ -37,27 +37,29 @@
 .strip-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-dim);width:100%;text-align:center;}
 @media (min-width:700px){.strip-label{width:auto;text-align:left;}}
 
-.problem{background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;position:relative;border:1px solid var(--line);}
-.problem .glow-a{width:400px;height:400px;background:radial-gradient(circle,rgba(212,255,0,.16),transparent 70%);top:-100px;right:-60px;}
+.problem{background:var(--ink);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;position:relative;}
+.problem .glow-a{width:400px;height:400px;background:radial-gradient(circle,rgba(205,255,46,.14),transparent 70%);top:-100px;right:-60px;}
 .problem-inner{position:relative;z-index:1;padding:52px 26px;}
 .problem-grid{display:flex;flex-wrap:wrap;gap:16px;}
-.problem-card{flex:1 1 260px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 22px;}
+.problem-card{flex:1 1 260px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:24px 22px;}
 .problem-card .icon{width:42px;height:42px;border-radius:var(--r-sm);background:var(--lime-dim);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
 .problem-card .icon svg{width:21px;height:21px;stroke:var(--lime);}
 .problem-card h3{font-weight:800;font-size:16.5px;margin-bottom:8px;color:#fff;}
-.problem-card p{font-size:14px;}
+.problem-card p{font-size:14px;color:rgba(255,255,255,.6);}
+.problem .section-head .eyebrow{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
+.problem .section-head h2{color:#fff;}
+.problem .section-head p{color:rgba(255,255,255,.6);}
 
-.proof-banner{max-width:1120px;margin:0 auto;background:linear-gradient(120deg,var(--lime),var(--lime-2));border-radius:var(--r-xl);padding:34px 28px;color:var(--ink);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;box-shadow:0 20px 40px -14px rgba(212,255,0,.35);}
+.proof-banner{max-width:1120px;margin:0 auto;background:linear-gradient(120deg,var(--lime),var(--lime-2));border-radius:var(--r-xl);padding:34px 28px;color:var(--ink);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;}
 .proof-banner h3{font-size:20px;margin-bottom:6px;color:var(--ink);}
-.proof-banner p{color:rgba(13,13,13,.72);font-size:13.5px;}
+.proof-banner p{color:rgba(13,13,15,.7);font-size:13.5px;}
 .proof-banner .big{font-weight:900;font-size:38px;color:var(--ink);white-space:nowrap;}
 @media (max-width:560px){.proof-banner{grid-template-columns:1fr;}}
 
-.final{position:relative;background:var(--surface);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;padding:56px 26px;text-align:center;border:1px solid var(--line);}
+.final{position:relative;background:var(--ink);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;padding:56px 26px;text-align:center;}
 .final-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
 .final h2{font-size:clamp(26px,4vw,42px);margin-bottom:14px;color:#fff;}
-.final p{font-size:15.5px;margin-bottom:26px;}
-.btn-primary.on-lime{background:#fff;color:var(--ink);}
+.final p{font-size:15.5px;margin-bottom:26px;color:rgba(255,255,255,.6);}
 
 /* Vidéo d'intro plein écran, jouée une fois par session puis retirée */
 #introOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background 1s ease .3s;}
@@ -70,13 +72,17 @@
 #introUnmute{position:absolute;bottom:28px;left:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background .2s;}
 #introUnmute:hover{background:rgba(255,255,255,.18);}
 #introUnmute svg{width:18px;height:18px;stroke:#fff;}
+#introSpinner{position:absolute;width:34px;height:34px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--lime);border-radius:50%;animation:introSpin .8s linear infinite;}
+#introOverlay.playing #introSpinner{display:none;}
+@keyframes introSpin{to{transform:rotate(360deg);}}
 body.intro-lock{overflow:hidden;}
 </style>
 </head>
 <body>
 
 <div id="introOverlay">
-  <video id="introVideo" autoplay muted playsinline preload="auto" src="intro.mp4"></video>
+  <video id="introVideo" autoplay muted playsinline preload="auto" fetchpriority="high" src="intro.mp4"></video>
+  <div id="introSpinner"></div>
   <button type="button" id="introUnmute" aria-label="Activer le son">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
   </button>
@@ -96,7 +102,10 @@ body.intro-lock{overflow:hidden;}
   sessionStorage.setItem('dgIntroSeen', '1');
   document.body.classList.add('intro-lock');
 
+  var closed = false;
   function closeIntro() {
+    if (closed) return;
+    closed = true;
     // Zoom dramatique sur la vidéo (comme si la caméra rentrait dans l'écran du
     // téléphone) pendant que le fond devient transparent et révèle le vrai site.
     overlay.classList.add('zoom-out');
@@ -104,6 +113,12 @@ body.intro-lock{overflow:hidden;}
     setTimeout(function () { overlay.remove(); }, 1400);
   }
 
+  // Filet de sécurité : si la vidéo ne démarre pas (lecture auto bloquée,
+  // connexion lente...) on révèle le site après quelques secondes plutôt
+  // que de laisser le visiteur bloqué derrière un écran noir.
+  var safetyTimer = setTimeout(closeIntro, 6000);
+
+  video.addEventListener('playing', function () { overlay.classList.add('playing'); clearTimeout(safetyTimer); }, { once: true });
   video.addEventListener('ended', closeIntro);
   video.addEventListener('error', closeIntro);
   document.getElementById('introSkip').addEventListener('click', closeIntro);
@@ -116,7 +131,10 @@ body.intro-lock{overflow:hidden;}
 
 <div class="nav-outer">
   <nav class="nav">
-    <a href="index.html" class="nav-logo"><span class="dg-badge">DG</span> Resto</a>
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 96 100" aria-hidden="true"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg>
+      DG <span class="accent">Resto</span>
+    </a>
     <div class="nav-links">
       <a href="index.html" class="active">Accueil</a>
       <a href="methode.html">Méthode</a>
@@ -263,7 +281,7 @@ body.intro-lock{overflow:hidden;}
     <div class="final-inner">
       <h2>Allez, on regarde où votre marge s'échappe ?</h2>
       <p>Pas de rapport de 40 pages. Un audit direct, un plan d'action concret piloté par votre DG, dès la première semaine.</p>
-      <a href="contact.html" class="btn-primary on-lime magnetic">Démarrer un audit gratuit</a>
+      <a href="contact.html" class="btn-primary magnetic">Démarrer un audit gratuit</a>
     </div>
   </div>
 </section>

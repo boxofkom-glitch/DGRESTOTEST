@@ -64,21 +64,6 @@ document.querySelectorAll('.faq-item').forEach(item => {
   }, { passive: true });
 })();
 
-// Cursor glow that follows the pointer (desktop only)
-(function () {
-  if (window.matchMedia('(hover: none)').matches) return;
-  const glow = document.createElement('div');
-  glow.className = 'cursor-glow';
-  document.body.appendChild(glow);
-  let x = 0, y = 0, cx = 0, cy = 0;
-  window.addEventListener('mousemove', (e) => { x = e.clientX; y = e.clientY; });
-  (function loop() {
-    cx += (x - cx) * 0.15; cy += (y - cy) * 0.15;
-    glow.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`;
-    requestAnimationFrame(loop);
-  })();
-})();
-
 // Magnetic buttons — pull slightly toward the cursor
 (function () {
   if (window.matchMedia('(hover: none)').matches) return;
@@ -104,17 +89,6 @@ document.querySelectorAll('.faq-item').forEach(item => {
       card.style.transform = `perspective(900px) rotateX(${(0.5 - py) * 8}deg) rotateY(${(px - 0.5) * 10}deg)`;
     });
     card.addEventListener('mouseleave', () => { card.style.transform = 'perspective(900px) rotateX(0) rotateY(0)'; });
-  });
-})();
-
-// Glow-card spotlight — track mouse position as CSS vars
-(function () {
-  document.querySelectorAll('.glow-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
   });
 })();
 
