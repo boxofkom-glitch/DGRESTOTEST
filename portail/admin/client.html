@@ -104,6 +104,7 @@ body{overflow-x:hidden;}
   <div class="tab-nav">
     <button type="button" class="tab-btn active" data-tab="audit">Audit</button>
     <button type="button" class="tab-btn" data-tab="plan">Plan d'action</button>
+    <button type="button" class="tab-btn" data-tab="kpi">KPI & Documents</button>
     <button type="button" class="tab-btn" data-tab="messages">WhatsApp</button>
   </div>
 
@@ -123,6 +124,35 @@ body{overflow-x:hidden;}
       <div id="planEditorRoot"></div>
       <div class="save-bar" id="planSaveBar" style="display:none;">
         <button type="button" class="btn-primary magnetic" id="savePlanBtn">💾 Enregistrer le plan</button>
+      </div>
+    </section>
+
+    <!-- KPI & DOCUMENTS -->
+    <section class="view" id="view-kpi">
+      <div class="plan-block">
+        <h4>Ajouter les KPI du jour</h4>
+        <form id="metricForm" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field" style="grid-column:span 2;"><label>Date</label><input type="date" id="metricDate" required></div>
+          <div class="field"><label>Food cost (%)</label><input type="number" step="0.1" id="metricFoodCost"></div>
+          <div class="field"><label>Masse salariale (%)</label><input type="number" step="0.1" id="metricPayroll"></div>
+          <div class="field"><label>CA du jour (€)</label><input type="number" step="1" id="metricRevenue"></div>
+          <div class="field"><label>Note Google (/5)</label><input type="number" step="0.1" min="0" max="5" id="metricRating"></div>
+          <div class="field" style="grid-column:span 2;"><label>Nombre d'avis Google (total à date)</label><input type="number" step="1" id="metricReviewCount"></div>
+          <button type="submit" class="btn-primary magnetic" style="grid-column:span 2;justify-content:center;">Enregistrer</button>
+        </form>
+      </div>
+      <div class="plan-block">
+        <h4>Derniers KPI enregistrés</h4>
+        <div class="table-scroll"><table class="audit-table" id="metricsTable"><thead><tr><th>Date</th><th>Food cost</th><th>Masse sal.</th><th>CA</th><th>Google</th></tr></thead><tbody></tbody></table></div>
+      </div>
+      <div class="plan-block">
+        <h4>Documents à trier pour ce client</h4>
+        <form id="docForm" style="display:flex;gap:8px;margin-bottom:14px;">
+          <input id="docName" placeholder="Nom du document (ex: Facture Metro juillet)" style="flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+          <input id="docCategory" placeholder="Catégorie" style="width:140px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
+          <button type="submit" class="btn-primary magnetic">+ Ajouter</button>
+        </form>
+        <div id="docsAdminList"></div>
       </div>
     </section>
 
@@ -499,6 +529,80 @@ body{overflow-x:hidden;}
     if (window.toast) toast('Cycle activé : ' + next.name, 'ok');
     renderPlanEditor();
   });
+
+  // =========================================================
+  // KPI & DOCUMENTS
+  // =========================================================
+  document.getElementById('metricDate').valueAsDate = new Date();
+
+  async function loadMetrics() {
+    const { data } = await supabaseClient.from('daily_metrics').select('*').eq('user_id', clientId).order('date', { ascending: false }).limit(30);
+    return data || [];
+  }
+  function renderMetrics(rows) {
+    const body = document.querySelector('#metricsTable tbody');
+    body.innerHTML = rows.length ? rows.map(r => `<tr>
+        <td>${esc(r.date)}</td>
+        <td>${r.food_cost_pct != null ? r.food_cost_pct + '%' : '—'}</td>
+        <td>${r.payroll_pct != null ? r.payroll_pct + '%' : '—'}</td>
+        <td>${r.revenue != null ? Number(r.revenue).toLocaleString('fr-FR') + ' €' : '—'}</td>
+        <td>${r.google_rating != null ? r.google_rating + '/5' : '—'}</td>
+      </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted-dim);">Aucun KPI enregistré pour l\'instant.</td></tr>';
+  }
+  document.getElementById('metricForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const row = {
+      user_id: clientId,
+      date: document.getElementById('metricDate').value,
+      food_cost_pct: document.getElementById('metricFoodCost').value || null,
+      payroll_pct: document.getElementById('metricPayroll').value || null,
+      revenue: document.getElementById('metricRevenue').value || null,
+      google_rating: document.getElementById('metricRating').value || null,
+      google_review_count: document.getElementById('metricReviewCount').value || null,
+    };
+    const { error } = await supabaseClient.from('daily_metrics').upsert(row, { onConflict: 'user_id,date' });
+    if (error) { if (window.toast) toast(error.message, 'error'); return; }
+    if (window.toast) toast('KPI enregistrés !', 'ok');
+    renderMetrics(await loadMetrics());
+  });
+
+  async function loadDocs() {
+    const { data } = await supabaseClient.from('documents').select('*').eq('user_id', clientId).order('created_at', { ascending: false });
+    return data || [];
+  }
+  function renderDocsAdmin(docs) {
+    const el = document.getElementById('docsAdminList');
+    el.innerHTML = docs.length ? docs.map(d => `<div class="repeat-row">
+        <div style="flex:1;font-size:13.5px;color:var(--ink);">${esc(d.name)}${d.category ? ` <span style="color:var(--muted-dim);">· ${esc(d.category)}</span>` : ''} <span style="font-size:11px;font-weight:800;text-transform:uppercase;color:${d.status === 'a_trier' ? '#c8860a' : '#1f9d4f'};">${d.status === 'a_trier' ? 'À trier' : 'Traité'}</span></div>
+        <button type="button" class="raw-toggle" data-toggle-doc="${d.id}" data-status="${d.status}">${d.status === 'a_trier' ? 'Marquer traité' : 'Remettre à trier'}</button>
+        <button type="button" class="chip-remove" data-remove-doc="${d.id}">✕</button>
+      </div>`).join('') : '<div class="empty-state">Aucun document pour ce client.</div>';
+  }
+  document.getElementById('docForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('docName').value.trim();
+    if (!name) return;
+    const category = document.getElementById('docCategory').value.trim();
+    const { error } = await supabaseClient.from('documents').insert({ user_id: clientId, name, category: category || null, status: 'a_trier' });
+    if (error) { if (window.toast) toast(error.message, 'error'); return; }
+    document.getElementById('docName').value = ''; document.getElementById('docCategory').value = '';
+    renderDocsAdmin(await loadDocs());
+  });
+  document.getElementById('docsAdminList').addEventListener('click', async (e) => {
+    const toggleId = e.target.dataset.toggleDoc;
+    const removeId = e.target.dataset.removeDoc;
+    if (toggleId) {
+      const newStatus = e.target.dataset.status === 'a_trier' ? 'traite' : 'a_trier';
+      await supabaseClient.from('documents').update({ status: newStatus }).eq('id', toggleId);
+      renderDocsAdmin(await loadDocs());
+    } else if (removeId) {
+      await supabaseClient.from('documents').delete().eq('id', removeId);
+      renderDocsAdmin(await loadDocs());
+    }
+  });
+
+  renderMetrics(await loadMetrics());
+  renderDocsAdmin(await loadDocs());
 
   // =========================================================
   // MESSAGES
