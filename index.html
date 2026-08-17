@@ -61,73 +61,38 @@
 .final h2{font-size:clamp(26px,4vw,42px);margin-bottom:14px;color:#fff;}
 .final p{font-size:15.5px;margin-bottom:26px;color:rgba(255,255,255,.6);}
 
-/* Vidéo d'intro plein écran, jouée une fois par session puis retirée */
-#introOverlay{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:background 1s ease .3s;}
-#introOverlay.zoom-out{background:transparent;pointer-events:none;}
-#introVideo{width:100%;height:100%;object-fit:cover;transform-origin:50% 42%;transition:transform 1.3s cubic-bezier(.7,0,.3,1),opacity 1s ease .2s;}
-#introOverlay.zoom-out #introVideo{transform:scale(10);opacity:0;}
-#introOverlay.zoom-out #introSkip,#introOverlay.zoom-out #introUnmute{opacity:0;transition:opacity .3s ease;}
-#introSkip{position:absolute;bottom:28px;right:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:inherit;font-weight:700;font-size:13px;padding:10px 18px;border-radius:999px;cursor:pointer;backdrop-filter:blur(8px);transition:background .2s;}
-#introSkip:hover{background:rgba(255,255,255,.18);}
-#introUnmute{position:absolute;bottom:28px;left:28px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);transition:background .2s;}
-#introUnmute:hover{background:rgba(255,255,255,.18);}
-#introUnmute svg{width:18px;height:18px;stroke:#fff;}
-#introSpinner{position:absolute;width:34px;height:34px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--lime);border-radius:50%;animation:introSpin .8s linear infinite;}
-#introOverlay.playing #introSpinner{display:none;}
-@keyframes introSpin{to{transform:rotate(360deg);}}
-body.intro-lock{overflow:hidden;}
+/* ---- Aperçu produit : scan de facture + tableau de bord live ---- */
+.preview-section{padding:24px 16px 8px;}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1120px;margin:36px auto 0;align-items:stretch;}
+@media (max-width:860px){.preview-grid{grid-template-columns:1fr;}}
+.preview-card{background:var(--ink);border-radius:var(--r-xl);padding:28px;position:relative;overflow:hidden;}
+.preview-card-label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:16px;}
+
+/* facture scan */
+.scan-doc{background:#fff;border-radius:var(--r-md);padding:18px 18px 14px;font-family:var(--font-mono);font-size:11.5px;color:#2a2a2a;position:relative;overflow:hidden;box-shadow:0 20px 40px -16px rgba(0,0,0,.4);}
+.scan-doc .sd-head{display:flex;justify-content:space-between;font-weight:700;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed #ddd;}
+.scan-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f0f0f0;transition:background .3s;}
+.scan-row.hit{background:rgba(43,75,255,.08);}
+.scan-row span:last-child{font-weight:700;}
+.scan-laser{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent);box-shadow:0 0 12px 2px rgba(43,75,255,.7);top:0;animation:scanMove 2.8s cubic-bezier(.5,0,.5,1) infinite;}
+@keyframes scanMove{0%{top:0;opacity:0;}8%{opacity:1;}50%{top:100%;opacity:1;}58%{opacity:0;}100%{top:100%;opacity:0;}}
+.scan-extract{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;}
+.scan-tag{background:var(--primary-dim);color:var(--primary);font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px;opacity:0;transform:translateY(4px);animation:tagIn .4s ease forwards;}
+@keyframes tagIn{to{opacity:1;transform:translateY(0);}}
+
+/* dashboard preview */
+.kpi-preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.kpi-preview{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-md);padding:14px 16px;}
+.kpi-preview span{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:rgba(255,255,255,.45);margin-bottom:6px;}
+.kpi-preview b{font-family:var(--font-mono);font-size:21px;font-weight:700;color:#fff;}
+.kpi-preview .trend{font-size:11px;font-weight:700;margin-left:6px;}
+.kpi-preview .trend.good{color:#7ed957;}
+.kpi-preview .trend.bad{color:#ff8a8a;}
+.kpi-preview-spark{display:flex;align-items:flex-end;gap:3px;height:26px;margin-top:10px;}
+.kpi-preview-spark i{flex:1;background:var(--lime);border-radius:2px 2px 0 0;opacity:.85;}
 </style>
 </head>
 <body>
-
-<div id="introOverlay">
-  <video id="introVideo" autoplay muted playsinline preload="auto" fetchpriority="high" src="intro.mp4"></video>
-  <div id="introSpinner"></div>
-  <button type="button" id="introUnmute" aria-label="Activer le son">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-  </button>
-  <button type="button" id="introSkip">Passer →</button>
-</div>
-<script>
-(function () {
-  var overlay = document.getElementById('introOverlay');
-  var video = document.getElementById('introVideo');
-  var unmuteBtn = document.getElementById('introUnmute');
-
-  // Ne joue qu'une fois par session (pas à chaque page vue si le visiteur revient sur l'accueil).
-  if (sessionStorage.getItem('dgIntroSeen')) {
-    overlay.remove();
-    return;
-  }
-  sessionStorage.setItem('dgIntroSeen', '1');
-  document.body.classList.add('intro-lock');
-
-  var closed = false;
-  function closeIntro() {
-    if (closed) return;
-    closed = true;
-    // Zoom dramatique sur la vidéo (comme si la caméra rentrait dans l'écran du
-    // téléphone) pendant que le fond devient transparent et révèle le vrai site.
-    overlay.classList.add('zoom-out');
-    document.body.classList.remove('intro-lock');
-    setTimeout(function () { overlay.remove(); }, 1400);
-  }
-
-  // Filet de sécurité : si la vidéo ne démarre pas (lecture auto bloquée,
-  // connexion lente...) on révèle le site après quelques secondes plutôt
-  // que de laisser le visiteur bloqué derrière un écran noir.
-  var safetyTimer = setTimeout(closeIntro, 6000);
-
-  video.addEventListener('playing', function () { overlay.classList.add('playing'); clearTimeout(safetyTimer); }, { once: true });
-  video.addEventListener('ended', closeIntro);
-  video.addEventListener('error', closeIntro);
-  document.getElementById('introSkip').addEventListener('click', closeIntro);
-  unmuteBtn.addEventListener('click', function () {
-    video.muted = !video.muted;
-    unmuteBtn.style.opacity = video.muted ? '1' : '.5';
-  });
-})();
-</script>
 
 <div class="nav-outer">
   <nav class="nav">
@@ -172,13 +137,48 @@ body.intro-lock{overflow:hidden;}
   </div>
 </section>
 
-<section class="video-section">
+<section class="preview-section">
   <div class="wrap">
-    <div class="section-head reveal" style="max-width:560px;">
-      <div class="eyebrow">La méthode en vidéo</div>
-      <h2>2 minutes pour comprendre comment ça marche.</h2>
+    <div class="section-head reveal" style="max-width:640px;">
+      <div class="eyebrow">Ce que votre DG voit</div>
+      <h2>Vos factures d'un côté, vos chiffres de l'autre. En temps réel.</h2>
     </div>
-    <div class="video-block reveal in-view"></div>
+    <div class="preview-grid">
+      <div class="preview-card reveal">
+        <div class="preview-card-label">Facture reçue à 08:03</div>
+        <div class="scan-doc">
+          <span class="scan-laser"></span>
+          <div class="sd-head"><span>METRO CASH & CARRY</span><span>Fact. n°88214</span></div>
+          <div class="scan-row hit"><span>Filet de bœuf 5kg</span><span>84,50 €</span></div>
+          <div class="scan-row hit"><span>Red Bull 24x25cl</span><span>32,90 €</span></div>
+          <div class="scan-row hit"><span>Huile d'olive 5L</span><span>41,20 €</span></div>
+          <div class="scan-row"><span>TVA 5,5% / 20%</span><span>18,74 €</span></div>
+          <div class="scan-row" style="border-bottom:none;"><span><b>Total TTC</b></span><span>177,34 €</span></div>
+          <div class="scan-extract">
+            <span class="scan-tag" style="animation-delay:.4s;">Fournisseur détecté</span>
+            <span class="scan-tag" style="animation-delay:.7s;">3 lignes rattachées aux recettes</span>
+            <span class="scan-tag" style="animation-delay:1s;">Red Bull +15,9% vs dernier prix</span>
+          </div>
+        </div>
+      </div>
+      <div class="preview-card reveal">
+        <div class="preview-card-label">Votre tableau de bord — aujourd'hui</div>
+        <div class="kpi-preview-grid">
+          <div class="kpi-preview"><span>Food cost</span><b class="cnt" data-target="31" data-suffix=",2%">0%</b><span class="trend good">▼ 2,1 pts</span>
+            <div class="kpi-preview-spark"><i style="height:40%;"></i><i style="height:65%;"></i><i style="height:50%;"></i><i style="height:80%;"></i><i style="height:55%;"></i><i style="height:30%;"></i><i style="height:20%;"></i></div>
+          </div>
+          <div class="kpi-preview"><span>Masse salariale</span><b class="cnt" data-target="29" data-suffix=",8%">0%</b><span class="trend bad">▲ 0,4 pt</span>
+            <div class="kpi-preview-spark"><i style="height:50%;"></i><i style="height:52%;"></i><i style="height:48%;"></i><i style="height:60%;"></i><i style="height:58%;"></i><i style="height:62%;"></i><i style="height:65%;"></i></div>
+          </div>
+          <div class="kpi-preview"><span>CA du jour</span><b>4 210 €</b><span class="trend good">▲ 6%</span>
+            <div class="kpi-preview-spark"><i style="height:30%;"></i><i style="height:45%;"></i><i style="height:40%;"></i><i style="height:70%;"></i><i style="height:60%;"></i><i style="height:85%;"></i><i style="height:100%;"></i></div>
+          </div>
+          <div class="kpi-preview"><span>Marge nette</span><b class="cnt" data-target="5" data-suffix=",8%">0%</b><span class="trend good">▲ 0,9 pt</span>
+            <div class="kpi-preview-spark"><i style="height:20%;"></i><i style="height:25%;"></i><i style="height:35%;"></i><i style="height:30%;"></i><i style="height:45%;"></i><i style="height:55%;"></i><i style="height:70%;"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -287,7 +287,6 @@ body.intro-lock{overflow:hidden;}
 </section>
 
 <footer>DG Resto — Le Directeur Général IA de votre restaurant</footer>
-<script src="video-config.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

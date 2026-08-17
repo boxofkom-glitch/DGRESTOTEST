@@ -25,13 +25,14 @@ if (burger) {
       if (!e.isIntersecting) return;
       const el = e.target;
       const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
       const duration = 1100;
       const start = performance.now();
       function tick(now) {
         if (!el.classList.contains('cnt')) return; // bail if something else took over this element (e.g. dynamic data loaded)
         const p = Math.min((now - start) / duration, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(eased * target);
+        el.textContent = Math.round(eased * target) + suffix;
         if (p < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
@@ -105,41 +106,6 @@ document.querySelectorAll('.btn-primary').forEach(btn => {
 document.querySelectorAll('.marquee-track').forEach(track => {
   track.innerHTML += track.innerHTML;
 });
-
-// Video block: click-to-load embed for YouTube / Vimeo / direct .mp4
-// (see video-config.js). Graceful placeholder if no video is set yet.
-(function () {
-  const block = document.querySelector('.video-block');
-  if (!block) return;
-  const url = (typeof INTRO_VIDEO_URL !== 'undefined') ? INTRO_VIDEO_URL : '';
-  const configured = url && url.indexOf('REMPLACEZ') !== 0;
-
-  if (!configured) {
-    block.classList.add('video-block--empty');
-    block.innerHTML = `<div class="video-empty">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="15" height="16" rx="2"/><path d="M17 8l5-3v14l-5-3"/></svg>
-      <span>Vidéo de présentation bientôt disponible</span>
-    </div>`;
-    return;
-  }
-
-  let embedSrc = '';
-  const yt = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([\w-]{11})/);
-  const vimeo = url.match(/vimeo\.com\/(\d+)/);
-  if (yt) embedSrc = `https://www.youtube.com/embed/${yt[1]}?autoplay=1&rel=0`;
-  else if (vimeo) embedSrc = `https://player.vimeo.com/video/${vimeo[1]}?autoplay=1`;
-
-  block.innerHTML = `<button type="button" class="video-play" aria-label="Lire la vidéo">
-    <span class="video-play-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-  </button>`;
-  block.querySelector('.video-play').addEventListener('click', () => {
-    if (embedSrc) {
-      block.innerHTML = `<iframe src="${embedSrc}" title="Vidéo de présentation" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-    } else {
-      block.innerHTML = `<video src="${url}" controls autoplay playsinline></video>`;
-    }
-  });
-})();
 
 // Global toast helper: toast('Message', 'ok' | 'error')
 window.toast = function (text, type) {
