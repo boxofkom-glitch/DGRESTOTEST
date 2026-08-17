@@ -11,7 +11,7 @@
 body{overflow-x:hidden;}
 .wizard-wrap{max-width:680px;margin:0 auto;padding:32px 16px 80px;}
 .wizard-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
-.wizard-top .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;text-decoration:none;color:#fff;}
+.wizard-top .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;text-decoration:none;color:var(--ink);}
 .wizard-progress-track{height:6px;border-radius:999px;background:var(--surface);overflow:hidden;margin-bottom:8px;}
 .wizard-progress-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--lime-2));border-radius:999px;transition:width .4s cubic-bezier(.16,.9,.3,1);}
 .wizard-step-label{font-size:12px;color:var(--muted-dim);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:26px;}
@@ -19,7 +19,7 @@ body{overflow-x:hidden;}
 .step{display:none;}
 .step.active{display:block;animation:stepIn .35s ease both;}
 @keyframes stepIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
-.step h2{font-size:clamp(20px,3vw,26px);color:#fff;margin-bottom:6px;}
+.step h2{font-size:clamp(20px,3vw,26px);color:var(--ink);margin-bottom:6px;}
 .step p.hint{font-size:13.5px;color:var(--muted);margin-bottom:24px;}
 .field-help{font-size:12px;color:var(--muted-dim);margin-top:-12px;margin-bottom:16px;}
 
@@ -27,24 +27,24 @@ body{overflow-x:hidden;}
 @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
 .field-suffix{position:relative;}
 .field-suffix span{position:absolute;right:14px;top:38px;font-size:13px;color:var(--muted-dim);pointer-events:none;}
-.field select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px;color:#fff;font-family:inherit;font-size:15px;}
-.field select:focus{outline:none;border-color:var(--lime);}
+.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-family:inherit;font-size:15px;}
+.field select:focus{outline:none;border-color:var(--primary);}
 
 .pillar-q{margin-bottom:18px;}
-.pillar-q label{display:block;font-size:13.5px;color:#EDE4D6;font-weight:600;margin-bottom:8px;}
+.pillar-q label{display:block;font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:8px;}
 .status-picker{display:flex;gap:8px;flex-wrap:wrap;}
-.status-opt{flex:1 1 90px;text-align:center;padding:10px 8px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--ink);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
-.status-opt.selected{border-color:var(--lime);color:var(--lime);background:var(--lime-dim);}
+.status-opt{flex:1 1 90px;text-align:center;padding:10px 8px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
+.status-opt.selected{border-color:var(--lime);color:var(--ink);background:var(--lime-dim);}
 
 .competitor-block{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;}
 .competitor-block h5{font-size:13px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
 
 .wizard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:30px;gap:12px;}
 .btn-back{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:14px;padding:14px 22px;border-radius:999px;cursor:pointer;}
-.btn-back:hover{color:#fff;}
+.btn-back:hover{color:var(--ink);}
 
 .summary-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;text-align:center;}
-.summary-card svg{width:40px;height:40px;stroke:var(--lime);margin-bottom:14px;}
+.summary-card svg{width:40px;height:40px;stroke:var(--primary);margin-bottom:14px;}
 </style>
 </head>
 <body>
@@ -58,7 +58,7 @@ body{overflow-x:hidden;}
 <div id="wizardContent" style="display:none;">
   <div class="wizard-wrap">
     <div class="wizard-top">
-      <a href="dashboard.html" class="logo"><span class="dg-badge">DG</span> Resto</a>
+      <a href="dashboard.html" class="logo"><svg viewBox="0 0 96 100" aria-hidden="true" width="18" height="18.75"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg> DG Resto</a>
       <a href="dashboard.html" style="font-size:13px;color:var(--muted-dim);text-decoration:none;">Annuler</a>
     </div>
     <div class="wizard-progress-track"><div class="wizard-progress-fill" id="progressFill" style="width:8%;"></div></div>
@@ -260,7 +260,7 @@ body{overflow-x:hidden;}
         <p class="hint">On génère votre audit et votre plan d'action à partir de vos réponses.</p>
         <div class="summary-card reveal in-view">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <p style="font-size:14.5px;color:#EDE4D6;margin-bottom:4px;">Votre plan comprendra au minimum 7 objectifs structurels sur 12 mois, 7 priorités sur 4 mois — chiffrés avec vos propres données — et un premier mois de 4 semaines déjà prêtes, 7 tâches concrètes par semaine.</p>
+          <p style="font-size:14.5px;color:var(--ink);margin-bottom:4px;">Votre plan comprendra au minimum 7 objectifs structurels sur 12 mois, 7 priorités sur 4 mois — chiffrés avec vos propres données — et un premier mois de 4 semaines déjà prêtes, 7 tâches concrètes par semaine.</p>
         </div>
       </section>
 

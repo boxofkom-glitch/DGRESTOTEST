@@ -13,33 +13,37 @@ body{display:flex;flex-direction:column;min-height:100vh;position:relative;overf
 .login-card{width:100%;max-width:400px;}
 .tabs{position:relative;display:flex;gap:0;margin-bottom:24px;background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:5px;}
 .tab-indicator{position:absolute;top:5px;left:5px;width:calc(50% - 5px);height:calc(100% - 10px);background:var(--lime);border-radius:999px;transition:transform .3s cubic-bezier(.2,.9,.2,1);z-index:0;}
-.tab{position:relative;z-index:1;flex:1;text-align:center;padding:10px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted);transition:color .25s;}
+.tab{position:relative;z-index:1;flex:1;text-align:center;padding:10px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;color:rgba(255,255,255,.6);transition:color .25s;}
 .tab.active{color:var(--ink);}
-.logo-center{display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:22px;margin-bottom:28px;text-decoration:none;color:#fff;}
+.logo-center{display:flex;align-items:center;justify-content:center;gap:9px;font-weight:800;font-size:20px;margin-bottom:28px;text-decoration:none;color:var(--ink);}
+.logo-center svg{width:21px;height:21.9px;color:var(--primary);}
+.logo-center .accent{color:var(--primary);}
 .pw-field{position:relative;}
 .pw-toggle{position:absolute;right:6px;top:29px;background:none;border:none;color:var(--muted);cursor:pointer;padding:8px;font-size:12px;font-weight:700;}
-.pw-toggle:hover{color:#fff;}
+.pw-toggle:hover{color:var(--ink);}
 .form-swap{transition:opacity .25s ease;}
-.oauth-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff;color:#1a1a1a;font-weight:700;font-size:14px;padding:12px 16px;border-radius:999px;border:none;cursor:pointer;margin-bottom:18px;transition:transform .18s,box-shadow .18s;}
-.oauth-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px -10px rgba(255,255,255,.25);}
+.oauth-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff;color:#1a1a1a;font-weight:700;font-size:14px;padding:12px 16px;border-radius:999px;border:1px solid var(--line);cursor:pointer;margin-bottom:18px;transition:transform .18s,box-shadow .18s;}
+.oauth-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
 .oauth-btn svg{width:18px;height:18px;flex:0 0 auto;}
 .divider{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:var(--muted-dim);font-size:12px;text-transform:uppercase;letter-spacing:.06em;}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line);}
 .pac-container{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow);font-family:'Urbanist',sans-serif;overflow:hidden;margin-top:4px;}
 .pac-item{color:var(--muted);border-color:var(--line);padding:9px 12px;font-size:13.5px;}
-.pac-item:hover{background:rgba(255,255,255,.05);}
-.pac-item-query{color:#fff;}
-.pac-icon{filter:invert(1) grayscale(1) brightness(1.6);}
+.pac-item:hover{background:var(--surface-2);}
+.pac-item-query{color:var(--ink);}
 </style>
 </head>
 <body>
 
-<span class="glow glow-a" style="width:480px;height:480px;background:radial-gradient(circle,rgba(212,255,0,.14),transparent 70%);top:-160px;right:-140px;position:fixed;"></span>
-<span class="glow glow-b" style="width:420px;height:420px;background:radial-gradient(circle,rgba(167,255,0,.10),transparent 70%);bottom:-160px;left:-120px;position:fixed;"></span>
+<span class="glow" style="width:480px;height:480px;background:radial-gradient(circle,rgba(43,75,255,.08),transparent 70%);top:-160px;right:-140px;position:fixed;"></span>
+<span class="glow" style="width:420px;height:420px;background:radial-gradient(circle,rgba(205,255,46,.10),transparent 70%);bottom:-160px;left:-120px;position:fixed;"></span>
 
 <div class="login-wrap">
-  <div class="login-card card glow-card tilt reveal in-view">
-    <a href="../index.html" class="logo-center"><span class="dg-badge">DG</span> Resto</a>
+  <div class="login-card card tilt reveal in-view">
+    <a href="../index.html" class="logo-center">
+      <svg viewBox="0 0 96 100" aria-hidden="true"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg>
+      DG <span class="accent">Resto</span>
+    </a>
 
     <div class="tabs">
       <div class="tab-indicator" id="tabIndicator"></div>

@@ -13,19 +13,19 @@ body{overflow-x:hidden;}
 
 /* SIDEBAR */
 .sidebar{width:240px;flex:0 0 auto;background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh;}
-.sidebar .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;text-decoration:none;color:#fff;padding:0 6px;margin-bottom:30px;}
+.sidebar .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;text-decoration:none;color:var(--ink);padding:0 6px;margin-bottom:30px;}
 .side-nav{display:flex;flex-direction:column;gap:4px;flex:1;overflow-y:auto;}
 .side-link{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r-md);color:var(--muted);text-decoration:none;font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s;background:transparent;border:none;text-align:left;width:100%;font-family:inherit;}
 .side-link svg{width:18px;height:18px;stroke:currentColor;flex:0 0 auto;}
-.side-link:hover{background:rgba(255,255,255,.04);color:#fff;}
-.side-link.active{background:var(--lime-dim);color:var(--lime);}
+.side-link:hover{background:var(--surface-2);color:var(--ink);}
+.side-link.active{background:var(--lime-dim);color:var(--ink);box-shadow:inset 3px 0 0 var(--lime);}
 .side-foot{border-top:1px solid var(--line);padding-top:16px;display:flex;align-items:center;gap:10px;}
 .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime-2));color:var(--ink);font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .side-foot-info{flex:1;min-width:0;}
-.side-foot-info b{display:block;font-size:13px;color:#fff;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.side-foot-info b{display:block;font-size:13px;color:var(--ink);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .side-foot-info span{font-size:11px;color:var(--muted-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
 .icon-btn{background:transparent;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:color .2s,border-color .2s;}
-.icon-btn:hover{color:#fff;border-color:var(--muted);}
+.icon-btn:hover{color:var(--ink);border-color:var(--muted);}
 .icon-btn svg{width:15px;height:15px;}
 
 /* MOBILE TOPBAR */
@@ -46,10 +46,10 @@ body{overflow-x:hidden;}
 .page-title-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:26px;}
 .page-title-row h1{font-size:clamp(22px,3vw,30px);}
 .page-title-row p{margin-top:4px;font-size:14px;}
-.section-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;}
+.section-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:6px;}
 .section-block{margin-bottom:34px;}
 .section-block:last-child{margin-bottom:0;}
-.section-block h2{font-size:clamp(18px,2.4vw,24px);color:#fff;margin-bottom:4px;}
+.section-block h2{font-size:clamp(18px,2.4vw,24px);color:var(--ink);margin-bottom:4px;}
 .section-block>p.sub{font-size:13.5px;margin-bottom:16px;}
 
 .view{display:none;}
@@ -69,7 +69,7 @@ body{overflow-x:hidden;}
 .stat-card-head span{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-dim);}
 .stat-card-icon{width:26px;height:26px;border-radius:7px;background:var(--lime-dim);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .stat-card-icon svg{width:13px;height:13px;stroke:var(--lime);}
-.stat-card b{font-size:24px;font-weight:900;color:#fff;}
+.stat-card b{font-size:24px;font-weight:900;color:var(--ink);}
 .stat-card b .unit{font-size:14px;font-weight:700;color:var(--muted);margin-left:2px;}
 .stat-card .sub{font-size:11.5px;color:var(--muted-dim);margin-top:2px;display:block;}
 
@@ -82,32 +82,33 @@ body{overflow-x:hidden;}
 .ring-wrap.sm .ring-track,.ring-wrap.sm .ring-fill{stroke-width:9;}
 .ring-fill{fill:none;stroke:var(--lime);stroke-width:11;stroke-linecap:round;stroke-dasharray:377;stroke-dashoffset:377;transition:stroke-dashoffset 1.4s cubic-bezier(.16,.9,.3,1);filter:drop-shadow(0 0 8px rgba(212,255,0,.5));}
 .ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.ring-label b{font-size:26px;font-weight:900;color:#fff;}
+.ring-label b{font-size:26px;font-weight:900;color:var(--ink);}
 .ring-label.sm b{font-size:16px;}
 .ring-label span{font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;}
 
 .progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13.5px;}
-.progress-bar{height:8px;border-radius:999px;background:var(--ink);overflow:hidden;margin-bottom:18px;}
+.progress-bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-bottom:18px;}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--lime-2));border-radius:999px;width:0;transition:width 1.1s cubic-bezier(.16,.9,.3,1);}
 .progress-bar.thin{height:5px;margin-bottom:0;}
 .kpi-mini{display:flex;gap:16px;flex-wrap:wrap;}
 .kpi-mini div{flex:1 1 90px;}
-.kpi-mini b{display:block;font-size:22px;font-weight:900;color:#fff;}
-.kpi-mini b.lime{color:var(--lime);}
+.kpi-mini b{display:block;font-size:22px;font-weight:900;color:var(--ink);}
+.kpi-mini b.lime{color:var(--primary);}
 .kpi-mini span{font-size:11px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;}
 
 .msg-list{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;margin-bottom:14px;padding-right:2px;}
-.msg-item{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;animation:msgIn .3s ease both;}
+.msg-item{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;animation:msgIn .3s ease both;color:var(--ink);}
 .msg-item.me{background:var(--lime-dim);border-color:rgba(212,255,0,.25);}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.msg-item b{color:var(--lime);font-size:12px;display:block;margin-bottom:4px;}
-.msg-item.me b{color:#fff;}
+.msg-item b{color:var(--primary);font-size:12px;display:block;margin-bottom:4px;}
+.msg-item.me b{color:var(--ink);}
+.msg-system{align-self:center;background:var(--lime-dim);color:var(--ink);font-size:12px;font-weight:700;padding:7px 16px;border-radius:999px;text-align:center;max-width:90%;}
 .doc-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);font-size:14px;}
 .doc-item:last-child{border-bottom:none;}
 .doc-item .doc-name{display:flex;align-items:center;gap:12px;}
 .doc-icon{width:34px;height:34px;border-radius:var(--r-sm);background:var(--lime-dim);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .doc-icon svg{width:16px;height:16px;stroke:var(--lime);}
-.doc-item a{color:var(--lime);text-decoration:none;font-weight:700;font-size:13px;}
+.doc-item a{color:var(--primary);text-decoration:none;font-weight:700;font-size:13px;}
 .empty-state{font-size:13.5px;color:var(--muted-dim);text-align:center;padding:20px 0;}
 
 .chart-box-lg{height:180px;}
@@ -116,53 +117,53 @@ body{overflow-x:hidden;}
 /* checkable task rows (used by objectifs + weeks) */
 .task-item{display:flex;align-items:flex-start;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);}
 .task-item:last-child{border-bottom:none;}
-.task-check{flex:0 0 auto;width:22px;height:22px;border-radius:7px;border:2px solid var(--line);background:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;margin-top:1px;}
+.task-check{flex:0 0 auto;width:22px;height:22px;border-radius:7px;border:2px solid var(--line);background:var(--surface-2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;margin-top:1px;}
 .task-check svg{width:13px;height:13px;stroke:var(--ink);opacity:0;transition:opacity .15s;}
 .task-item.done .task-check{background:var(--lime);border-color:var(--lime);}
 .task-item.done .task-check svg{opacity:1;}
 .task-item.done .task-title{color:var(--muted-dim);text-decoration:line-through;}
-.task-title{font-size:14px;color:#EDE4D6;cursor:pointer;user-select:none;}
+.task-title{font-size:14px;color:var(--ink);cursor:pointer;user-select:none;}
 
 /* audit: company header */
 .audit-hero{text-align:center;padding:10px 0 28px;}
-.audit-logo{width:64px;height:64px;border-radius:16px;border:2px solid var(--lime);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:var(--lime);margin:0 auto 18px;}
-.audit-hero h2{font-size:clamp(22px,3.2vw,32px);color:#fff;margin-bottom:6px;}
+.audit-logo{width:64px;height:64px;border-radius:16px;border:2px solid var(--primary);background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:var(--primary);margin:0 auto 18px;}
+.audit-hero h2{font-size:clamp(22px,3.2vw,32px);color:var(--ink);margin-bottom:6px;}
 .audit-hero .contact{font-size:13.5px;color:var(--muted);margin-bottom:18px;}
-.audit-desc{max-width:720px;margin:0 auto;font-size:14px;line-height:1.7;color:#EDE4D6;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;}
+.audit-desc{max-width:720px;margin:0 auto;font-size:14px;line-height:1.7;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;}
 
 /* audit: product card */
 .product-card{position:relative;overflow:hidden;}
 .product-card .icon{width:40px;height:40px;border-radius:var(--r-sm);background:var(--lime-dim);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
 .product-card .icon svg{width:19px;height:19px;stroke:var(--lime);}
-.product-card h4{font-size:17px;color:#fff;font-weight:800;}
+.product-card h4{font-size:17px;color:var(--ink);font-weight:800;}
 .product-card .tag{font-size:12px;color:var(--muted-dim);margin-bottom:16px;display:block;}
 .product-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.product-mini{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;}
+.product-mini{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;}
 .product-mini span{font-size:10px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;display:block;margin-bottom:3px;}
-.product-mini b{font-size:16px;color:#fff;}
-.product-mini.lime b{color:var(--lime);}
+.product-mini b{font-size:16px;color:var(--ink);}
+.product-mini.lime b{color:var(--primary);}
 
 /* audit: tables */
 .audit-table{width:100%;border-collapse:collapse;font-size:13.5px;}
 .audit-table th,.audit-table td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);}
 .audit-table th{color:var(--muted-dim);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
-.audit-table td{color:#EDE4D6;}
+.audit-table td{color:var(--ink);}
 .audit-table tr:last-child td{border-bottom:none;}
 .table-scroll{overflow-x:auto;}
 
-.competitor-card{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:12px;}
+.competitor-card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:12px;}
 .competitor-card:last-child{margin-bottom:0;}
-.competitor-card h5{font-size:14.5px;color:#fff;margin-bottom:10px;}
+.competitor-card h5{font-size:14.5px;color:var(--ink);margin-bottom:10px;}
 .competitor-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:6px 0;border-top:1px solid var(--line);}
 .competitor-row:first-of-type{border-top:none;}
 .competitor-row span:first-child{color:var(--muted-dim);flex:0 0 auto;}
-.competitor-row span:last-child{color:#EDE4D6;text-align:right;}
+.competitor-row span:last-child{color:var(--ink);text-align:right;}
 
 .opportunity-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line);}
 .opportunity-item:first-child{border-top:none;}
 .opportunity-item .icon{width:34px;height:34px;border-radius:50%;background:var(--lime-dim);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .opportunity-item .icon svg{width:16px;height:16px;stroke:var(--lime);}
-.opportunity-item p{font-size:14px;color:#EDE4D6;margin:0;}
+.opportunity-item p{font-size:14px;color:var(--ink);margin:0;}
 
 /* audit: growth journey timeline */
 .journey{position:relative;padding-left:52px;}
@@ -176,10 +177,10 @@ body{overflow-x:hidden;}
 .journey-item.blocker .journey-dot svg{stroke:#ff5c5c;}
 .journey-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;}
 .journey-item.blocker .journey-card{border-color:rgba(255,80,80,.3);background:rgba(255,60,60,.05);}
-.journey-card b{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--lime);display:block;margin-bottom:6px;}
+.journey-card b{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--primary);display:block;margin-bottom:6px;}
 .journey-item.blocker .journey-card b{color:#ff8a8a;}
 .journey-card .q{font-size:12.5px;font-style:italic;color:var(--muted-dim);margin-bottom:6px;}
-.journey-card .a{font-size:14.5px;color:#EDE4D6;}
+.journey-card .a{font-size:14.5px;color:var(--ink);}
 
 /* audit: 3 piliers */
 .pillars3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
@@ -188,25 +189,25 @@ body{overflow-x:hidden;}
 .pillar3-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;gap:8px;}
 .pillar3-head .icon{width:32px;height:32px;border-radius:8px;background:var(--ink);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .pillar3-head .icon svg{width:15px;height:15px;stroke:var(--lime);}
-.pillar3-head h5{font-size:14.5px;color:#fff;font-weight:800;line-height:1.3;}
-.pillar3-head .score{font-size:15px;font-weight:900;color:#fff;white-space:nowrap;}
+.pillar3-head h5{font-size:14.5px;color:var(--ink);font-weight:800;line-height:1.3;}
+.pillar3-head .score{font-size:15px;font-weight:900;color:var(--ink);white-space:nowrap;}
 .pillar3-head .score span{font-size:11px;color:var(--muted-dim);font-weight:600;}
 .pillar-criterion{margin-bottom:12px;}
 .pillar-criterion:last-child{margin-bottom:0;}
 .pillar-criterion-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-bottom:5px;}
-.pillar-criterion-row span:first-child{color:#EDE4D6;}
+.pillar-criterion-row span:first-child{color:var(--ink);}
 .status-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;}
 .status-tag.critique{color:#ff5c5c;}
 .status-tag.en-cours{color:#ffc94d;}
 .status-tag.bon{color:#7ed957;}
-.status-tag.excellent{color:var(--lime);}
+.status-tag.excellent{color:var(--primary);}
 .pillar-legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:20px;font-size:12px;color:var(--muted);}
 .pillar-legend span{display:inline-flex;align-items:center;gap:6px;}
 .pillar-legend i{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
 /* plan: objectifs */
 .objectif-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-.objectif-card-head h4{font-size:15px;color:#fff;}
+.objectif-card-head h4{font-size:15px;color:var(--ink);}
 .objectif-card-head span{font-size:12.5px;color:var(--muted-dim);font-weight:700;}
 .objectif-list .task-title{counter-increment:none;}
 
@@ -220,23 +221,23 @@ body{overflow-x:hidden;}
 .axis-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .axis-head .icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
 .axis-head .icon svg{width:18px;height:18px;stroke:#fff;}
-.axis-head h4{font-size:15.5px;color:#fff;font-weight:800;}
+.axis-head h4{font-size:15.5px;color:var(--ink);font-weight:800;}
 .axis-head span{font-size:12px;color:var(--muted-dim);}
-.axis-sub{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 15px;margin-bottom:10px;}
+.axis-sub{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 15px;margin-bottom:10px;}
 .axis-sub:last-child{margin-bottom:0;}
 .axis-sub b{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:6px;}
-.axis-sub p{font-size:13.5px;color:#EDE4D6;margin:0 0 6px;}
+.axis-sub p{font-size:13.5px;color:var(--ink);margin:0 0 6px;}
 .axis-sub ul{margin:0;padding-left:18px;}
-.axis-sub li{font-size:13.5px;color:#EDE4D6;margin-bottom:4px;}
+.axis-sub li{font-size:13.5px;color:var(--ink);margin-bottom:4px;}
 
 /* plan: cycles / months */
 .cycle-tabs,.month-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
 .cycle-tab{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px;}
-.cycle-tab.current{border-color:rgba(212,255,0,.4);color:var(--lime);}
+.cycle-tab.current{border-color:var(--primary);color:var(--primary);}
 .cycle-tab.locked{opacity:.5;cursor:not-allowed;}
 .cycle-tab .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);}
-.month-tab{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 8px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;flex:1 1 70px;text-align:center;}
-.month-tab.active{background:var(--lime-dim);border-color:rgba(212,255,0,.4);color:var(--lime);}
+.month-tab{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 8px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;flex:1 1 70px;text-align:center;}
+.month-tab.active{background:var(--lime-dim);border-color:rgba(212,255,0,.4);color:var(--ink);}
 
 .month-dash{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:20px;}
 @media (max-width:760px){.month-dash{grid-template-columns:1fr;}}
@@ -249,13 +250,13 @@ body{overflow-x:hidden;}
 .week-recap-row:first-of-type{border-top:none;}
 
 .month-objectif{background:var(--lime-dim);border:1px solid rgba(212,255,0,.25);border-radius:var(--r-md);padding:16px 18px;margin-bottom:20px;}
-.month-objectif b{color:var(--lime);font-size:12px;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:6px;}
-.month-objectif p{margin:0;font-size:14px;color:#EDE4D6;}
+.month-objectif b{color:var(--primary);font-size:12px;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:6px;}
+.month-objectif p{margin:0;font-size:14px;color:var(--ink);}
 
 .week-card{border:1px solid var(--line);border-radius:var(--r-md);margin-bottom:14px;overflow:hidden;}
 .week-card:last-child{margin-bottom:0;}
-.week-card-head{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--ink);}
-.week-card-head h5{font-size:13.5px;color:#fff;font-weight:800;}
+.week-card-head{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--surface-2);}
+.week-card-head h5{font-size:13.5px;color:var(--ink);font-weight:800;}
 .week-card-head span{font-size:11.5px;font-weight:800;color:var(--muted-dim);background:var(--surface);border-radius:999px;padding:3px 10px;}
 .week-card.locked{border-color:rgba(255,190,60,.25);}
 .week-locked-banner{display:flex;align-items:center;gap:8px;background:rgba(255,190,60,.08);color:#ffc94d;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:9px 16px;}
@@ -264,13 +265,13 @@ body{overflow-x:hidden;}
 .week-card-body{padding:6px 16px 8px;}
 
 .kpi-tag-list{display:flex;flex-direction:column;gap:8px;}
-.kpi-tag-list .tag-row{display:flex;gap:10px;font-size:13px;color:#EDE4D6;}
-.kpi-tag-list .tag-badge{flex:0 0 auto;font-size:10px;font-weight:800;background:var(--ink);border:1px solid var(--line);border-radius:5px;padding:2px 6px;color:var(--muted-dim);height:fit-content;}
+.kpi-tag-list .tag-row{display:flex;gap:10px;font-size:13px;color:var(--ink);}
+.kpi-tag-list .tag-badge{flex:0 0 auto;font-size:10px;font-weight:800;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:2px 6px;color:var(--muted-dim);height:fit-content;}
 
 /* calls */
 .call-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);}
 .call-item:last-child{border-bottom:none;}
-.call-when{font-size:14px;color:#fff;font-weight:700;}
+.call-when{font-size:14px;color:var(--ink);font-weight:700;}
 .call-notes{font-size:13px;color:var(--muted);margin-top:2px;}
 .call-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:4px 10px;border-radius:999px;flex:0 0 auto;}
 .call-badge.confirmed{background:var(--lime-dim);color:var(--lime);}
@@ -297,7 +298,7 @@ body{overflow-x:hidden;}
 <div id="dashboardContent" style="display:none;">
 
   <div class="mobile-topbar">
-    <a href="../index.html" class="logo"><span class="dg-badge">DG</span> Resto</a>
+    <a href="../index.html" class="logo"><svg viewBox="0 0 96 100" aria-hidden="true" width="17" height="17.7"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg> DG Resto</a>
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -305,7 +306,7 @@ body{overflow-x:hidden;}
 
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <a href="../index.html" class="logo"><span class="dg-badge">DG</span> Resto</a>
+      <a href="../index.html" class="logo"><svg viewBox="0 0 96 100" aria-hidden="true" width="19" height="20"><mask id="dgm2" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm2)"/></svg> DG Resto</a>
 
       <nav class="side-nav">
         <button class="side-link active" data-view="overview">
@@ -354,7 +355,7 @@ body{overflow-x:hidden;}
         <section class="view active" id="view-overview">
           <div class="page-title-row">
             <div>
-              <h1>Bienvenue, <span id="welcomeName" style="color:var(--lime);">—</span></h1>
+              <h1>Bienvenue, <span id="welcomeName" style="color:var(--primary);">—</span></h1>
               <p id="clientSinceText">Voici où en est votre restaurant avec votre DG.</p>
             </div>
           </div>
@@ -416,10 +417,16 @@ body{overflow-x:hidden;}
         <section class="view" id="view-plan">
           <div class="page-title-row">
             <div><h1>Plan d'action</h1><p>Vos objectifs et vos tâches, semaine par semaine.</p></div>
-            <button type="button" class="magnetic" id="syncPlanBtn" style="text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13px;padding:11px 18px;border-radius:999px;display:none;align-items:center;gap:8px;white-space:nowrap;">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-              Synchroniser le plan
-            </button>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="magnetic" data-goto="audit" style="text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:700;font-size:13px;padding:11px 18px;border-radius:999px;display:flex;align-items:center;gap:8px;white-space:nowrap;cursor:pointer;font-family:inherit;">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l3-3 3 3M9 11l3-3 3 3"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                Voir mon audit
+              </button>
+              <button type="button" class="magnetic" id="syncPlanBtn" style="text-decoration:none;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13px;padding:11px 18px;border-radius:999px;display:none;align-items:center;gap:8px;white-space:nowrap;">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+                Synchroniser le plan
+              </button>
+            </div>
           </div>
           <div id="planLoading" style="padding:60px 0;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);">
             <span style="width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--lime);border-radius:50%;display:inline-block;animation:spin .7s linear infinite;"></span>
@@ -456,7 +463,7 @@ body{overflow-x:hidden;}
           <div class="card glow-card reveal in-view">
             <div class="msg-list" id="msgList" style="max-height:420px;"></div>
             <form id="msgForm" style="display:flex;gap:8px;">
-              <input id="msgInput" placeholder="Écrire un message..." style="flex:1;background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:#fff;font-family:inherit;">
+              <input id="msgInput" placeholder="Écrire un message..." style="flex:1;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:var(--ink);font-family:inherit;">
               <button class="btn-primary magnetic" type="submit" style="padding:10px 16px;">→</button>
             </form>
           </div>
@@ -486,8 +493,7 @@ body{overflow-x:hidden;}
 
 <script src="../script.js"></script>
 <script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-client.js"></script>
+<script src="supabase-client.preview.js"></script>
 <script src="playbooks.js"></script>
 <script>
 (async function () {
@@ -525,6 +531,37 @@ body{overflow-x:hidden;}
     return icons[name] || icons.vision;
   }
   const axisColors = { 'Structure & opérations': '#e07b39', 'Acquisition & Vente': '#3b6fe0', 'Vision & Pilotage': '#2fae6b' };
+
+  // Objectifs structurels par défaut : complètent toujours la liste à 7,
+  // que le coach ait rempli 0, 3 ou 7 objectifs pour cette période.
+  const FALLBACK_OBJECTIFS_12M = [
+    'Stabiliser la rentabilité : food cost et masse salariale ramenés durablement dans les cibles métier.',
+    'Structurer une carte à forte marge, avec des fiches techniques à jour sur 100% des plats.',
+    'Construire un pilotage hebdomadaire (CA, marge, trésorerie) qui ne dépend plus de la mémoire du dirigeant.',
+    'Développer une acquisition client récurrente (avis en ligne, réseaux, fidélisation) pour réduire la dépendance au bouche-à-oreille.',
+    'Sécuriser la trésorerie avec un matelas de sécurité d’au moins 1 mois de charges fixes.',
+    'Structurer l’équipe (rôles clairs, process de formation) pour réduire la dépendance au dirigeant sur le terrain.',
+    'Poser les bases d’un second axe de croissance (nouveau point de vente, traiteur, dark kitchen...) une fois la rentabilité stabilisée.'
+  ];
+  const FALLBACK_OBJECTIFS_4M = [
+    'Recalculer les fiches techniques et prix de vente des 10 meilleures ventes.',
+    'Renégocier au moins 2 contrats fournisseurs clés pour réduire le food cost.',
+    'Mettre en place un contrôle hebdomadaire des marges par plat.',
+    'Optimiser le planning et les heures de présence pour ramener la masse salariale dans la cible.',
+    'Développer la présence en ligne (fiche Google, avis clients) pour améliorer l’acquisition.',
+    'Mettre en place un tableau de bord de trésorerie suivi chaque semaine.',
+    'Identifier et lancer une première action de diversification du chiffre d’affaires (vente à emporter, brunch, évènementiel...).'
+  ];
+  function padObjectifs(section, fallbackPool) {
+    section.items = section.items || [];
+    let i = 0;
+    while (section.items.length < 7 && i < fallbackPool.length) {
+      const text = fallbackPool[i++];
+      if (section.items.some(t => t.text === text)) continue;
+      section.items.push({ text, done: false, fallback: true });
+    }
+    return section;
+  }
   const axisIconKey = { 'Structure & opérations': 'structure', 'Acquisition & Vente': 'acquisition', 'Vision & Pilotage': 'vision' };
   const statusClass = (s) => (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, '-');
 
@@ -567,8 +604,8 @@ body{overflow-x:hidden;}
       statusCard.style.borderColor = critical ? 'rgba(255,80,80,.3)' : '';
       statusCard.style.background = critical ? 'rgba(255,60,60,.05)' : '';
       let html = '';
-      if (critical) html += `<h3 style="color:#ff8a8a;margin-bottom:8px;">⚠ Situation jugée critique par votre DG</h3><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(plan.status_critical_reason || 'Votre DG vous en parlera au prochain point.')}</p>`;
-      if (difficulties) html += `<div${critical ? ' style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);"' : ''}><b style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:6px;">Difficultés actuelles</b><p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(difficulties)}</p></div>`;
+      if (critical) html += `<h3 style="color:#ff8a8a;margin-bottom:8px;">⚠ Situation jugée critique par votre DG</h3><p style="font-size:14px;color:var(--ink);margin:0;">${esc(plan.status_critical_reason || 'Votre DG vous en parlera au prochain point.')}</p>`;
+      if (difficulties) html += `<div${critical ? ' style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);"' : ''}><b style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:6px;">Difficultés actuelles</b><p style="font-size:14px;color:var(--ink);margin:0;">${esc(difficulties)}</p></div>`;
       statusCard.innerHTML = html;
     } else {
       statusCard.style.display = 'none';
@@ -577,7 +614,7 @@ body{overflow-x:hidden;}
     const missions = (plan && plan.next_missions) || [];
     const missionsEl = document.getElementById('overviewMissions');
     missionsEl.innerHTML = missions.length ? missions.slice(0, 2).map(m => `<div class="card glow-card" style="margin-bottom:14px;">
-        <h4 style="font-size:15.5px;color:#fff;margin-bottom:12px;">${esc(m.title || '')}</h4>
+        <h4 style="font-size:15.5px;color:var(--ink);margin-bottom:12px;">${esc(m.title || '')}</h4>
         ${m.how ? `<div class="axis-sub"><b>Comment faire</b><p>${esc(m.how)}</p></div>` : ''}
         ${m.why ? `<div class="axis-sub"><b>Pourquoi c'est important</b><p>${esc(m.why)}</p></div>` : ''}
       </div>`).join('') : `<div class="empty-state">Votre DG n'a pas encore défini vos prochaines missions.</div>`;
@@ -640,10 +677,10 @@ body{overflow-x:hidden;}
         </div>
         ${fd.top_lever ? `<div class="card glow-card" style="border-color:rgba(255,80,80,.25);background:rgba(255,60,60,.05);">
           <h3 style="color:#ff8a8a;margin-bottom:8px;">Priorité n°1 : ${esc(fd.top_lever.label)}</h3>
-          <p style="font-size:14px;color:#EDE4D6;margin:0;">${esc(fd.top_lever.label)} est à ${fd.top_lever.actual}%, au-dessus de la cible (${fd.top_lever.target}%), soit un écart de +${fd.top_lever.gap}${'%'} de CA parti dans ce poste. C'est le premier levier travaillé dans votre plan d'action.</p>
+          <p style="font-size:14px;color:var(--ink);margin:0;">${esc(fd.top_lever.label)} est à ${fd.top_lever.actual}%, au-dessus de la cible (${fd.top_lever.target}%), soit un écart de +${fd.top_lever.gap}${'%'} de CA parti dans ce poste. C'est le premier levier travaillé dans votre plan d'action.</p>
         </div>` : `<div class="card glow-card" style="border-color:rgba(126,217,87,.25);background:rgba(126,217,87,.05);">
           <h3 style="color:#7ed957;margin-bottom:8px;">Structure de coûts dans les clous</h3>
-          <p style="font-size:14px;color:#EDE4D6;margin:0;">Food cost et masse salariale sont dans les cibles métier. Le plan d'action se concentre sur les autres leviers de croissance.</p>
+          <p style="font-size:14px;color:var(--ink);margin:0;">Food cost et masse salariale sont dans les cibles métier. Le plan d'action se concentre sur les autres leviers de croissance.</p>
         </div>`}
       </div>`;
     }
@@ -739,12 +776,12 @@ body{overflow-x:hidden;}
         <div class="section-tag">Diagnostic stratégique</div>
         <h2 style="text-align:center;">Les 3 piliers</h2>
         <div class="pillar-legend" style="margin-top:14px;">
-          <span><i style="background:#ff5c5c;"></i>Critique</span><span><i style="background:#ffc94d;"></i>En cours</span><span><i style="background:#7ed957;"></i>Bon</span><span><i style="background:var(--lime);"></i>Excellent</span>
+          <span><i style="background:#ff5c5c;"></i>Critique</span><span><i style="background:#ffc94d;"></i>En cours</span><span><i style="background:#7ed957;"></i>Bon</span><span><i style="background:var(--primary);"></i>Excellent</span>
         </div>
         <div class="pillars3">
           ${a.pillars.map(p => `<div class="pillar3-card">
             <div class="pillar3-head">
-              <div class="icon" style="background:${axisColors[p.name] || 'var(--ink)'}22;"><svg viewBox="0 0 24 24" fill="none" stroke="${axisColors[p.name] || 'var(--lime)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${svgIcon(axisIconKey[p.name])}</svg></div>
+              <div class="icon" style="background:${axisColors[p.name] || '#0D0D0F'}22;"><svg viewBox="0 0 24 24" fill="none" stroke="${axisColors[p.name] || 'var(--lime)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${svgIcon(axisIconKey[p.name])}</svg></div>
               <h5>${esc(p.name)}</h5>
               <div class="score">${p.score}<span>/${p.max || 4}</span></div>
             </div>
@@ -826,13 +863,15 @@ body{overflow-x:hidden;}
   function renderTaskItem(task) {
     const item = document.createElement('div');
     item.className = 'task-item' + (task.done ? ' done' : '');
-    item.innerHTML = `<span class="task-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="task-title">${esc(task.text)}</span>`;
+    item.innerHTML = `<span class="task-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="task-title">${esc(task.text)}${task.fallback ? '<span style="display:inline-block;margin-left:8px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-dim);background:var(--surface-2);border-radius:999px;padding:2px 7px;vertical-align:middle;">Suggéré</span>' : ''}</span>`;
     return item;
   }
 
   let currentCycleIdx = 0, currentMonthIdx = 0;
 
   function renderPlan(plan) {
+    plan.vision_12m = padObjectifs(plan.vision_12m || { title: 'Vision 12 mois', items: [] }, FALLBACK_OBJECTIFS_12M);
+    plan.priorities_4m = padObjectifs(plan.priorities_4m || { title: 'Priorités 4 mois', items: [] }, FALLBACK_OBJECTIFS_4M);
     const all = allTasksFlat(plan);
     const doneCount = all.filter(t => t.done).length;
     const cycles = plan.cycles || [];
@@ -844,24 +883,22 @@ body{overflow-x:hidden;}
     let html = `<div class="stat-grid stat-grid-4 reveal in-view" style="margin-bottom:30px;">
       <div class="stat-card" style="display:flex;align-items:center;gap:14px;">
         <div class="ring-wrap sm"><svg viewBox="0 0 76 76"><circle class="ring-track" cx="38" cy="38" r="31" stroke-width="7"/><circle class="ring-fill" id="planRing" cx="38" cy="38" r="31" stroke-width="7" style="stroke-dasharray:195;stroke-dashoffset:195;"/></svg><div class="ring-label sm"><b id="planRingPct">0%</b></div></div>
-        <div><span style="font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;">Progression globale</span><br><b style="font-size:15px;color:#fff;">${all.length ? Math.round(doneCount / all.length * 100) : 0}%</b></div>
+        <div><span style="font-size:10.5px;color:var(--muted-dim);text-transform:uppercase;font-weight:700;">Progression globale</span><br><b style="font-size:15px;color:var(--ink);">${all.length ? Math.round(doneCount / all.length * 100) : 0}%</b></div>
       </div>
       <div class="stat-card"><div class="stat-card-head"><span>Total actions</span></div><b>${doneCount}<span class="unit">/ ${all.length}</span></b><span class="sub">${doneCount} complétées</span></div>
       <div class="stat-card" id="monthActionsCard"><div class="stat-card-head"><span>Actions ce mois</span></div><b>0<span class="unit">/ 0</span></b><span class="sub">—</span></div>
       <div class="stat-card"><div class="stat-card-head"><span>Contrat</span></div><b>${plan.contract_months ?? '—'}<span class="unit">mois</span></b></div>
     </div>`;
 
-    if (plan.vision_12m || plan.priorities_4m) {
-      html += `<div class="section-block reveal in-view">
-        <div class="section-tag">Objectifs stratégiques</div>
-        <h2>Vos objectifs</h2>
-        <p class="sub">Des cibles précises et mesurables pour guider chaque décision.</p>
-        <div class="grid-2-equal">
-          ${plan.vision_12m ? `<div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.vision_12m.title || 'Vision 12 mois')}</h4></div><div id="visionList" class="objectif-list"></div></div>` : '<div></div>'}
-          ${plan.priorities_4m ? `<div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.priorities_4m.title || 'Priorités 4 mois')}</h4></div><div id="prioritiesList" class="objectif-list"></div></div>` : ''}
-        </div>
-      </div>`;
-    }
+    html += `<div class="section-block reveal in-view">
+      <div class="section-tag">Objectifs stratégiques</div>
+      <h2>Vos objectifs</h2>
+      <p class="sub">7 objectifs structurels par période. Ceux non encore personnalisés par votre DG sont marqués « Suggéré ».</p>
+      <div class="grid-2-equal">
+        <div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.vision_12m.title || 'Vision 12 mois')}</h4></div><div id="visionList" class="objectif-list"></div></div>
+        <div class="card glow-card"><div class="objectif-card-head"><h4>${esc(plan.priorities_4m.title || 'Priorités 4 mois')}</h4></div><div id="prioritiesList" class="objectif-list"></div></div>
+      </div>
+    </div>`;
 
     if ((plan.axes || []).length) {
       html += `<div class="section-block reveal in-view">
@@ -932,7 +969,12 @@ body{overflow-x:hidden;}
   }
 
   function renderMonth(month, plan) {
-    const weeks = month.weeks || [];
+    const allWeeks = month.weeks || [];
+    // Semaine 1 toujours ouverte ; les suivantes restent verrouillées tant que
+    // la précédente n'est pas cochée à 100% (déblocage automatique en cascade).
+    allWeeks.forEach((w, wi) => { if (wi === 0 && w.locked == null) w.locked = false; });
+    const firstLockedIdx = allWeeks.findIndex(w => w.locked);
+    const weeks = firstLockedIdx === -1 ? allWeeks : allWeeks.slice(0, firstLockedIdx + 1);
     const weekTotals = weeks.map(w => ({ label: w.label, done: (w.tasks || []).filter(t => t.done).length, total: (w.tasks || []).length }));
     const monthDone = weekTotals.reduce((a, w) => a + w.done, 0);
     const monthTotal = weekTotals.reduce((a, w) => a + w.total, 0);
@@ -960,9 +1002,8 @@ body{overflow-x:hidden;}
     if (month.objective) html += `<div class="month-objectif"><b>Objectif du mois</b><p>${esc(month.objective)}</p></div>`;
 
     html += weeks.map((w, wi) => `<div class="week-card${w.locked ? ' locked' : ''}">
-      <div class="week-card-head"><h5>${esc(w.label)}</h5><span>${(w.tasks || []).filter(t => t.done).length}/${(w.tasks || []).length}</span></div>
-      ${w.locked ? `<div class="week-locked-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Masqué au client</div>` : ''}
-      <div class="week-card-body" data-week-idx="${wi}"></div>
+      <div class="week-card-head"><h5>${esc(w.label)}</h5>${w.locked ? '' : `<span>${(w.tasks || []).filter(t => t.done).length}/${(w.tasks || []).length}</span>`}</div>
+      ${w.locked ? `<div class="week-locked-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Se débloque une fois la semaine précédente terminée</div>` : `<div class="week-card-body" data-week-idx="${wi}"></div>`}
     </div>`).join('');
 
     if ((month.kpis || []).length) {
@@ -982,8 +1023,28 @@ body{overflow-x:hidden;}
     weeks.forEach((w, wi) => {
       if (w.locked) return;
       const body = container.querySelector(`.week-card-body[data-week-idx="${wi}"]`);
-      (w.tasks || []).forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => { renderPlan(plan); renderOverview(plan); }); body.appendChild(el); });
+      (w.tasks || []).forEach(t => { const el = renderTaskItem(t); bindCheck(el, t, () => onWeekTaskToggled(w, wi, month, plan)); body.appendChild(el); });
     });
+  }
+
+  // Débloque automatiquement la semaine suivante quand toutes les tâches de
+  // la semaine courante sont cochées, et prévient le DG dans le fil WhatsApp.
+  async function onWeekTaskToggled(week, weekIdx, month, plan) {
+    const tasks = week.tasks || [];
+    const justCompleted = tasks.length > 0 && tasks.every(t => t.done);
+    const next = (month.weeks || [])[weekIdx + 1];
+    if (justCompleted && next && next.locked) {
+      next.locked = false;
+      await savePlan();
+      await supabaseClient.from('messages').insert({
+        user_id: user.id, sender: 'system',
+        text: `✅ ${company} a terminé "${week.label}" — "${next.label}" est débloquée.`
+      });
+      refreshMessages();
+      if (window.toast) toast(`${next.label} débloquée !`, 'ok');
+    }
+    renderPlan(plan);
+    renderOverview(plan);
   }
 
   // Animate progress bars + ring + counters now that the page is visible
@@ -1048,7 +1109,10 @@ body{overflow-x:hidden;}
   }
   function renderMessageList(el, list) {
     if (!list.length) { el.innerHTML = '<div class="empty-state">Pas encore de messages.</div>'; return; }
-    el.innerHTML = list.map(m => `<div class="msg-item${m.sender === 'client' ? ' me' : ''}"><b>${m.sender === 'client' ? 'Vous' : 'Votre DG'}</b>${esc(m.text)}</div>`).join('');
+    el.innerHTML = list.map(m => m.sender === 'system'
+      ? `<div class="msg-system">${esc(m.text)}</div>`
+      : `<div class="msg-item${m.sender === 'client' ? ' me' : ''}"><b>${m.sender === 'client' ? 'Vous' : 'Votre DG'}</b>${esc(m.text)}</div>`
+    ).join('');
     el.scrollTop = el.scrollHeight;
   }
   async function refreshMessages() {
