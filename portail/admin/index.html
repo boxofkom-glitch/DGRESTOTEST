@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Espace coach — ScaleX</title>
+<title>Espace coach — DG Resto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
@@ -23,21 +23,21 @@ body{overflow-x:hidden;}
 .empty-state{font-size:13.5px;color:var(--muted-dim);text-align:center;padding:40px 0;}
 
 .search-row{margin-bottom:18px;}
-.search-row input{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;color:#fff;font-family:inherit;font-size:14px;}
-.search-row input:focus{outline:none;border-color:var(--lime);}
+.search-row input{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 16px;color:var(--ink);font-family:inherit;font-size:14px;}
+.search-row input:focus{outline:none;border-color:var(--primary);}
 
 .client-table{width:100%;border-collapse:collapse;font-size:13.5px;}
 .client-table th{text-align:left;padding:10px 14px;color:var(--muted-dim);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--line);}
-.client-table td{padding:14px;border-bottom:1px solid var(--line);color:#EDE4D6;vertical-align:middle;}
+.client-table td{padding:14px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:middle;}
 .client-table tr:last-child td{border-bottom:none;}
 .client-table tr.client-row{cursor:pointer;transition:background .15s;}
-.client-table tr.client-row:hover{background:rgba(255,255,255,.03);}
-.client-name{font-weight:700;color:#fff;}
+.client-table tr.client-row:hover{background:var(--surface-2);}
+.client-name{font-weight:700;color:var(--ink);}
 .client-email{font-size:12px;color:var(--muted-dim);}
 .status-dot{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;}
 .status-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted-dim);flex:0 0 auto;}
-.status-dot.on{color:var(--lime);}
-.status-dot.on::before{background:var(--lime);}
+.status-dot.on{color:var(--primary);}
+.status-dot.on::before{background:var(--primary);}
 .status-dot.off{color:var(--muted-dim);}
 .table-scroll{overflow-x:auto;}
 .attention-banner{display:flex;align-items:center;gap:10px;background:rgba(255,60,60,.08);border:1px solid rgba(255,80,80,.25);border-radius:var(--r-md);padding:13px 16px;margin-bottom:16px;font-size:13.5px;color:#ff8a8a;font-weight:700;}
@@ -57,7 +57,7 @@ body{overflow-x:hidden;}
 
 <div id="adminPage" style="display:none;">
   <div class="admin-topbar">
-    <a href="index.html" class="logo"><svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M2 22L14 2M8 22L20 2" stroke="#D4FF00" stroke-width="3" stroke-linecap="round"/></svg>Scale<span style="color:var(--lime)">X</span><span class="tag">Espace coach</span></a>
+    <a href="index.html" class="logo"><svg viewBox="0 0 96 100" aria-hidden="true" width="19" height="20"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg> DG Resto<span class="tag">Espace coach</span></a>
     <button type="button" class="icon-btn" id="logoutBtn" aria-label="Se déconnecter"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
   </div>
 
@@ -79,7 +79,7 @@ body{overflow-x:hidden;}
       <div class="table-scroll">
         <table class="client-table">
           <thead>
-            <tr><th>Établissement</th><th>Audit</th><th>Plan</th><th>Dernier call</th></tr>
+            <tr><th>Établissement</th><th>Audit</th><th>Plan</th><th>Dernier message</th></tr>
           </thead>
           <tbody id="clientsBody"></tbody>
         </table>
@@ -114,22 +114,21 @@ body{overflow-x:hidden;}
   let clients = [];
 
   async function loadClients() {
-    const [{ data: profiles }, { data: audits }, { data: plans }, { data: calls }] = await Promise.all([
+    const [{ data: profiles }, { data: audits }, { data: plans }, { data: messages }] = await Promise.all([
       supabaseClient.from('profiles').select('*').order('created_at', { ascending: false }),
       supabaseClient.from('audits').select('user_id'),
       supabaseClient.from('plans').select('user_id, data'),
-      supabaseClient.from('calls').select('user_id, status, scheduled_at, created_at'),
+      supabaseClient.from('messages').select('user_id, sender, created_at'),
     ]);
 
     const auditSet = new Set((audits || []).map(a => a.user_id));
     const planSet = new Set((plans || []).map(p => p.user_id));
     const criticalSet = new Set((plans || []).filter(p => p.data && p.data.status_critical).map(p => p.user_id));
-    const lastCallByUser = {};
-    (calls || []).forEach(c => {
-      const existing = lastCallByUser[c.user_id];
-      const ts = c.scheduled_at || c.created_at;
-      if (!existing || new Date(ts) > new Date(existing.ts)) {
-        lastCallByUser[c.user_id] = { ts, status: c.status };
+    const lastMessageByUser = {};
+    (messages || []).forEach(m => {
+      const existing = lastMessageByUser[m.user_id];
+      if (!existing || new Date(m.created_at) > new Date(existing.ts)) {
+        lastMessageByUser[m.user_id] = { ts: m.created_at, sender: m.sender };
       }
     });
 
@@ -140,19 +139,18 @@ body{overflow-x:hidden;}
       hasAudit: auditSet.has(p.id),
       hasPlan: planSet.has(p.id),
       critical: criticalSet.has(p.id),
-      lastCall: lastCallByUser[p.id] || null,
+      lastMessage: lastMessageByUser[p.id] || null,
     }));
     // Les clients en situation critique remontent en haut de la liste,
     // pour que le coach les voie sans avoir à cliquer sur chacun.
     clients.sort((a, b) => (b.critical ? 1 : 0) - (a.critical ? 1 : 0));
   }
 
-  function callLabel(lastCall) {
-    if (!lastCall) return '<span style="color:var(--muted-dim);">Aucun</span>';
-    const d = new Date(lastCall.ts);
+  function messageLabel(lastMessage) {
+    if (!lastMessage) return '<span style="color:var(--muted-dim);">Aucun</span>';
+    const d = new Date(lastMessage.ts);
     const dateStr = isNaN(d) ? '' : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
-    const statusLabels = { requested: 'Demandé', confirmed: 'Confirmé', done: 'Terminé' };
-    return `${esc(dateStr)} — ${esc(statusLabels[lastCall.status] || lastCall.status)}`;
+    return `${esc(dateStr)} — ${lastMessage.sender === 'coach' ? 'Vous' : 'Client'}`;
   }
 
   function render(list) {
@@ -178,7 +176,7 @@ body{overflow-x:hidden;}
         <td><div class="client-name">${esc(c.company)}${c.critical ? '<span class="critical-badge">⚠ Critique</span>' : ''}</div><div class="client-email">${esc(c.email)}</div></td>
         <td><span class="status-dot ${c.hasAudit ? 'on' : 'off'}">${c.hasAudit ? 'Fait' : 'À faire'}</span></td>
         <td><span class="status-dot ${c.hasPlan ? 'on' : 'off'}">${c.hasPlan ? 'Créé' : 'Aucun'}</span></td>
-        <td>${callLabel(c.lastCall)}</td>
+        <td>${messageLabel(c.lastMessage)}</td>
       </tr>`).join('');
     body.querySelectorAll('.client-row').forEach(row => {
       row.addEventListener('click', () => { window.location.href = 'client.html?id=' + row.dataset.id; });

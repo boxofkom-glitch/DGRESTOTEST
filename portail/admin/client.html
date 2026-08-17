@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Client — Espace coach ScaleX</title>
+<title>Client — Espace DG Resto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
@@ -20,72 +20,68 @@ body{overflow-x:hidden;}
 
 .tab-nav{display:flex;gap:6px;overflow-x:auto;padding:14px 24px 0;max-width:1080px;margin:0 auto;}
 .tab-btn{flex:0 0 auto;background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13.5px;padding:9px 16px;border-radius:999px;cursor:pointer;font-family:inherit;white-space:nowrap;}
-.tab-btn.active{background:var(--lime-dim);border-color:transparent;color:var(--lime);}
+.tab-btn.active{background:var(--lime-dim);border-color:transparent;color:var(--ink);}
 
 .admin-main{max-width:1080px;margin:0 auto;padding:22px 24px 80px;}
 .view{display:none;}
 .view.active{display:block;}
 .empty-state{font-size:13.5px;color:var(--muted-dim);text-align:center;padding:34px 0;}
-.section-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;}
+.section-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:6px;}
 
 /* ---- Audit tab ---- */
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
 @media (max-width:640px){.stat-grid{grid-template-columns:1fr 1fr;}}
 .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 16px 14px;}
 .stat-card span{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-dim);display:block;margin-bottom:8px;}
-.stat-card b{font-size:21px;font-weight:900;color:#fff;}
+.stat-card b{font-size:21px;font-weight:900;color:var(--ink);}
 .journey-mini{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;margin-bottom:14px;}
 .journey-mini h5{font-size:12px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
-.journey-mini p{font-size:14px;color:#EDE4D6;line-height:1.6;}
+.journey-mini p{font-size:14px;color:var(--ink);line-height:1.6;}
 .raw-toggle{background:transparent;border:1px solid var(--line);color:var(--muted);font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;margin-top:6px;}
 .raw-json{width:100%;min-height:260px;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;color:#EDE4D6;font-family:'SFMono-Regular',Consolas,monospace;font-size:12.5px;margin-top:12px;white-space:pre;}
 .raw-json:focus{outline:none;border-color:var(--lime);}
 
 /* ---- Plan editor ---- */
 .plan-block{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;margin-bottom:20px;}
-.plan-block h4{font-size:15px;color:#fff;margin-bottom:14px;}
+.plan-block h4{font-size:15px;color:var(--ink);margin-bottom:14px;}
 .repeat-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
-.repeat-row input,.repeat-row textarea{flex:1;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:#fff;font-family:inherit;font-size:13.5px;}
-.repeat-row input:focus,.repeat-row textarea:focus{outline:none;border-color:var(--lime);}
+.repeat-row input,.repeat-row textarea{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;font-size:13.5px;}
+.repeat-row input:focus,.repeat-row textarea:focus{outline:none;border-color:var(--primary);}
 .chip-remove{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;}
 .chip-remove:hover{color:#ff8a8a;border-color:#ff8a8a;}
 .add-row-btn{background:transparent;border:1px dashed var(--line);color:var(--muted);font-size:12.5px;font-weight:700;padding:9px 14px;border-radius:var(--r-sm);cursor:pointer;width:100%;text-align:center;margin-top:4px;}
-.add-row-btn:hover{color:var(--lime);border-color:var(--lime);}
+.add-row-btn:hover{color:var(--primary);border-color:var(--primary);}
 .inline-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none;}
 .inline-check input{accent-color:var(--D4FF00,#D4FF00);accent-color:#D4FF00;width:16px;height:16px;}
 .quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
-.quick-actions button{background:var(--surface);border:1px solid var(--line);color:#fff;font-size:13px;font-weight:700;padding:11px 16px;border-radius:999px;cursor:pointer;}
-.quick-actions button:hover{border-color:var(--lime);color:var(--lime);}
+.quick-actions button{background:var(--surface);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:700;padding:11px 16px;border-radius:999px;cursor:pointer;}
+.quick-actions button:hover{border-color:var(--lime);color:var(--ink);background:var(--lime-dim);}
 
-.axis-card{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;}
+.axis-card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;}
 .axis-card:last-of-type{margin-bottom:0;}
 .axis-card-head{display:flex;justify-content:flex-end;margin-bottom:8px;}
-.cycle-card{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;background:var(--ink);}
+.cycle-card{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;background:var(--surface-2);}
 .cycle-card:last-child{margin-bottom:0;}
 .cycle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.cycle-head h5{font-size:14.5px;color:#fff;}
+.cycle-head h5{font-size:14.5px;color:var(--ink);}
 .month-card{border-left:2px solid var(--lime-dim);padding-left:16px;margin-bottom:16px;margin-top:10px;}
 .month-card:last-child{margin-bottom:0;}
 .month-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
 .week-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:10px;}
 .week-card:last-child{margin-bottom:0;}
 .week-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;}
-.week-head input[type="text"]{background:transparent;border:none;color:#fff;font-weight:700;font-size:13.5px;padding:2px 0;flex:1;}
+.week-head input[type="text"]{background:transparent;border:none;color:var(--ink);font-weight:700;font-size:13.5px;padding:2px 0;flex:1;}
 .week-head input[type="text"]:focus{outline:none;}
 .save-bar{position:sticky;bottom:0;background:rgba(20,20,20,.95);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:14px 0;margin-top:10px;display:flex;justify-content:flex-end;}
 
 /* ---- Messages ---- */
 .msg-list{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;margin-bottom:14px;padding-right:2px;}
-.msg-item{background:var(--ink);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;max-width:78%;align-self:flex-start;}
+.msg-item{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;max-width:78%;align-self:flex-start;color:var(--ink);}
 .msg-item.mine{background:var(--lime-dim);border-color:rgba(212,255,0,.25);align-self:flex-end;}
-.msg-item b{color:var(--lime);font-size:11px;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em;}
-.msg-item.mine b{color:#fff;}
+.msg-item b{color:var(--primary);font-size:11px;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em;}
+.msg-item.mine b{color:var(--ink);}
+.msg-system{align-self:center;background:var(--lime-dim);color:var(--ink);font-size:12px;font-weight:700;padding:7px 16px;border-radius:999px;text-align:center;max-width:90%;}
 
-/* ---- Calls ---- */
-.call-row{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:12px;background:var(--ink);}
-.call-row:last-child{margin-bottom:0;}
-.call-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
-.call-row select{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;color:#fff;font-family:inherit;font-size:13px;}
 </style>
 </head>
 <body>
@@ -108,8 +104,7 @@ body{overflow-x:hidden;}
   <div class="tab-nav">
     <button type="button" class="tab-btn active" data-tab="audit">Audit</button>
     <button type="button" class="tab-btn" data-tab="plan">Plan d'action</button>
-    <button type="button" class="tab-btn" data-tab="messages">Messages</button>
-    <button type="button" class="tab-btn" data-tab="calls">Calls</button>
+    <button type="button" class="tab-btn" data-tab="messages">WhatsApp</button>
   </div>
 
   <div class="admin-main">
@@ -136,15 +131,10 @@ body{overflow-x:hidden;}
       <div class="card glow-card reveal in-view">
         <div class="msg-list" id="msgList"></div>
         <form id="msgForm" style="display:flex;gap:8px;">
-          <input id="msgInput" placeholder="Répondre au client..." style="flex:1;background:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:#fff;font-family:inherit;">
+          <input id="msgInput" placeholder="Répondre au client..." style="flex:1;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:var(--ink);font-family:inherit;">
           <button class="btn-primary magnetic" type="submit" style="padding:10px 16px;">→</button>
         </form>
       </div>
-    </section>
-
-    <!-- CALLS -->
-    <section class="view" id="view-calls">
-      <div id="callsRoot"></div>
     </section>
 
   </div>
@@ -318,7 +308,7 @@ body{overflow-x:hidden;}
         <div class="field"><label>Nom de l'axe</label><input type="text" value="${esc(ax.name || '')}" data-path="axes[${ai}].name"></div>
         <div class="field"><label>Sous-titre</label><input type="text" value="${esc(ax.subtitle || '')}" data-path="axes[${ai}].subtitle"></div>
         <div class="field"><label>Situation actuelle</label><textarea rows="2" data-path="axes[${ai}].situation">${esc(ax.situation || '')}</textarea></div>
-        <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin-bottom:7px;">Actions clés</label>
+        <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;">Actions clés</label>
         ${renderStringList(ax.actions, `axes[${ai}].actions`, 'Ex: Mettre à jour la fiche Google Business')}
       </div>`).join('') +
       `<button type="button" class="add-row-btn" data-add-axis="1">+ Ajouter un axe</button>`;
@@ -336,10 +326,14 @@ body{overflow-x:hidden;}
   }
 
   function renderWeek(week, ci, mi, wi) {
+    // Par défaut (non défini par le DG) : semaine 1 débloquée, les suivantes
+    // verrouillées jusqu'à ce que le client termine la précédente — même
+    // logique de déblocage automatique que côté client.
+    const isUnlocked = week.locked == null ? wi === 0 : !week.locked;
     return `<div class="week-card">
       <div class="week-head">
         <input type="text" value="${esc(week.label || '')}" data-path="cycles[${ci}].months[${mi}].weeks[${wi}].label">
-        <label class="inline-check"><input type="checkbox" ${week.locked ? '' : 'checked'} data-week-unlock="1" data-ci="${ci}" data-mi="${mi}" data-wi="${wi}"> Débloquée</label>
+        <label class="inline-check"><input type="checkbox" ${isUnlocked ? 'checked' : ''} data-week-unlock="1" data-ci="${ci}" data-mi="${mi}" data-wi="${wi}"> Débloquée${week.locked == null ? ' (auto)' : ''}</label>
         <button type="button" class="chip-remove" data-remove-path="cycles[${ci}].months[${mi}].weeks" data-remove-index="${wi}">✕</button>
       </div>
       ${renderTextObjList(week.tasks, `cycles[${ci}].months[${mi}].weeks[${wi}].tasks`, 'Tâche à faire cette semaine...')}
@@ -354,10 +348,10 @@ body{overflow-x:hidden;}
         <button type="button" class="chip-remove" data-remove-path="cycles[${ci}].months" data-remove-index="${mi}">✕</button>
       </div>
       <div class="field"><label>Objectif du mois</label><textarea rows="2" data-path="cycles[${ci}].months[${mi}].objective">${esc(month.objective || '')}</textarea></div>
-      <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin-bottom:7px;">Semaines</label>
+      <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;">Semaines</label>
       ${(month.weeks || []).map((w, wi) => renderWeek(w, ci, mi, wi)).join('')}
       <button type="button" class="add-row-btn" data-add-week="1" data-ci="${ci}" data-mi="${mi}">+ Ajouter une semaine</button>
-      <label style="display:block;font-size:13px;font-weight:700;color:#EDE4D6;margin:14px 0 7px;">Indicateurs suivis (KPIs)</label>
+      <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin:14px 0 7px;">Indicateurs suivis (KPIs)</label>
       ${renderStringList(month.kpis, `cycles[${ci}].months[${mi}].kpis`, 'Ex: [HEBDO] Food cost moyen de la semaine')}
     </div>`;
   }
@@ -365,7 +359,7 @@ body{overflow-x:hidden;}
   function renderCycle(cycle, ci) {
     return `<div class="cycle-card">
       <div class="cycle-head">
-        <input type="text" value="${esc(cycle.name || '')}" data-path="cycles[${ci}].name" style="background:transparent;border:none;color:#fff;font-weight:800;font-size:14.5px;max-width:160px;">
+        <input type="text" value="${esc(cycle.name || '')}" data-path="cycles[${ci}].name" style="background:transparent;border:none;color:var(--ink);font-weight:800;font-size:14.5px;max-width:160px;">
         <label class="inline-check"><input type="checkbox" ${cycle.active ? 'checked' : ''} data-path="cycles[${ci}].active" data-checkbox="1"> Actif (visible par le client)</label>
       </div>
       ${(cycle.months || []).map((m, mi) => renderMonth(m, ci, mi)).join('')}
@@ -515,9 +509,12 @@ body{overflow-x:hidden;}
   }
   function renderMessages(list) {
     const box = document.getElementById('msgList');
-    box.innerHTML = list.map(m => `<div class="msg-item ${m.sender === 'coach' ? 'mine' : ''}">
+    box.innerHTML = list.map(m => m.sender === 'system'
+      ? `<div class="msg-system">${esc(m.text)}</div>`
+      : `<div class="msg-item ${m.sender === 'coach' ? 'mine' : ''}">
         <b>${m.sender === 'coach' ? 'Vous' : (profile?.company_name || 'Client')}</b>${esc(m.text)}
-      </div>`).join('') || '<div class="empty-state">Pas encore de messages.</div>';
+      </div>`
+    ).join('') || '<div class="empty-state">Pas encore de messages.</div>';
     box.scrollTop = box.scrollHeight;
   }
   document.getElementById('msgForm').addEventListener('submit', async (e) => {
@@ -531,58 +528,10 @@ body{overflow-x:hidden;}
     renderMessages(await loadMessages());
   });
 
-  // =========================================================
-  // CALLS
-  // =========================================================
-  async function loadCalls() {
-    const { data } = await supabaseClient.from('calls').select('*').eq('user_id', clientId).order('created_at', { ascending: false });
-    return data || [];
-  }
-  function toLocalInputValue(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    if (isNaN(d)) return '';
-    const pad = (n) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-  function renderCalls(list) {
-    const root = document.getElementById('callsRoot');
-    if (!list.length) { root.innerHTML = '<div class="empty-state">Aucune demande de call pour ce client.</div>'; return; }
-    root.innerHTML = list.map(c => `
-      <div class="call-row" data-id="${c.id}">
-        <div class="call-row-top">
-          <select data-field="status">
-            <option value="requested" ${c.status === 'requested' ? 'selected' : ''}>Demandé</option>
-            <option value="confirmed" ${c.status === 'confirmed' ? 'selected' : ''}>Confirmé</option>
-            <option value="done" ${c.status === 'done' ? 'selected' : ''}>Terminé</option>
-          </select>
-          <input type="datetime-local" data-field="scheduled_at" value="${toLocalInputValue(c.scheduled_at)}" style="background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:8px 10px;color:#fff;font-family:inherit;font-size:13px;">
-        </div>
-        <div class="field"><label>Notes</label><textarea rows="2" data-field="notes">${esc(c.notes || '')}</textarea></div>
-        <button type="button" class="btn-primary magnetic save-call-btn" style="padding:9px 16px;font-size:13px;">Enregistrer</button>
-      </div>`).join('');
-    root.querySelectorAll('.call-row').forEach(row => {
-      row.querySelector('.save-call-btn').addEventListener('click', async () => {
-        const id = row.dataset.id;
-        const status = row.querySelector('[data-field="status"]').value;
-        const scheduledRaw = row.querySelector('[data-field="scheduled_at"]').value;
-        const notes = row.querySelector('[data-field="notes"]').value;
-        const { error } = await supabaseClient.from('calls').update({
-          status,
-          scheduled_at: scheduledRaw ? new Date(scheduledRaw).toISOString() : null,
-          notes,
-        }).eq('id', id);
-        if (error) { if (window.toast) toast(error.message, 'error'); return; }
-        if (window.toast) toast('Call mis à jour', 'ok');
-      });
-    });
-  }
-
   // ---- Init ----
   await loadAudit(); renderAuditTab();
   await loadPlan(); renderPlanEditor();
   renderMessages(await loadMessages());
-  renderCalls(await loadCalls());
 })();
 </script>
 </body>
