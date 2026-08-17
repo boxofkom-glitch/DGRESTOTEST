@@ -158,6 +158,7 @@ body{overflow-x:hidden;}
       </div>
       <div class="plan-block">
         <h4>Documents pour ce client</h4>
+        <div class="field"><label>Document de la bibliothèque (optionnel — coche-le comme fourni)</label><select id="docKeySelect" style="width:100%;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;"><option value="">— Document personnalisé —</option></select></div>
         <form id="docForm" style="display:flex;gap:8px;margin-bottom:14px;">
           <input id="docName" placeholder="Nom du document (ex: Facture Metro juillet)" style="flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
           <select id="docCategory" style="width:160px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 12px;color:var(--ink);font-family:inherit;">
@@ -616,6 +617,60 @@ body{overflow-x:hidden;}
     renderTeamAdmin(await loadTeamAdmin());
   });
 
+  // Bibliothèque des 30 documents obligatoires — doit rester alignée avec
+  // REQUIRED_DOCS dans dashboard.html (mêmes clés "key").
+  const REQUIRED_DOCS = [
+    { key: 'kbis', name: 'Extrait KBIS', groupLabel: 'Juridique & administratif' },
+    { key: 'statuts', name: 'Statuts de la société', groupLabel: 'Juridique & administratif' },
+    { key: 'bail', name: 'Bail commercial', groupLabel: 'Juridique & administratif' },
+    { key: 'licence4', name: 'Licence IV (débit de boissons)', groupLabel: 'Juridique & administratif' },
+    { key: 'permis_exploitation', name: "Permis d'exploitation", groupLabel: 'Juridique & administratif' },
+    { key: 'courrier_mairie', name: 'Courriers de la mairie', groupLabel: 'Juridique & administratif' },
+    { key: 'registre_personnel', name: 'Registre unique du personnel', groupLabel: 'RH & social' },
+    { key: 'contrats_travail', name: 'Contrats de travail', groupLabel: 'RH & social' },
+    { key: 'dsn', name: 'DSN (déclarations sociales)', groupLabel: 'RH & social' },
+    { key: 'convention_collective', name: 'Convention collective HCR', groupLabel: 'RH & social' },
+    { key: 'duerp', name: "Document unique d'évaluation des risques", groupLabel: 'RH & social' },
+    { key: 'affichage_obligatoire', name: 'Affichages obligatoires', groupLabel: 'RH & social' },
+    { key: 'rib', name: 'RIB', groupLabel: 'Finances' },
+    { key: 'bilan_comptable', name: 'Bilan comptable annuel', groupLabel: 'Finances' },
+    { key: 'liasse_fiscale', name: 'Liasse fiscale', groupLabel: 'Finances' },
+    { key: 'justificatifs_tva', name: 'Justificatifs TVA', groupLabel: 'Finances' },
+    { key: 'factures_fournisseurs', name: 'Archive factures fournisseurs', groupLabel: 'Finances' },
+    { key: 'assurance_rc_pro', name: 'Assurance responsabilité civile pro', groupLabel: 'Assurances' },
+    { key: 'assurance_multirisque', name: 'Assurance multirisque locaux', groupLabel: 'Assurances' },
+    { key: 'assurance_perte_exploitation', name: "Assurance perte d'exploitation", groupLabel: 'Assurances' },
+    { key: 'quittances_loyer', name: 'Quittances de loyer', groupLabel: 'Local & immobilier' },
+    { key: 'dpe', name: 'Diagnostic de performance énergétique', groupLabel: 'Local & immobilier' },
+    { key: 'conformite_electrique', name: 'Attestation de conformité électrique', groupLabel: 'Local & immobilier' },
+    { key: 'contrat_entretien_hotte', name: "Contrat d'entretien hotte/extraction", groupLabel: 'Local & immobilier' },
+    { key: 'haccp', name: 'Manuel HACCP / PMS', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'tracabilite', name: 'Registre de traçabilité', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'maintenance_froid', name: 'Carnet de maintenance chaîne du froid', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'formation_hygiene', name: 'Attestation formation hygiène alimentaire', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'registre_nettoyage', name: 'Registre de nettoyage/désinfection', groupLabel: 'Hygiène & sécurité alimentaire' },
+    { key: 'manuel_operatoire', name: "Manuel opératoire / livret d'accueil", groupLabel: 'Opérationnel' },
+  ];
+  (function populateDocKeySelect() {
+    const sel = document.getElementById('docKeySelect');
+    const groups = {};
+    REQUIRED_DOCS.forEach(item => { (groups[item.groupLabel] = groups[item.groupLabel] || []).push(item); });
+    Object.keys(groups).forEach(label => {
+      const og = document.createElement('optgroup');
+      og.label = label;
+      groups[label].forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.key; opt.textContent = item.name;
+        og.appendChild(opt);
+      });
+      sel.appendChild(og);
+    });
+    sel.addEventListener('change', () => {
+      const item = REQUIRED_DOCS.find(d => d.key === sel.value);
+      document.getElementById('docName').value = item ? item.name : '';
+    });
+  })();
+
   async function loadDocs() {
     const { data } = await supabaseClient.from('documents').select('*').eq('user_id', clientId).order('created_at', { ascending: false });
     return data || [];
@@ -633,9 +688,10 @@ body{overflow-x:hidden;}
     const name = document.getElementById('docName').value.trim();
     if (!name) return;
     const category = document.getElementById('docCategory').value.trim();
-    const { error } = await supabaseClient.from('documents').insert({ user_id: clientId, name, category: category || null, status: 'a_trier' });
+    const docKey = document.getElementById('docKeySelect').value || null;
+    const { error } = await supabaseClient.from('documents').insert({ user_id: clientId, name, category: category || null, status: 'a_trier', doc_key: docKey });
     if (error) { if (window.toast) toast(error.message, 'error'); return; }
-    document.getElementById('docName').value = ''; document.getElementById('docCategory').value = '';
+    document.getElementById('docName').value = ''; document.getElementById('docCategory').value = ''; document.getElementById('docKeySelect').value = '';
     renderDocsAdmin(await loadDocs());
   });
   document.getElementById('docsAdminList').addEventListener('click', async (e) => {
