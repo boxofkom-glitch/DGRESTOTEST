@@ -7,19 +7,23 @@
   --muted:#4C4C54; --muted-dim:#84848C;
   --line: rgba(13,13,15,0.12);
   --nav-fg: rgba(255,255,255,.7); --nav-fg-strong:#fff;
+  --font-mono:'SFMono-Regular',Consolas,'Roboto Mono',monospace;
   --r-xl:24px; --r-lg:18px; --r-md:12px; --r-sm:8px;
   --shadow: 0 1px 2px rgba(13,13,15,.05), 0 20px 40px -16px rgba(13,13,15,.14);
   --shadow-lime: 0 12px 26px -10px rgba(205,255,46,.55);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
-body{font-family:'Urbanist',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body{font-family:'Urbanist',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative;}
 img{max-width:100%;display:block;}
 .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
 a{color:inherit;}
-h1,h2,h3{font-weight:900;line-height:1.08;letter-spacing:-0.02em;color:var(--ink);}
+h1,h2,h3{font-weight:900;line-height:1.02;letter-spacing:-0.035em;color:var(--ink);text-wrap:balance;}
 h1 em,h2 em{font-style:normal;color:var(--primary);}
 p{color:var(--muted);}
+
+/* grain texture overlay — subtle tactile depth on every page, cheap & theme-agnostic */
+body::after{content:"";position:fixed;inset:0;z-index:9000;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 12px;margin-bottom:20px;}
 .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--lime);flex:0 0 auto;}
