@@ -493,7 +493,8 @@ body{overflow-x:hidden;}
 
 <script src="../script.js"></script>
 <script src="config.js"></script>
-<script src="supabase-client.preview.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <script src="playbooks.js"></script>
 <script>
 (async function () {
@@ -970,9 +971,10 @@ body{overflow-x:hidden;}
 
   function renderMonth(month, plan) {
     const allWeeks = month.weeks || [];
-    // Semaine 1 toujours ouverte ; les suivantes restent verrouillées tant que
-    // la précédente n'est pas cochée à 100% (déblocage automatique en cascade).
-    allWeeks.forEach((w, wi) => { if (wi === 0 && w.locked == null) w.locked = false; });
+    // Semaine 1 toujours ouverte ; les suivantes restent verrouillées par défaut
+    // tant que la précédente n'est pas cochée à 100% (déblocage auto en cascade),
+    // sauf si le DG a explicitement choisi un état dans l'éditeur de plan.
+    allWeeks.forEach((w, wi) => { if (w.locked == null) w.locked = wi !== 0; });
     const firstLockedIdx = allWeeks.findIndex(w => w.locked);
     const weeks = firstLockedIdx === -1 ? allWeeks : allWeeks.slice(0, firstLockedIdx + 1);
     const weekTotals = weeks.map(w => ({ label: w.label, done: (w.tasks || []).filter(t => t.done).length, total: (w.tasks || []).length }));
