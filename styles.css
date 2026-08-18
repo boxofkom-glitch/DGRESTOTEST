@@ -157,6 +157,6 @@ body{animation:pageIn .5s ease both;}
 .video-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:rgba(255,255,255,.5);font-size:13.5px;font-weight:700;}
 .video-empty svg{width:34px;height:34px;opacity:.5;}
 
-@media (hover:none){.tilt{display:none !important;transform:none !important;}}
+@media (hover:none){.tilt{transform:none !important;}}
 
 @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}.reveal{opacity:1;transform:none;}.draw-path{stroke-dashoffset:0;}}
