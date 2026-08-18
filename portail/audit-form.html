@@ -25,19 +25,29 @@ body{overflow-x:hidden;}
 
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
-.field-suffix{position:relative;}
-.field-suffix span{position:absolute;right:14px;top:38px;font-size:13px;color:var(--muted-dim);pointer-events:none;}
-.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-family:inherit;font-size:15px;}
+.field select{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-family:inherit;font-size:15px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2384848C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:18px;}
 .field select:focus{outline:none;border-color:var(--primary);}
+.field .other-input{display:none;margin-top:8px;width:100%;background:var(--surface-2);border:1px solid var(--primary);border-radius:var(--r-sm);padding:13px 14px;color:var(--ink);font-family:inherit;font-size:15px;}
+.field .other-input.show{display:block;}
 
-.pillar-q{margin-bottom:18px;}
-.pillar-q label{display:block;font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:8px;}
-.status-picker{display:flex;gap:8px;flex-wrap:wrap;}
-.status-opt{flex:1 1 90px;text-align:center;padding:10px 8px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-2);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:border-color .2s,color .2s,background .2s;}
-.status-opt.selected{border-color:var(--lime);color:var(--ink);background:var(--lime-dim);}
-
-.competitor-block{border:1px solid var(--line);border-radius:var(--r-md);padding:16px;margin-bottom:14px;}
-.competitor-block h5{font-size:13px;color:var(--muted-dim);text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;}
+/* checklist multi-select (problématiques / objectifs) */
+.check-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-2);cursor:pointer;transition:border-color .15s,background .15s;}
+.check-item:hover{border-color:var(--muted);}
+.check-item.selected{border-color:var(--lime);background:var(--lime-dim);}
+.check-item .box{width:20px;height:20px;border-radius:6px;border:2px solid var(--line);background:var(--surface);flex:0 0 auto;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;}
+.check-item.selected .box{background:var(--lime);border-color:var(--lime);}
+.check-item .box svg{width:12px;height:12px;stroke:var(--ink);opacity:0;transition:opacity .1s;}
+.check-item.selected .box svg{opacity:1;}
+.check-item span.txt{font-size:13.5px;color:var(--ink);font-weight:600;line-height:1.4;}
+.check-group-label{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-dim);margin:18px 0 8px;}
+.check-group-label:first-child{margin-top:0;}
+.add-custom-row{display:flex;gap:8px;margin-top:6px;}
+.add-custom-row input{flex:1;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:11px 13px;color:var(--ink);font-family:inherit;font-size:13.5px;}
+.add-custom-row button{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:13px;padding:0 16px;border-radius:var(--r-sm);cursor:pointer;white-space:nowrap;}
+.add-custom-row button:hover{border-color:var(--lime);color:var(--ink);}
+.custom-chip{display:inline-flex;align-items:center;gap:8px;background:var(--lime-dim);border:1px solid rgba(212,255,0,.3);border-radius:999px;padding:7px 8px 7px 14px;font-size:12.5px;font-weight:700;color:var(--ink);margin:4px 6px 0 0;}
+.custom-chip button{background:none;border:none;color:var(--ink);cursor:pointer;font-size:14px;line-height:1;padding:2px;}
 
 .wizard-nav{display:flex;justify-content:space-between;align-items:center;margin-top:30px;gap:12px;}
 .btn-back{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:14px;padding:14px 22px;border-radius:999px;cursor:pointer;}
@@ -61,15 +71,15 @@ body{overflow-x:hidden;}
       <a href="dashboard.html" class="logo"><svg viewBox="0 0 96 100" aria-hidden="true" width="18" height="18.75"><mask id="dgm" maskUnits="userSpaceOnUse" x="-12" y="-12" width="120" height="124"><rect x="-12" y="-12" width="120" height="124" fill="#fff"/><path d="M68 26 H24 V74 H68 V52 H48" fill="none" stroke="#000" stroke-width="15" stroke-linejoin="miter"/></mask><path d="M0 0 H64 L96 32 V68 L64 100 H0 Z" fill="currentColor" mask="url(#dgm)"/></svg> DG Resto</a>
       <a href="dashboard.html" style="font-size:13px;color:var(--muted-dim);text-decoration:none;">Annuler</a>
     </div>
-    <div class="wizard-progress-track"><div class="wizard-progress-fill" id="progressFill" style="width:8%;"></div></div>
-    <div class="wizard-step-label" id="stepLabel">Étape 1 / 12</div>
+    <div class="wizard-progress-track"><div class="wizard-progress-fill" id="progressFill" style="width:14%;"></div></div>
+    <div class="wizard-step-label" id="stepLabel">Étape 1 / 7</div>
 
     <form id="wizardForm">
 
-      <!-- STEP 1 -->
+      <!-- STEP 1 : établissement (seuls champs texte du formulaire) -->
       <section class="step active" data-step="1">
         <h2>Votre établissement</h2>
-        <p class="hint">Le strict nécessaire pour situer votre activité.</p>
+        <p class="hint">Le strict nécessaire pour situer votre activité. Tout le reste se fait en quelques clics.</p>
         <div class="field"><label for="f_company">Nom de l'établissement</label><input id="f_company" required></div>
         <div class="field"><label for="f_contact">Votre nom</label><input id="f_contact" required></div>
         <div class="field-row">
@@ -81,75 +91,150 @@ body{overflow-x:hidden;}
               <option>Restauration rapide</option>
               <option>Food truck</option>
               <option>Traiteur / événementiel</option>
-              <option>Autre</option>
-            </select>
+            <option value="__other__">Autre (préciser)</option></select><input type="text" class="other-input" id="f_type_other" placeholder="Précisez le type d'établissement">
           </div>
-          <div class="field"><label for="f_seats">Nombre de couverts (capacité salle)</label><input id="f_seats" type="number" min="0" required></div>
+          <div class="field"><label for="f_seats">Capacité en salle</label>
+            <select id="f_seats" required>
+              <option value="">Choisir...</option>
+              <option value="15">Moins de 20 couverts</option>
+              <option value="30">20 à 40 couverts</option>
+              <option value="60">40 à 80 couverts</option>
+              <option value="110">80 à 150 couverts</option>
+              <option value="180">Plus de 150 couverts</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_seats_other" placeholder="Nombre de couverts exact">
+          </div>
         </div>
-        <div class="field"><label for="f_hours">Jours et horaires d'ouverture</label><input id="f_hours" placeholder="Ex : Mardi-Samedi, midi et soir" required></div>
-        <div class="field"><label for="f_desc">Décrivez votre restaurant en 2-3 phrases</label><textarea id="f_desc" rows="3" placeholder="Positionnement, cuisine, particularités..." required></textarea></div>
+        <div class="field"><label for="f_hours">Rythme d'ouverture</label>
+          <select id="f_hours" required>
+            <option value="">Choisir...</option>
+            <option>Midi uniquement, en semaine</option>
+            <option>Midi et soir, en semaine</option>
+            <option>Midi et soir, 7j/7</option>
+            <option>Soir uniquement</option>
+            <option>Week-end uniquement</option>
+            <option>Horaires variables / événementiel</option>
+          <option value="__other__">Autre (préciser)</option></select><input type="text" class="other-input" id="f_hours_other" placeholder="Précisez vos horaires">
+        </div>
       </section>
 
-      <!-- STEP 2 -->
+      <!-- STEP 2 : chiffres clés (tout en fourchettes) -->
       <section class="step" data-step="2">
-        <h2>Vos chiffres généraux</h2>
-        <p class="hint">Des estimations suffisent — vous pourrez toujours ajuster plus tard.</p>
-        <div class="field-row">
-          <div class="field field-suffix"><label for="f_revenue">Chiffre d'affaires annuel</label><input id="f_revenue" type="number" min="0" required><span>€</span></div>
-          <div class="field"><label for="f_employees">Nombre de collaborateurs</label><input id="f_employees" type="number" min="0" required></div>
+        <h2>Vos chiffres clés</h2>
+        <p class="hint">Des fourchettes suffisent — inutile de sortir la calculatrice.</p>
+        <div class="field"><label for="f_revenue">Chiffre d'affaires annuel</label>
+          <select id="f_revenue" required>
+            <option value="">Choisir...</option>
+            <option value="75000">Moins de 100 000 €</option>
+            <option value="175000">100 000 à 250 000 €</option>
+            <option value="375000">250 000 à 500 000 €</option>
+            <option value="750000">500 000 à 1 000 000 €</option>
+            <option value="1500000">Plus de 1 000 000 €</option>
+          <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_revenue_other" placeholder="CA annuel exact (en €)">
         </div>
         <div class="field-row">
-          <div class="field field-suffix"><label for="f_fixedcosts">Charges fixes annuelles (hors salaires et matière première)</label><input id="f_fixedcosts" type="number" min="0" required><span>€</span></div>
-          <div class="field field-suffix"><label for="f_cash">Trésorerie disponible</label><input id="f_cash" type="number" min="0" required><span>€</span></div>
+          <div class="field"><label for="f_foodcost">Food cost (coût matière / CA)</label>
+            <select id="f_foodcost" required>
+              <option value="">Choisir...</option>
+              <option value="23">Moins de 25%</option>
+              <option value="26.5">25 à 28%</option>
+              <option value="29">28 à 30% (cible métier)</option>
+              <option value="31.5">30 à 33%</option>
+              <option value="35.5">33 à 38%</option>
+              <option value="40">Plus de 38%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_foodcost_other" placeholder="Food cost exact (en %)">
+          </div>
+          <div class="field"><label for="f_payroll">Masse salariale / CA</label>
+            <select id="f_payroll" required>
+              <option value="">Choisir...</option>
+              <option value="23">Moins de 25%</option>
+              <option value="26.5">25 à 28%</option>
+              <option value="30">28 à 32% (cible métier)</option>
+              <option value="34">32 à 36%</option>
+              <option value="38">36 à 40%</option>
+              <option value="42">Plus de 40%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_payroll_other" placeholder="Masse salariale exacte (en %)">
+          </div>
         </div>
-        <div class="field field-suffix"><label for="f_margin">Marge nette estimée</label><input id="f_margin" type="number" min="0" max="100" required><span>%</span></div>
+        <div class="field-help">Le "prime cost" (food cost + masse salariale) tourne en général entre 55% et 70% du CA selon le type d'établissement.</div>
+        <div class="field-row">
+          <div class="field"><label for="f_margin">Marge nette estimée</label>
+            <select id="f_margin" required>
+              <option value="">Choisir...</option>
+              <option value="-2">Négative</option>
+              <option value="1.5">0 à 3%</option>
+              <option value="4.5">3 à 6%</option>
+              <option value="8">6 à 10%</option>
+              <option value="12.5">10 à 15%</option>
+              <option value="18">Plus de 15%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_margin_other" placeholder="Marge nette exacte (en %)">
+          </div>
+          <div class="field"><label for="f_fixedcosts_pct">Charges fixes (% du CA)</label>
+            <select id="f_fixedcosts_pct" required>
+              <option value="">Choisir...</option>
+              <option value="12">Moins de 15%</option>
+              <option value="17.5">15 à 20%</option>
+              <option value="22.5">20 à 25%</option>
+              <option value="27.5">25 à 30%</option>
+              <option value="33">Plus de 30%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_fixedcosts_pct_other" placeholder="Charges fixes exactes (% du CA)">
+          </div>
+        </div>
+        <div class="field"><label for="f_cash">Trésorerie disponible</label>
+          <select id="f_cash" required>
+            <option value="">Choisir...</option>
+            <option value="0.5">Moins d'1 mois de charges</option>
+            <option value="2">1 à 3 mois de charges</option>
+            <option value="4.5">3 à 6 mois de charges</option>
+            <option value="8">Plus de 6 mois de charges</option>
+          <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_cash_other" placeholder="Trésorerie exacte (en mois de charges)">
+        </div>
       </section>
 
-      <!-- STEP 3 -->
+      <!-- STEP 3 : équipe -->
       <section class="step" data-step="3">
-        <h2>Indicateurs clés restauration</h2>
-        <p class="hint">Les deux chiffres qui déterminent la vraie rentabilité d'un restaurant.</p>
-        <div class="field-row">
-          <div class="field field-suffix"><label for="f_foodcost">Food cost (coût matière / CA)</label><input id="f_foodcost" type="number" min="0" max="100" required><span>%</span></div>
-          <div class="field field-suffix"><label for="f_payroll">Masse salariale / CA</label><input id="f_payroll" type="number" min="0" max="100" required><span>%</span></div>
-        </div>
-        <div class="field-help">La somme des deux (le "prime cost") tourne en général entre 50% et 75% du CA selon le type d'établissement.</div>
-        <div class="field"><label for="f_covers">Couverts servis par semaine (moyenne)</label><input id="f_covers" type="number" min="0" required></div>
-        <div class="field-row">
-          <div class="field field-suffix"><label for="f_ticket_lunch">Ticket moyen midi</label><input id="f_ticket_lunch" type="number" min="0" required><span>€</span></div>
-          <div class="field field-suffix"><label for="f_ticket_dinner">Ticket moyen soir</label><input id="f_ticket_dinner" type="number" min="0" required><span>€</span></div>
-        </div>
-      </section>
-
-      <!-- STEP 4 -->
-      <section class="step" data-step="4">
-        <h2>Votre offre phare</h2>
-        <p class="hint">Le plat ou la formule qui représente le mieux votre activité.</p>
-        <div class="field-row">
-          <div class="field"><label for="f_prodname">Nom du plat / de l'offre</label><input id="f_prodname" required></div>
-          <div class="field"><label for="f_prodtag">Étiquette (optionnel)</label><input id="f_prodtag" placeholder="Ex : Best-seller"></div>
-        </div>
-        <div class="field-row">
-          <div class="field field-suffix"><label for="f_price">Prix de vente HT</label><input id="f_price" type="number" min="0" required><span>€</span></div>
-          <div class="field field-suffix"><label for="f_cost">Coût matière direct</label><input id="f_cost" type="number" min="0" required><span>€</span></div>
-        </div>
-        <div class="field"><label for="f_prodvolume">Vendu environ combien de fois par semaine ?</label><input id="f_prodvolume" type="number" min="0" required></div>
-      </section>
-
-      <!-- STEP 5 -->
-      <section class="step" data-step="5">
         <h2>Votre équipe</h2>
         <p class="hint">Le vrai plafond de verre de la croissance, la plupart du temps.</p>
         <div class="field-row">
-          <div class="field"><label for="f_turnover">Départs sur les 12 derniers mois</label><input id="f_turnover" type="number" min="0" required></div>
-          <div class="field"><label for="f_tenure">Ancienneté moyenne de l'équipe</label><input id="f_tenure" type="number" min="0" required></div>
+          <div class="field"><label for="f_employees">Nombre de collaborateurs</label>
+            <select id="f_employees" required>
+              <option value="">Choisir...</option>
+              <option value="2">1 à 3</option>
+              <option value="6">4 à 8</option>
+              <option value="12">9 à 15</option>
+              <option value="20">16 à 25</option>
+              <option value="30">Plus de 25</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_employees_other" placeholder="Nombre de collaborateurs exact">
+          </div>
+          <div class="field"><label for="f_turnover">Départs sur 12 mois</label>
+            <select id="f_turnover" required>
+              <option value="">Choisir...</option>
+              <option value="0">Aucun</option>
+              <option value="1.5">1 à 2</option>
+              <option value="4">3 à 5</option>
+              <option value="7">Plus de 5</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_turnover_other" placeholder="Nombre de départs exact">
+          </div>
         </div>
-        <div class="field-help">Ancienneté en mois.</div>
-        <div class="field"><label for="f_hardestrole">Poste le plus difficile à recruter ou à garder</label><input id="f_hardestrole" placeholder="Ex : second de cuisine" required></div>
+        <div class="field"><label for="f_hardestrole">Poste le plus difficile à recruter ou à garder</label>
+          <select id="f_hardestrole" required>
+            <option value="">Choisir...</option>
+            <option>Chef de cuisine</option>
+            <option>Second de cuisine</option>
+            <option>Commis de cuisine</option>
+            <option>Pizzaiolo</option>
+            <option>Plongeur</option>
+            <option>Serveur / Serveuse</option>
+            <option>Responsable de salle</option>
+            <option>Barman / Barmaid</option>
+            <option>Livreur</option>
+            <option>Manager / Responsable</option>
+            <option>Aucun poste particulièrement difficile</option>
+          <option value="__other__">Autre (préciser)</option></select><input type="text" class="other-input" id="f_hardestrole_other" placeholder="Précisez le poste">
+        </div>
       </section>
 
-      <!-- STEP 6 -->
-      <section class="step" data-step="6">
+      <!-- STEP 4 : acquisition & fidélisation -->
+      <section class="step" data-step="4">
         <h2>Acquisition &amp; fidélisation</h2>
         <p class="hint">D'où viennent vos clients aujourd'hui, et combien reviennent.</p>
         <div class="field"><label for="f_channel">Canal principal d'acquisition aujourd'hui</label>
@@ -161,106 +246,119 @@ body{overflow-x:hidden;}
             <option>Plateformes de livraison</option>
             <option>Plateformes de réservation</option>
             <option>Emplacement / passage</option>
-            <option>Autre</option>
-          </select>
+          <option value="__other__">Autre (préciser)</option></select><input type="text" class="other-input" id="f_channel_other" placeholder="Précisez le canal">
         </div>
         <div class="field-row">
-          <div class="field"><label for="f_grating">Note Google actuelle</label><input id="f_grating" type="number" min="0" max="5" step="0.1" required></div>
-          <div class="field"><label for="f_greviews">Nombre d'avis Google</label><input id="f_greviews" type="number" min="0" required></div>
+          <div class="field"><label for="f_grating">Note Google actuelle</label>
+            <select id="f_grating" required>
+              <option value="">Choisir...</option>
+              <option value="3.2">Moins de 3,5</option>
+              <option value="3.7">3,5 à 4,0</option>
+              <option value="4.15">4,0 à 4,3</option>
+              <option value="4.45">4,3 à 4,6</option>
+              <option value="4.8">4,6 à 5,0</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_grating_other" placeholder="Note Google exacte (sur 5)">
+          </div>
+          <div class="field"><label for="f_greviews">Nombre d'avis Google</label>
+            <select id="f_greviews" required>
+              <option value="">Choisir...</option>
+              <option value="10">Moins de 20</option>
+              <option value="35">20 à 50</option>
+              <option value="75">50 à 100</option>
+              <option value="200">100 à 300</option>
+              <option value="400">Plus de 300</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_greviews_other" placeholder="Nombre d'avis exact">
+          </div>
         </div>
-        <div class="field field-suffix"><label for="f_recurring">Part de clients récurrents estimée</label><input id="f_recurring" type="number" min="0" max="100" required><span>%</span></div>
-        <div class="field"><label for="f_platforms">Plateformes de livraison/réservation utilisées (optionnel)</label><input id="f_platforms" placeholder="Ex : TheFork, Uber Eats"></div>
-      </section>
-
-      <!-- STEP 7 -->
-      <section class="step" data-step="7">
-        <h2>Votre concurrence</h2>
-        <p class="hint">Un concurrent suffit, deux c'est mieux (tout est optionnel sauf le premier).</p>
-        <div class="competitor-block"><h5>Concurrent 1</h5>
-          <div class="field"><label for="c1_name">Nom</label><input id="c1_name"></div>
-          <div class="field"><label for="c1_offer">Son offre par rapport à la vôtre</label><input id="c1_offer" placeholder="Ex : légèrement moins cher"></div>
-          <div class="field"><label for="c1_our">Votre avantage face à lui</label><input id="c1_our"></div>
-          <div class="field"><label for="c1_their">Son avantage face à vous</label><input id="c1_their"></div>
-        </div>
-        <div class="competitor-block"><h5>Concurrent 2 (optionnel)</h5>
-          <div class="field"><label for="c2_name">Nom</label><input id="c2_name"></div>
-          <div class="field"><label for="c2_offer">Son offre par rapport à la vôtre</label><input id="c2_offer"></div>
-          <div class="field"><label for="c2_our">Votre avantage face à lui</label><input id="c2_our"></div>
-          <div class="field"><label for="c2_their">Son avantage face à vous</label><input id="c2_their"></div>
-        </div>
-      </section>
-
-      <!-- STEP 8 -->
-      <section class="step" data-step="8">
-        <h2>Opportunités de marché</h2>
-        <p class="hint">Une piste par ligne — vente à emporter, traiteur, nouveaux horaires...</p>
-        <div class="field"><label for="f_opps">Vos pistes de développement</label><textarea id="f_opps" rows="6" placeholder="Ex : Développer la vente à emporter le midi&#10;Proposer une offre traiteur pour événements privés"></textarea></div>
-      </section>
-
-      <!-- STEP 9 -->
-      <section class="step" data-step="9">
-        <h2>Votre parcours</h2>
-        <p class="hint">Ça nous aide à comprendre le contexte derrière les chiffres.</p>
-        <div class="field"><label for="f_story">Qu'est-ce qui vous a poussé à devenir restaurateur ?</label><textarea id="f_story" rows="2" required></textarea></div>
-        <div class="field"><label for="f_vision">Où voulez-vous être dans 12 mois ?</label><textarea id="f_vision" rows="2" required></textarea></div>
-        <div class="field"><label for="f_obj4m">Quel est votre objectif concret pour les 4 prochains mois ?</label><textarea id="f_obj4m" rows="2" required></textarea></div>
-        <div class="field"><label for="f_blocker">Qu'est-ce qui vous empêche d'y arriver aujourd'hui ?</label><textarea id="f_blocker" rows="2" required></textarea></div>
-        <div class="field"><label for="f_solutions">Que pourriez-vous mettre en place pour lever ce blocage ?</label><textarea id="f_solutions" rows="2" required></textarea></div>
-      </section>
-
-      <!-- STEP 10 -->
-      <section class="step" data-step="10">
-        <h2>Auto-évaluation</h2>
-        <p class="hint">Soyez honnête — c'est ce qui rend votre plan vraiment utile.</p>
-        <div class="pillar-q" data-crit="struct1" data-label="Suivi de vos coûts (food cost, marges par plat)">
-          <label>Suivi de vos coûts (food cost, marges par plat)</label>
-          <div class="status-picker"></div>
-        </div>
-        <div class="pillar-q" data-crit="struct2" data-label="Organisation de l'équipe (plannings, rôles clairs)">
-          <label>Organisation de l'équipe (plannings, rôles clairs)</label>
-          <div class="status-picker"></div>
-        </div>
-        <div class="pillar-q" data-crit="acq1" data-label="Visibilité en ligne (Google, réseaux sociaux, avis)">
-          <label>Visibilité en ligne (Google, réseaux sociaux, avis)</label>
-          <div class="status-picker"></div>
-        </div>
-        <div class="pillar-q" data-crit="acq2" data-label="Fidélisation de vos clients">
-          <label>Fidélisation de vos clients</label>
-          <div class="status-picker"></div>
-        </div>
-        <div class="pillar-q" data-crit="vis1" data-label="Suivi mensuel de vos chiffres">
-          <label>Suivi mensuel de vos chiffres</label>
-          <div class="status-picker"></div>
-        </div>
-        <div class="pillar-q" data-crit="vis2" data-label="Clarté de vos objectifs chiffrés">
-          <label>Clarté de vos objectifs chiffrés</label>
-          <div class="status-picker"></div>
+        <div class="field"><label for="f_recurring">Part de clients récurrents estimée</label>
+          <select id="f_recurring" required>
+            <option value="">Choisir...</option>
+            <option value="10">Moins de 20%</option>
+            <option value="27.5">20 à 35%</option>
+            <option value="42.5">35 à 50%</option>
+            <option value="60">50 à 70%</option>
+            <option value="80">Plus de 70%</option>
+          <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_recurring_other" placeholder="Part de clients récurrents exacte (en %)">
         </div>
       </section>
 
-      <!-- STEP 11 -->
-      <section class="step" data-step="11">
-        <h2>Vos priorités structurelles</h2>
+      <!-- STEP 5 : vision & priorités -->
+      <section class="step" data-step="5">
+        <h2>Votre vision</h2>
         <p class="hint">Ça détermine les objectifs long terme de votre plan.</p>
         <div class="field-row">
-          <div class="field field-suffix"><label for="f_growth">Croissance de CA visée sur 12 mois</label><input id="f_growth" type="number" min="0" value="30" required><span>%</span></div>
-          <div class="field"><label for="f_contract">Durée de votre accompagnement</label><input id="f_contract" type="number" min="1" value="4" required></div>
+          <div class="field"><label for="f_growth">Croissance de CA visée sur 12 mois</label>
+            <select id="f_growth" required>
+              <option value="">Choisir...</option>
+              <option value="10">10%</option>
+              <option value="20">20%</option>
+              <option value="30">30%</option>
+              <option value="50">50%</option>
+              <option value="100">100% ou plus (ouverture, franchise...)</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_growth_other" placeholder="Croissance visée exacte (en %)">
+          </div>
+          <div class="field"><label for="f_contract">Durée de votre accompagnement</label>
+            <select id="f_contract" required>
+              <option value="">Choisir...</option>
+              <option value="4">4 mois</option>
+              <option value="6">6 mois</option>
+              <option value="12">12 mois</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_contract_other" placeholder="Durée exacte (en mois)">
+          </div>
         </div>
-        <div class="field-help">Durée en mois.</div>
         <div class="field-row">
-          <div class="field field-suffix"><label for="f_involv_now">Temps opérationnel aujourd'hui</label><input id="f_involv_now" type="number" min="0" max="100" value="80" required><span>%</span></div>
-          <div class="field field-suffix"><label for="f_involv_target">Temps opérationnel visé dans 12 mois</label><input id="f_involv_target" type="number" min="0" max="100" value="30" required><span>%</span></div>
+          <div class="field"><label for="f_involv_now">Temps opérationnel aujourd'hui</label>
+            <select id="f_involv_now" required>
+              <option value="">Choisir...</option>
+              <option value="20">Moins de 30%</option>
+              <option value="40">30 à 50%</option>
+              <option value="60">50 à 70%</option>
+              <option value="80">70 à 90%</option>
+              <option value="95">90 à 100%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_involv_now_other" placeholder="Temps opérationnel exact (en %)">
+          </div>
+          <div class="field"><label for="f_involv_target">Temps opérationnel visé dans 12 mois</label>
+            <select id="f_involv_target" required>
+              <option value="">Choisir...</option>
+              <option value="20">Moins de 30%</option>
+              <option value="40">30 à 50%</option>
+              <option value="60">50 à 70%</option>
+              <option value="80">70 à 90%</option>
+              <option value="95">90 à 100%</option>
+            <option value="__other__">Autre (préciser)</option></select><input type="number" class="other-input" id="f_involv_target_other" placeholder="Temps opérationnel visé exact (en %)">
+          </div>
         </div>
-        <div class="field"><label for="f_extra">Une autre priorité long terme ? (optionnel)</label><input id="f_extra" placeholder="Ex : préparer une ouverture de second établissement"></div>
       </section>
 
-      <!-- STEP 12 -->
-      <section class="step" data-step="12">
+      <!-- STEP 6 : problématiques & objectifs (multi-select, sans écriture) -->
+      <section class="step" data-step="6">
+        <h2>Vos problématiques &amp; objectifs</h2>
+        <p class="hint">Cochez tout ce qui vous parle. Rien ne colle à votre situation ? Ajoutez la vôtre en bas de chaque liste.</p>
+
+        <div class="check-group-label">Ce qui vous freine aujourd'hui</div>
+        <div class="check-grid" id="problemsGrid"></div>
+        <div class="add-custom-row">
+          <input type="text" id="problemCustomInput" placeholder="Ajouter une autre problématique...">
+          <button type="button" id="problemCustomBtn">+ Ajouter</button>
+        </div>
+        <div id="problemCustomChips"></div>
+
+        <div class="check-group-label" style="margin-top:28px;">Ce que vous voulez atteindre</div>
+        <div class="check-grid" id="goalsGrid"></div>
+        <div class="add-custom-row">
+          <input type="text" id="goalCustomInput" placeholder="Ajouter un autre objectif...">
+          <button type="button" id="goalCustomBtn">+ Ajouter</button>
+        </div>
+        <div id="goalCustomChips"></div>
+      </section>
+
+      <!-- STEP 7 : récap -->
+      <section class="step" data-step="7">
         <h2>C'est prêt !</h2>
         <p class="hint">On génère votre audit et votre plan d'action à partir de vos réponses.</p>
         <div class="summary-card reveal in-view">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <p style="font-size:14.5px;color:var(--ink);margin-bottom:4px;">Votre plan comprendra au minimum 7 objectifs structurels sur 12 mois, 7 priorités sur 4 mois — chiffrés avec vos propres données — et un premier mois de 4 semaines déjà prêtes, 7 tâches concrètes par semaine.</p>
+          <p style="font-size:14.5px;color:var(--ink);margin-bottom:4px;">Votre plan comprendra au minimum 7 objectifs structurels sur 12 mois, 7 priorités sur 4 mois — construits à partir de vos réponses — et un premier mois de 4 semaines déjà prêtes, 7 tâches concrètes par semaine.</p>
         </div>
       </section>
 
@@ -288,27 +386,105 @@ body{overflow-x:hidden;}
   document.getElementById('authGate').style.display = 'none';
   document.getElementById('wizardContent').style.display = 'block';
 
-  // ---- Status pickers (Critique/En cours/Bon/Excellent) ----
-  const STATUS_OPTS = [
-    { label: 'Critique', pct: 15 },
-    { label: 'En cours', pct: 45 },
-    { label: 'Bon', pct: 70 },
-    { label: 'Excellent', pct: 90 }
+  // =========================================================
+  // Bibliothèque de problématiques / objectifs — chaque
+  // problématique est rattachée à un critère du diagnostic
+  // (mêmes clés que les 3 piliers de l'audit). Cocher 0 problème
+  // sur un critère = "Bon", 1 = "En cours", 2+ = "Critique".
+  // =========================================================
+  const PROBLEMS = [
+    { crit: 'struct1', label: "Je ne connais pas le coût réel de mes plats" },
+    { crit: 'struct1', label: "Mes prix de vente ne sont pas ajustés aux coûts actuels" },
+    { crit: 'struct1', label: "Je gaspille beaucoup de matière première" },
+    { crit: 'struct2', label: "Je perds du temps à faire les plannings" },
+    { crit: 'struct2', label: "Les rôles ne sont pas clairs dans l'équipe" },
+    { crit: 'struct2', label: "Je fais trop d'heures supplémentaires non maîtrisées" },
+    { crit: 'acq1', label: "Ma fiche Google n'est pas à jour" },
+    { crit: 'acq1', label: "Je n'ai pas assez d'avis clients" },
+    { crit: 'acq1', label: "Je dépends trop du bouche-à-oreille" },
+    { crit: 'acq2', label: "Je ne fidélise pas mes clients réguliers" },
+    { crit: 'acq2', label: "Je n'ai pas de moyen de recontacter mes clients" },
+    { crit: 'vis1', label: "Je ne suis pas mes chiffres régulièrement" },
+    { crit: 'vis1', label: "Je ne sais pas précisément où part ma trésorerie" },
+    { crit: 'vis2', label: "Je n'ai pas d'objectifs chiffrés clairs" },
+    { crit: 'vis2', label: "Je n'ai pas le temps de me projeter sur l'avenir" },
+    { crit: 'charges', label: "Mes charges fixes ont augmenté sans que je m'en rende compte" },
+    { crit: 'charges', label: "Mes charges variables (énergie, consommables) explosent" },
+    { crit: 'charges', label: "Je ne renégocie pas mes contrats régulièrement" },
   ];
-  document.querySelectorAll('.pillar-q').forEach(q => {
-    const picker = q.querySelector('.status-picker');
-    STATUS_OPTS.forEach((opt, i) => {
-      const btn = document.createElement('div');
-      btn.className = 'status-opt' + (i === 1 ? ' selected' : '');
-      btn.textContent = opt.label;
-      btn.dataset.pct = opt.pct;
-      btn.addEventListener('click', () => {
-        picker.querySelectorAll('.status-opt').forEach(o => o.classList.remove('selected'));
-        btn.classList.add('selected');
+  const CRIT_META = {
+    struct1: { pillar: 'Structure & opérations', label: 'Suivi de vos coûts (food cost, marges par plat)' },
+    struct2: { pillar: 'Structure & opérations', label: "Organisation de l'équipe (plannings, rôles clairs)" },
+    acq1: { pillar: 'Acquisition & Vente', label: 'Visibilité en ligne (Google, réseaux sociaux, avis)' },
+    acq2: { pillar: 'Acquisition & Vente', label: 'Fidélisation de vos clients' },
+    vis1: { pillar: 'Vision & Pilotage', label: 'Suivi mensuel de vos chiffres' },
+    vis2: { pillar: 'Vision & Pilotage', label: 'Clarté de vos objectifs chiffrés' },
+  };
+  const GOALS = [
+    "Améliorer ma rentabilité (marge, food cost)",
+    "Réduire ma masse salariale sans perdre en qualité",
+    "Stabiliser mon équipe et réduire le turnover",
+    "Développer ma visibilité en ligne",
+    "Fidéliser davantage mes clients",
+    "Mettre en place un vrai pilotage mensuel",
+    "Sécuriser ma trésorerie",
+    "Augmenter mon chiffre d'affaires",
+    "Réduire mon implication opérationnelle au quotidien",
+    "Structurer l'entreprise pour pouvoir déléguer",
+    "Ouvrir un second point de vente",
+    "Développer une offre complémentaire (traiteur, livraison, vente à emporter)",
+    "Digitaliser mes outils de gestion",
+    "Préparer une transmission ou une revente",
+    "Obtenir un label ou une reconnaissance qualité",
+  ];
+
+  function buildCheckGrid(containerId, items, getLabel) {
+    const el = document.getElementById(containerId);
+    const selected = new Set();
+    el.innerHTML = '';
+    items.forEach((item, i) => {
+      const label = getLabel(item);
+      const row = document.createElement('div');
+      row.className = 'check-item';
+      row.innerHTML = `<span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span class="txt">${label}</span>`;
+      row.addEventListener('click', () => {
+        row.classList.toggle('selected');
+        if (row.classList.contains('selected')) selected.add(i); else selected.delete(i);
       });
-      picker.appendChild(btn);
+      el.appendChild(row);
     });
-  });
+    return selected;
+  }
+
+  const selectedProblems = buildCheckGrid('problemsGrid', PROBLEMS, p => p.label);
+  const selectedGoals = buildCheckGrid('goalsGrid', GOALS, g => g);
+
+  function wireCustomAdd(inputId, btnId, chipsId, store) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    const chips = document.getElementById(chipsId);
+    function add() {
+      const val = input.value.trim();
+      if (!val) return;
+      store.push(val);
+      input.value = '';
+      const chip = document.createElement('span');
+      chip.className = 'custom-chip';
+      chip.innerHTML = `${val} <button type="button" aria-label="Retirer">✕</button>`;
+      chip.querySelector('button').addEventListener('click', () => {
+        const idx = store.indexOf(val);
+        if (idx !== -1) store.splice(idx, 1);
+        chip.remove();
+      });
+      chips.appendChild(chip);
+    }
+    btn.addEventListener('click', add);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+  }
+  const customProblems = [];
+  const customGoals = [];
+  wireCustomAdd('problemCustomInput', 'problemCustomBtn', 'problemCustomChips', customProblems);
+  wireCustomAdd('goalCustomInput', 'goalCustomBtn', 'goalCustomChips', customGoals);
 
   // ---- Wizard navigation ----
   const steps = Array.from(document.querySelectorAll('.step'));
@@ -329,9 +505,26 @@ body{overflow-x:hidden;}
 
   function stepValid(i) {
     const required = steps[i].querySelectorAll('[required]');
-    for (const el of required) { if (!el.value.trim()) { el.focus(); if (window.toast) toast('Merci de remplir ce champ.', 'error'); return false; } }
+    for (const el of required) {
+      if (!el.value.trim()) { el.focus(); if (window.toast) toast('Merci de remplir ce champ.', 'error'); return false; }
+      if (el.value === '__other__') {
+        const other = document.getElementById(el.id + '_other');
+        if (other && !other.value.trim()) { other.focus(); if (window.toast) toast('Merci de préciser ce champ.', 'error'); return false; }
+      }
+    }
     return true;
   }
+
+  // "Autre (préciser)" : affiche/masque l'input voisin selon le choix du select.
+  document.querySelectorAll('select').forEach(sel => {
+    const other = document.getElementById(sel.id + '_other');
+    if (!other) return;
+    sel.addEventListener('change', () => {
+      const isOther = sel.value === '__other__';
+      other.classList.toggle('show', isOther);
+      if (isOther) other.focus(); else other.value = '';
+    });
+  });
 
   nextBtn.addEventListener('click', () => {
     if (!stepValid(current)) return;
@@ -341,12 +534,38 @@ body{overflow-x:hidden;}
 
   // ---- Generation engine (rule-based, no AI) ----
   const fmt = (n) => Math.round(n).toLocaleString('fr-FR');
-  const num = (id) => parseFloat(document.getElementById(id).value) || 0;
-  const txt = (id) => document.getElementById(id).value.trim();
+  // "Autre (préciser)" : quand un select vaut __other__, on lit son input
+  // texte/nombre voisin (id + "_other") à la place de la valeur du select.
+  const num = (id) => {
+    const el = document.getElementById(id);
+    if (el.value === '__other__') return parseFloat(document.getElementById(id + '_other').value) || 0;
+    return parseFloat(el.value) || 0;
+  };
+  const txt = (id) => {
+    const el = document.getElementById(id);
+    if (el.value === '__other__') return document.getElementById(id + '_other').value.trim();
+    return el.value.trim();
+  };
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 
-  // PLAYBOOKS est défini dans playbooks.js (chargé plus haut) — partagé avec
-  // le bouton "Synchroniser le plan" du tableau de bord.
+  // Dérive les 6 critères (mêmes clés que l'ancien auto-évaluation) à partir
+  // des problématiques cochées par le client : 0 coché = Bon, 1 = En cours,
+  // 2+ = Critique. Les problématiques "charges" alimentent uniquement le
+  // texte de situation, pas un critère des 3 piliers historiques.
+  function deriveRatings(problemIdx) {
+    const counts = { struct1: 0, struct2: 0, acq1: 0, acq2: 0, vis1: 0, vis2: 0 };
+    problemIdx.forEach(i => {
+      const crit = PROBLEMS[i].crit;
+      if (counts[crit] !== undefined) counts[crit]++;
+    });
+    const ratings = {};
+    Object.keys(CRIT_META).forEach(key => {
+      const n = counts[key];
+      const rated = n >= 2 ? { label: 'Critique', pct: 15 } : n === 1 ? { label: 'En cours', pct: 45 } : { label: 'Bon', pct: 70 };
+      ratings[key] = { label: CRIT_META[key].label, status: rated.label, pct: rated.pct };
+    });
+    return ratings;
+  }
 
   function buildPillars(ratings) {
     const axisDefs = [
@@ -365,32 +584,34 @@ body{overflow-x:hidden;}
     return Object.values(ratings).sort((a, b) => a.pct - b.pct)[0];
   }
 
-  function buildAudit(f, ratings) {
-    const gross = f.price > 0 ? Math.round((f.price - f.cost) / f.price * 100) : null;
-    const competitors = [];
-    if (f.c1name) competitors.push({ name: f.c1name, offer: f.c1offer, our_advantage: f.c1our, their_advantage: f.c1their });
-    if (f.c2name) competitors.push({ name: f.c2name, offer: f.c2offer, our_advantage: f.c2our, their_advantage: f.c2their });
-    const avgSale = Math.round((f.ticketLunch + f.ticketDinner) / 2);
-    const overview = { revenue: f.revenue, employees: f.employees, fixed_costs: f.fixedcosts, avg_sale: avgSale, margin_pct: f.margin, cash: f.cash };
-    const restaurantMetrics = { food_cost_pct: f.foodcost, payroll_pct: f.payroll, covers_per_week: f.covers, avg_ticket_lunch: f.ticketLunch, avg_ticket_dinner: f.ticketDinner };
+  function buildAudit(f, ratings, problemLabels) {
+    const chargesProblems = problemLabels.filter((_, idx) => PROBLEMS[idx] && PROBLEMS[idx].crit === 'charges');
+    const fixedCosts = Math.round(f.revenue * f.fixedcostsPct / 100);
+    const overview = { revenue: f.revenue, employees: f.employees, fixed_costs: fixedCosts, avg_sale: null, margin_pct: f.margin, cash: Math.round(fixedCosts / 12 * f.cashMonthsFactor) };
+    const restaurantMetrics = { food_cost_pct: f.foodcost, payroll_pct: f.payroll, covers_per_week: null, avg_ticket_lunch: null, avg_ticket_dinner: null };
     return {
-      company_name: f.company, contact_name: f.contact, establishment_type: f.type, seats: f.seats, opening_hours: f.hours, company_description: f.desc,
+      company_name: f.company, contact_name: f.contact, establishment_type: f.type, seats: f.seats, opening_hours: f.hours,
+      company_description: `${f.type} — ${f.hours}.`,
       overview, restaurant_metrics: restaurantMetrics,
       financial_diagnosis: financialDiagnosis(overview, restaurantMetrics),
-      team: { turnover_count: f.turnover, avg_tenure_months: f.tenure, hardest_role: f.hardestrole },
-      acquisition: { main_channel: f.channel, google_rating: f.grating, google_reviews: f.greviews, recurring_clients_pct: f.recurring, platforms: f.platforms },
-      main_product: { name: f.prodname, tag: f.prodtag, price_ht: f.price, direct_cost: f.cost, gross_margin_pct: gross, net_margin_pct: f.margin, weekly_volume: f.prodvolume },
-      financial_history: [{ year: 'Année N', revenue: f.revenue, gross_margin_pct: gross, net_result_pct: f.margin, net_debt: null, cash: f.cash }],
-      competitors,
-      market_opportunities: f.opps.split('\n').map(s => s.trim()).filter(Boolean),
-      growth_journey: { story: f.story, vision_12m: f.vision, objective_4m: f.obj4m, blocker: f.blocker, solutions: f.solutions },
-      pillars: buildPillars(ratings)
+      team: { turnover_count: f.turnover, avg_tenure_months: null, hardest_role: f.hardestrole },
+      acquisition: { main_channel: f.channel, google_rating: f.grating, google_reviews: f.greviews, recurring_clients_pct: f.recurring, platforms: '' },
+      main_product: null,
+      financial_history: [{ year: 'Année N', revenue: f.revenue, gross_margin_pct: null, net_result_pct: f.margin, net_debt: null, cash: overview.cash }],
+      competitors: [],
+      market_opportunities: f.customGoals.length ? f.customGoals : [],
+      growth_journey: {
+        blocker: problemLabels.slice(0, 3).join(' ') || null,
+        solutions: chargesProblems.length ? chargesProblems.join(' ') : null,
+      },
+      pillars: buildPillars(ratings),
+      selected_problems: problemLabels,
+      selected_goals: f.goalLabels
     };
   }
 
   function buildPlan(f, audit, ratings) {
     const targetRevenue = f.revenue * (1 + f.growth / 100);
-    const targetMargin = Math.max(f.margin + 4, 10);
     const targetFoodCost = clamp(f.foodcost - 3, 20, 100);
     const foodCostSavings = f.revenue * 0.03;
     const targetPayroll = clamp(f.payroll - 2, 15, 100);
@@ -399,38 +620,48 @@ body{overflow-x:hidden;}
     const weak = weakestCriterion(ratings);
     const fd = audit.financial_diagnosis;
     const focusLabel = pickFocusLabel(audit);
-    const topCompetitor = audit.competitors[0];
-    const topOpportunity = audit.market_opportunities[0];
 
+    // Priorité 1 : la rentabilité (EBITDA) n'est pas un chiffre à atteindre puis
+    // oublier — c'est un plancher à dépasser autant que possible. Food cost et
+    // masse salariale sont des plafonds à faire baisser le plus possible, pas
+    // des cibles à "atteindre pile". Priorité 2 : le côté duplicable — un
+    // restaurant qui tourne sans dépendre en permanence du dirigeant et dont
+    // les process sont documentés est un restaurant qui peut se dupliquer.
     const vision12 = [
+      `Dépasser durablement ${fd.ebitda_target}% d'EBITDA (actuellement ${fd.ebitda_pct}%) — la vraie cible n'est pas ce chiffre mais le maximum atteignable au-delà.`,
+      `Faire baisser votre food cost le plus possible sous ${targetFoodCost}% (actuellement ${f.foodcost}%, plafond métier 28-30%), soit environ ${fmt(foodCostSavings)}€ de marge récupérée sur l'année si vous tenez ce niveau.`,
+      `Faire baisser votre masse salariale le plus possible sous ${targetPayroll}% du CA (actuellement ${f.payroll}%, plafond métier ~30%) sans dégrader la qualité de service.`,
+      `Rendre votre activité duplicable : manuel opératoire à jour, rôles clarifiés, process documentés — la base indispensable avant tout second point de vente.`,
       `Atteindre ${fmt(targetRevenue)}€ de chiffre d'affaires annuel (+${f.growth}%) en sécurisant un flux de clients récurrents.`,
-      `Ramener votre food cost de ${f.foodcost}% à ${targetFoodCost}% (cible métier : 28-30%), soit environ ${fmt(foodCostSavings)}€ de marge récupérée sur l'année.`,
-      `Optimiser votre masse salariale de ${f.payroll}% à ${targetPayroll}% du CA (cible métier : ~30%) sans dégrader la qualité de service.`,
-      `Faire progresser votre EBITDA estimé de ${fd.ebitda_pct}% vers la cible de ${fd.ebitda_target}%${fd.top_lever ? `, en commençant par : ${fd.top_lever.label.toLowerCase()}` : ''}.`,
       `Réduire votre implication opérationnelle de ${f.involvNow}% à ${f.involvTarget}% grâce à une équipe autonome et des process clairs.`,
       `Faire passer votre taux de clients récurrents de ${f.recurring}% à ${targetRecurring}% grâce à un programme de fidélisation actif.`,
-      `Stabiliser votre équipe pour réduire le turnover (actuellement ${f.turnover} départ${f.turnover > 1 ? 's' : ''} sur 12 mois), en particulier sur le poste de ${f.hardestrole || 'vos postes clés'}.`,
-      topCompetitor ? `Renforcer votre avantage face à ${topCompetitor.name} en capitalisant sur : ${topCompetitor.our_advantage || 'vos points forts'}.` : `Mettre en place un tableau de bord mensuel complet (CA, marge, trésorerie) pour piloter sereinement la croissance.`
+      `Stabiliser votre équipe pour réduire le turnover, en particulier sur le poste de ${f.hardestrole || 'vos postes clés'}.`,
     ];
-    if (f.extra) vision12.push(f.extra);
+    // On complète avec les objectifs choisis par le client, sans dépasser 9 items au total.
+    // Les objectifs tapés à la main passent avant les cases cochées : c'est ce que le
+    // client a jugé assez important pour l'écrire lui-même.
+    const orderedGoals = f.customGoals.concat(f.goalLabels.filter(g => !f.customGoals.includes(g)));
+    orderedGoals.forEach(g => { if (vision12.length < 9 && !vision12.some(v => v.includes(g))) vision12.push(g); });
 
     const priorities4 = [
       `Mettre en place un suivi hebdomadaire du food cost et viser une première baisse de ${f.foodcost}% à ${clamp(f.foodcost - 1, 20, 100)}%.`,
       `Lancer un premier palier de délégation : passer de ${f.involvNow}% à ${Math.max(f.involvTarget, f.involvNow - 15)}% d'implication opérationnelle.`,
       `Passer de ${f.greviews} à ${f.greviews + 20} avis Google et viser une note de ${targetRating}/5, en structurant la demande d'avis en fin de service.`,
-      `Clarifier vos indicateurs financiers clés (trésorerie, marge, panier moyen midi/soir).`,
-      topOpportunity ? `Tester cette piste sur 4 semaines : ${topOpportunity}` : `Identifier et tester une nouvelle piste de développement.`,
+      `Clarifier vos indicateurs financiers clés (trésorerie, marge).`,
       `Sécuriser le poste de ${f.hardestrole || 'vos postes clés'} pour limiter le risque de départ dans les 4 prochains mois.`,
       `Réaliser un premier point mensuel chiffré avec votre DG pour ajuster le plan.`,
-      fd && fd.top_lever ? `Prioriser l'amélioration de : ${focusLabel} (chiffres au-delà de la cible métier — priorité au diagnostic financier).` : `Prioriser l'amélioration de : ${weak.label} (identifié comme le point le plus fragile).`
+      fd && fd.top_lever ? `Prioriser la rentabilité par : ${fd.top_lever.label} — c'est le levier qui pèse le plus sur votre EBITDA aujourd'hui.` : `Prioriser l'amélioration de : ${weak.label} (identifié comme le point le plus fragile).`,
     ];
+    const customProblemsSet = new Set(f.customProblems);
+    const orderedProblems = f.problemLabels.filter(p => customProblemsSet.has(p)).concat(f.problemLabels.filter(p => !customProblemsSet.has(p)));
+    orderedProblems.slice(0, 3).forEach(p => { if (priorities4.length < 8) priorities4.push(`Traiter en priorité : ${p}`); });
 
     const axes = [
       { name: 'Structure & opérations', subtitle: 'Optimisation structurelle',
-        situation: `${ratings.struct1.label} : ${ratings.struct1.status}. ${ratings.struct2.label} : ${ratings.struct2.status}. Food cost actuel : ${f.foodcost}%. Masse salariale : ${f.payroll}%. Turnover : ${f.turnover} départ(s)/12 mois.`,
+        situation: `${ratings.struct1.label} : ${ratings.struct1.status}. ${ratings.struct2.label} : ${ratings.struct2.status}. Food cost actuel : ${f.foodcost}%. Masse salariale : ${f.payroll}%.`,
         actions: [PLAYBOOKS[ratings.struct1.label].objective, PLAYBOOKS[ratings.struct2.label].objective] },
       { name: 'Acquisition & Vente', subtitle: 'Performance commerciale',
-        situation: `${ratings.acq1.label} : ${ratings.acq1.status}. ${ratings.acq2.label} : ${ratings.acq2.status}. Canal principal : ${f.channel || 'non précisé'}. Note Google : ${f.grating}/5 (${f.greviews} avis). Clients récurrents estimés : ${f.recurring}%.`,
+        situation: `${ratings.acq1.label} : ${ratings.acq1.status}. ${ratings.acq2.label} : ${ratings.acq2.status}. Canal principal : ${f.channel || 'non précisé'}. Note Google : ${f.grating}/5 (${f.greviews} avis).`,
         actions: [PLAYBOOKS[ratings.acq1.label].objective, PLAYBOOKS[ratings.acq2.label].objective] },
       { name: 'Vision & Pilotage', subtitle: 'Direction stratégique',
         situation: `${ratings.vis1.label} : ${ratings.vis1.status}. ${ratings.vis2.label} : ${ratings.vis2.status}.`,
@@ -465,27 +696,22 @@ body{overflow-x:hidden;}
     if (!stepValid(current)) return;
     submitBtn.disabled = true; submitBtn.textContent = 'Génération en cours...';
 
-    const ratings = {};
-    document.querySelectorAll('.pillar-q').forEach(q => {
-      const key = q.dataset.crit;
-      const selected = q.querySelector('.status-opt.selected');
-      ratings[key] = { label: q.dataset.label, status: selected.textContent, pct: Number(selected.dataset.pct) };
-    });
+    const problemIdx = Array.from(selectedProblems);
+    const problemLabels = problemIdx.map(i => PROBLEMS[i].label).concat(customProblems);
+    const goalLabels = Array.from(selectedGoals).map(i => GOALS[i]).concat(customGoals);
+    const ratings = deriveRatings(problemIdx);
 
     const f = {
-      company: txt('f_company'), contact: txt('f_contact'), type: txt('f_type'), seats: num('f_seats'), hours: txt('f_hours'), desc: txt('f_desc'),
-      revenue: num('f_revenue'), employees: num('f_employees'), fixedcosts: num('f_fixedcosts'), margin: num('f_margin'), cash: num('f_cash'),
-      foodcost: num('f_foodcost'), payroll: num('f_payroll'), covers: num('f_covers'), ticketLunch: num('f_ticket_lunch'), ticketDinner: num('f_ticket_dinner'),
-      prodname: txt('f_prodname'), prodtag: txt('f_prodtag'), price: num('f_price'), cost: num('f_cost'), prodvolume: num('f_prodvolume'),
-      turnover: num('f_turnover'), tenure: num('f_tenure'), hardestrole: txt('f_hardestrole'),
-      channel: txt('f_channel'), grating: num('f_grating'), greviews: num('f_greviews'), recurring: num('f_recurring'), platforms: txt('f_platforms'),
-      c1name: txt('c1_name'), c1offer: txt('c1_offer'), c1our: txt('c1_our'), c1their: txt('c1_their'),
-      c2name: txt('c2_name'), c2offer: txt('c2_offer'), c2our: txt('c2_our'), c2their: txt('c2_their'),
-      opps: txt('f_opps'), story: txt('f_story'), vision: txt('f_vision'), obj4m: txt('f_obj4m'), blocker: txt('f_blocker'), solutions: txt('f_solutions'),
-      growth: num('f_growth'), contract: num('f_contract'), involvNow: num('f_involv_now'), involvTarget: num('f_involv_target'), extra: txt('f_extra')
+      company: txt('f_company'), contact: txt('f_contact'), type: txt('f_type'), seats: num('f_seats'), hours: txt('f_hours'),
+      revenue: num('f_revenue'), foodcost: num('f_foodcost'), payroll: num('f_payroll'), margin: num('f_margin'),
+      fixedcostsPct: num('f_fixedcosts_pct'), cashMonthsFactor: num('f_cash'),
+      employees: num('f_employees'), turnover: num('f_turnover'), hardestrole: txt('f_hardestrole'),
+      channel: txt('f_channel'), grating: num('f_grating'), greviews: num('f_greviews'), recurring: num('f_recurring'),
+      growth: num('f_growth'), contract: num('f_contract'), involvNow: num('f_involv_now'), involvTarget: num('f_involv_target'),
+      problemLabels, goalLabels, customGoals, customProblems
     };
 
-    const audit = buildAudit(f, ratings);
+    const audit = buildAudit(f, ratings, problemLabels);
     const plan = buildPlan(f, audit, ratings);
 
     const { error: e1 } = await supabaseClient.from('audits').upsert({ user_id: user.id, data: audit }, { onConflict: 'user_id' });
