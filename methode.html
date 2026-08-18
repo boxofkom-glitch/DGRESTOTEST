@@ -16,6 +16,56 @@
 .process-card h3{font-size:18px;margin-bottom:8px;color:var(--ink);}
 .process-card p{font-size:14px;}
 .stats-section{max-width:1120px;margin:40px auto 0;padding:0 16px;}
+
+/* raisonnement — chaîne de puces sur fond sombre */
+.reasoning{background:var(--ink);border-radius:var(--r-xl);max-width:1160px;margin:0 auto;overflow:hidden;position:relative;}
+.reasoning .glow-a{width:400px;height:400px;background:radial-gradient(circle,rgba(43,75,255,.16),transparent 70%);top:-100px;left:-80px;}
+.reasoning-inner{position:relative;z-index:1;padding:52px 26px;}
+.reasoning .section-head .eyebrow{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
+.reasoning .section-head h2{color:#fff;}
+.reasoning .section-head p{color:rgba(255,255,255,.6);}
+.reasoning-chain{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;margin-top:8px;}
+.chain-node{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:10px 18px;font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap;}
+.chain-node.hl{background:var(--lime);color:var(--ink);border-color:var(--lime);}
+.chain-arrow{color:rgba(255,255,255,.28);font-size:15px;flex:0 0 auto;}
+
+/* 11 domaines */
+.domain-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media (max-width:820px){.domain-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.domain-grid{grid-template-columns:1fr;}}
+.domain-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 18px;display:flex;gap:12px;align-items:flex-start;}
+.domain-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--muted);}
+.domain-card h4{font-size:14.5px;font-weight:800;margin-bottom:4px;color:var(--ink);}
+.domain-card p{font-size:12.5px;line-height:1.5;}
+
+/* drill-down food cost */
+.drilldown{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1120px;margin:0 auto;}
+.drilldown-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 20px;position:relative;}
+.drilldown-step::after{content:"→";position:absolute;right:-19px;top:50%;transform:translateY(-50%);color:var(--muted-dim);font-size:16px;z-index:1;}
+.drilldown-step:last-child::after{content:none;}
+.drilldown-step .process-num{margin-bottom:14px;}
+.drilldown-step h4{font-size:15px;font-weight:800;margin-bottom:6px;color:var(--ink);}
+.drilldown-step p{font-size:13px;}
+@media (max-width:820px){.drilldown{grid-template-columns:1fr 1fr;}.drilldown-step::after{content:none;}}
+@media (max-width:520px){.drilldown{grid-template-columns:1fr;}}
+
+/* telescope temporel */
+.telescope-viz{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1120px;margin:0 auto;}
+.tv-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 18px;text-align:center;position:relative;}
+.tv-step::after{content:"→";position:absolute;right:-19px;top:50%;transform:translateY(-50%);color:var(--muted-dim);font-size:16px;z-index:1;}
+.tv-step:last-child::after{content:none;}
+.tv-step .eyebrow{margin-bottom:10px;padding:5px 12px 5px 10px;font-size:10.5px;}
+.tv-step b{display:block;font-size:19px;color:var(--ink);margin-bottom:6px;}
+.tv-step p{font-size:12.5px;}
+.tv-step.tv-active{border-color:var(--lime);background:var(--lime-dim);box-shadow:var(--shadow-lime);}
+@media (max-width:820px){.telescope-viz{grid-template-columns:1fr 1fr;}.tv-step::after{content:none;}}
+@media (max-width:520px){.telescope-viz{grid-template-columns:1fr;}}
+
+.proof-banner{max-width:1120px;margin:0 auto;background:linear-gradient(120deg,var(--lime),var(--lime-2));border-radius:var(--r-xl);padding:34px 28px;color:var(--ink);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;}
+.proof-banner h3{font-size:20px;margin-bottom:6px;color:var(--ink);}
+.proof-banner p{color:rgba(13,13,15,.7);font-size:13.5px;}
+.proof-banner .big{font-weight:900;font-size:30px;color:var(--ink);white-space:nowrap;}
+@media (max-width:560px){.proof-banner{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -77,6 +127,101 @@
       <div><b class="cnt" data-target="7">0</b><span>tâches concrètes par semaine dans votre plan</span></div>
       <div><b class="cnt" data-target="3">0</b><span>axes stratégiques suivis en continu</span></div>
       <div><b>24/7</b><span>votre DG surveille vos chiffres et vos prix</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="raisonnement">
+  <div class="reasoning">
+    <span class="glow glow-a"></span>
+    <div class="reasoning-inner">
+      <div class="section-head reveal" style="max-width:640px;">
+        <div class="eyebrow">Comment votre DG réfléchit</div>
+        <h2>Pas un tableau de chiffres. Un raisonnement, à chaque décision.</h2>
+        <p>Chaque action de votre plan répond à cette même logique — celle qu'un vrai directeur général applique, restaurant après restaurant.</p>
+      </div>
+      <div class="reasoning-chain reveal">
+        <span class="chain-node">Objectif</span><span class="chain-arrow">→</span>
+        <span class="chain-node">État actuel</span><span class="chain-arrow">→</span>
+        <span class="chain-node">Écart</span><span class="chain-arrow">→</span>
+        <span class="chain-node">Ce qui bloque</span><span class="chain-arrow">→</span>
+        <span class="chain-node">Stratégie</span><span class="chain-arrow">→</span>
+        <span class="chain-node">Actions de la semaine</span><span class="chain-arrow">→</span>
+        <span class="chain-node">Résultat mesuré</span><span class="chain-arrow">→</span>
+        <span class="chain-node hl">Nouvel objectif</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="domaines">
+  <div class="section-head reveal" style="max-width:680px;">
+    <div class="eyebrow">Ce qui est suivi</div>
+    <h2>11 domaines. Un seul moteur qui les fait parler entre eux.</h2>
+    <p>Un consultant regarde un sujet à la fois. Votre DG croise les 11 en continu — parce qu'un problème de masse salariale est presque toujours aussi un problème de planning, de CA, ou d'organisation.</p>
+  </div>
+  <div class="domain-grid">
+    <div class="domain-card glow-card reveal"><span class="domain-num">01</span><div><h4>Rentabilité & finance</h4><p>Marge nette, EBITDA, trésorerie : la vue d'ensemble qui dit si le restaurant est en bonne santé.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">02</span><div><h4>Food cost</h4><p>Coût matière plat par plat, pertes, grammages, prix d'achat et de vente.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">03</span><div><h4>Masse salariale & RH</h4><p>Planning, heures supplémentaires, turnover, postes clés à sécuriser.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">04</span><div><h4>Charges fixes & variables</h4><p>Loyer, énergie, abonnements : ce qui grignote la marge sans qu'on le regarde.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">05</span><div><h4>Opérationnel</h4><p>Ouverture, fermeture, mise en place : les process du quotidien, écrits noir sur blanc.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">06</span><div><h4>Management</h4><p>Rôles clairs, légitimité, ce qui fait qu'une équipe suit — ou pas.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">07</span><div><h4>Recrutement & équipe</h4><p>Recruter la bonne personne, la former, la faire monter en compétence.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">08</span><div><h4>Marketing & acquisition</h4><p>Visibilité en ligne, réseaux sociaux, bouche-à-oreille : d'où viennent vos clients.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">09</span><div><h4>Expérience client</h4><p>Avis Google, fidélisation, taux de clients récurrents.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">10</span><div><h4>Vos objectifs personnels</h4><p>Le temps que vous voulez y consacrer, ce que ce métier doit vous apporter.</p></div></div>
+    <div class="domain-card glow-card reveal"><span class="domain-num">11</span><div><h4>Scale & développement</h4><p>2e point de vente, franchise : la suite, une fois les fondamentaux sécurisés.</p></div></div>
+  </div>
+</section>
+
+<section id="exemple">
+  <div class="section-head reveal" style="max-width:680px;">
+    <div class="eyebrow">Un exemple concret</div>
+    <h2>Comment on creuse un vrai problème de food cost.</h2>
+    <p>« Votre food cost est trop haut » ne dit rien d'actionnable. Votre DG descend jusqu'à la cause réelle, dans cet ordre.</p>
+  </div>
+  <div class="drilldown">
+    <div class="drilldown-step glow-card reveal"><div class="process-num">1</div><h4>Pertes</h4><p>Produits jetés, mal conservés, en surproduction : on repère où la matière part sans être vendue.</p></div>
+    <div class="drilldown-step glow-card reveal"><div class="process-num">2</div><h4>Portions</h4><p>Les grammages réellement servis, comparés à ce que dit la fiche technique.</p></div>
+    <div class="drilldown-step glow-card reveal"><div class="process-num">3</div><h4>Prix d'achat</h4><p>Vos tarifs fournisseurs actuels, comparés à ce qu'ils devraient être.</p></div>
+    <div class="drilldown-step glow-card reveal"><div class="process-num">4</div><h4>Prix de vente</h4><p>Vos prix de carte, ajustés ou non aux coûts réels du moment.</p></div>
+  </div>
+</section>
+
+<section id="operationnel">
+  <div class="section-head reveal" style="max-width:680px;">
+    <div class="eyebrow">Vous sortir de l'opérationnel</div>
+    <h2>Le vrai objectif : que le restaurant tourne sans vous.</h2>
+    <p>Pour chaque tâche que vous faites encore vous-même, une seule question compte : pourquoi personne d'autre ne la fait ?</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-card glow-card reveal"><div class="process-num">R</div><h3>Recruter</h3><p>La bonne personne pour reprendre une tâche que vous portez encore seul.</p></div>
+    <div class="process-card glow-card reveal"><div class="process-num">F</div><h3>Former</h3><p>Un manuel opératoire simple — qui, quoi, comment, à quelle fréquence — pas un savoir dans votre seule tête.</p></div>
+    <div class="process-card glow-card reveal"><div class="process-num">P</div><h3>Piloter</h3><p>Vous gardez la main sans reprendre la tâche : confiance, points réguliers, contrôle léger.</p></div>
+  </div>
+  <p class="reveal" style="max-width:680px;margin:24px auto 0;text-align:center;font-size:14.5px;">Le vrai test : partez deux semaines. Ce qui casse n'est pas un problème de personne — c'est un process qui manque encore. Ce qui tient tout seul, c'est ce qu'on peut dupliquer.</p>
+</section>
+
+<section id="temporel">
+  <div class="section-head reveal" style="max-width:680px;">
+    <div class="eyebrow">Votre plan, dans le temps</div>
+    <h2>Vous ne voyez jamais tout le chemin. Juste la prochaine étape qui compte.</h2>
+    <p>Votre DG garde la vision complète en tête. Vous, vous voyez toujours : où vous allez, où vous en êtes, et ce qu'il faut faire maintenant.</p>
+  </div>
+  <div class="telescope-viz">
+    <div class="tv-step reveal"><div class="eyebrow">12 mois</div><b>Vision</b><p>Où votre restaurant doit être dans un an.</p></div>
+    <div class="tv-step reveal"><div class="eyebrow">4 mois</div><b>Trajectoire</b><p>Les paliers qui mènent à la vision.</p></div>
+    <div class="tv-step reveal"><div class="eyebrow">Ce mois-ci</div><b>Plan</b><p>Les priorités du mois en cours.</p></div>
+    <div class="tv-step tv-active reveal"><div class="eyebrow">Cette semaine</div><b>Actions</b><p>Ce que vous cochez, concrètement.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof-banner reveal">
+      <div><h3>Vos fondamentaux sont bons ?</h3><p>Food cost et masse salariale dans les clous : votre plan bascule automatiquement vers le développement — 2e point de vente, franchise, salons professionnels.</p></div>
+      <div class="big">→ Scale</div>
     </div>
   </div>
 </section>

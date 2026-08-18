@@ -32,6 +32,12 @@
 
 .pillars{padding:16px 16px 24px;}
 
+.domain-teaser{max-width:1120px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:36px 30px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+.domain-teaser h3{font-size:clamp(20px,2.6vw,28px);margin:0 0 12px;}
+.domain-teaser p{font-size:14px;margin-bottom:18px;}
+.domain-teaser-chips{display:flex;flex-wrap:wrap;gap:8px;}
+@media (max-width:820px){.domain-teaser{grid-template-columns:1fr;}}
+
 .strip{padding:28px 16px;}
 .strip-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
 .strip-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-dim);width:100%;text-align:center;}
@@ -234,6 +240,22 @@
     <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><h4>Facturation en pilote automatique</h4><p>Gmail, Outlook ou une simple photo : chaque facture est lue ligne à ligne, avec un score de précision par document. Vous ne ressaisissez plus rien.</p></div>
     <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 4-6"/></svg></div><h4>Un plan d'action piloté par votre DG</h4><p>Objectifs 12 mois, priorités du trimestre, tâches de la semaine : votre DG traduit vos vrais chiffres en quick wins concrets, semaine après semaine.</p></div>
     <div class="pillar-card glow-card reveal"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5M13 5h6v6"/></svg></div><h4>Suivi en continu</h4><p>Votre espace client suit chaque tâche cochée, chaque alerte réglée et chaque point d'attention, pour ne plus jamais perdre le fil.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="domain-teaser reveal">
+      <div>
+        <div class="eyebrow">Pas un outil à un seul sujet</div>
+        <h3>11 domaines suivis en continu, croisés entre eux.</h3>
+        <p>Food cost, masse salariale, marketing, management, recrutement, scale... un problème de trésorerie est presque toujours aussi un problème de planning ou de carte. Votre DG voit les 11 en même temps.</p>
+        <a href="methode.html#domaines" class="btn-ghost">Voir les 11 domaines →</a>
+      </div>
+      <div class="domain-teaser-chips">
+        <span class="chip">Rentabilité</span><span class="chip">Food cost</span><span class="chip">Masse salariale</span><span class="chip">Charges</span><span class="chip">Opérationnel</span><span class="chip">Management</span><span class="chip">Recrutement</span><span class="chip">Marketing</span><span class="chip">Expérience client</span><span class="chip">Objectifs perso</span><span class="chip">Scale</span>
+      </div>
+    </div>
   </div>
 </section>
 
