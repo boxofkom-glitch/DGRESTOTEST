@@ -12,35 +12,24 @@
 .page-hero{padding:56px 16px 20px;text-align:center;}
 .page-hero h1{font-size:clamp(34px,5.5vw,58px);max-width:760px;margin:0 auto 14px;}
 
-/* ---- Calculateur de marge perdue (widget interactif) ---- */
-.calc-section{padding:24px 16px 56px;}
-.calc-card{position:relative;max-width:980px;margin:0 auto;background:var(--ink);border-radius:var(--r-xl);padding:44px 32px;overflow:hidden;}
-.calc-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(205,255,46,.16),transparent 70%);top:-160px;right:-120px;pointer-events:none;}
-.calc-head{position:relative;z-index:1;max-width:560px;margin:0 auto 36px;text-align:center;}
-.calc-head .eyebrow{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);}
-.calc-head h2{color:#fff;font-size:clamp(24px,3.4vw,34px);}
-.calc-head p{color:rgba(255,255,255,.55);margin-top:10px;font-size:14.5px;}
-.calc-body{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 1fr;gap:36px;align-items:center;}
-@media (max-width:760px){.calc-body{grid-template-columns:1fr;gap:28px;}}
-.calc-field{margin-bottom:26px;}
-.calc-field:last-child{margin-bottom:0;}
-.calc-field label{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.55);margin-bottom:12px;}
-.calc-val{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--lime);letter-spacing:0;text-transform:none;}
-.calc-field input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:rgba(255,255,255,.14);outline:none;cursor:pointer;}
-.calc-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--lime);border:3px solid var(--ink);box-shadow:0 0 0 2px var(--lime);cursor:grab;}
-.calc-field input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--lime);border:3px solid var(--ink);box-shadow:0 0 0 2px var(--lime);cursor:grab;border:none;}
-.calc-field input[type=range]:active::-webkit-slider-thumb{cursor:grabbing;transform:scale(1.1);}
-.calc-result{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-lg);padding:28px 24px;text-align:center;transition:border-color .3s,background .3s;}
-.calc-result-label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-bottom:10px;}
-.calc-result-num{display:block;font-family:var(--font-mono);font-size:clamp(34px,5vw,48px);font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1;}
-.calc-result-sub{display:block;font-size:12.5px;color:rgba(255,255,255,.4);margin-top:10px;}
-.calc-result.calc-danger{border-color:rgba(220,60,60,.4);background:rgba(220,60,60,.08);}
-.calc-result.calc-danger .calc-result-num{color:#ff6b6b;}
-.calc-result.calc-warn{border-color:rgba(205,255,46,.35);background:rgba(205,255,46,.06);}
-.calc-result.calc-warn .calc-result-num{color:var(--lime);}
-.calc-result.calc-ok{border-color:rgba(205,255,46,.5);background:rgba(205,255,46,.1);}
-.calc-result.calc-ok .calc-result-num{color:var(--lime);}
-.calc-cta{position:relative;z-index:1;text-align:center;margin-top:32px;}
+/* ---- Diagnostic express (funnel de questions) ---- */
+.funnel-section{padding:24px 16px 56px;}
+.funnel-card{position:relative;max-width:760px;margin:0 auto;background:var(--ink);border-radius:var(--r-xl);padding:44px 32px;overflow:hidden;min-height:340px;display:flex;flex-direction:column;}
+.funnel-glow{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(205,255,46,.16),transparent 70%);top:-160px;right:-120px;pointer-events:none;}
+.funnel-progress{position:relative;z-index:1;display:flex;gap:6px;justify-content:center;margin-bottom:28px;}
+.funnel-dot{width:28px;height:4px;border-radius:999px;background:rgba(255,255,255,.14);transition:background .25s;}
+.funnel-dot.done{background:var(--lime);}
+.funnel-body{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;}
+.funnel-q{color:#fff;font-size:clamp(19px,2.6vw,24px);font-weight:800;letter-spacing:-.02em;max-width:520px;margin:0 auto 26px;}
+.funnel-choices{display:flex;flex-direction:column;gap:10px;max-width:460px;margin:0 auto;width:100%;}
+.funnel-choice{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-md);padding:15px 18px;font-size:14.5px;font-weight:700;color:#fff;text-align:left;cursor:pointer;transition:background .18s,border-color .18s;}
+.funnel-choice:hover{background:rgba(255,255,255,.1);border-color:var(--lime);}
+.funnel-result-eyebrow{color:#fff;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);margin:0 auto 16px;}
+.funnel-result h2{color:#fff;font-size:clamp(22px,3vw,30px);max-width:560px;margin:0 auto 18px;}
+.funnel-result-list{list-style:none;display:flex;flex-direction:column;gap:10px;max-width:480px;margin:0 auto 26px;text-align:left;}
+.funnel-result-list li{display:flex;gap:10px;font-size:14px;color:rgba(255,255,255,.75);align-items:flex-start;}
+.funnel-result-list li svg{flex:0 0 auto;width:18px;height:18px;stroke:var(--lime);margin-top:1px;}
+.funnel-restart{background:none;border:none;color:rgba(255,255,255,.4);font-size:12.5px;text-decoration:underline;cursor:pointer;margin-top:14px;}
 
 .offer-card{position:relative;max-width:1120px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:36px 28px;box-shadow:var(--shadow);display:flex;flex-wrap:wrap;gap:32px;align-items:center;overflow:hidden;}
 .offer-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--lime),var(--primary));}
@@ -90,39 +79,16 @@
   <p style="max-width:520px;margin:0 auto;">Pas de contrat piège sur 12 mois. Un mois à la fois. Si ça ne vous sert plus, vous partez. Basta.</p>
 </section>
 
-<section class="calc-section">
-  <div class="calc-card reveal">
-    <span class="calc-glow"></span>
-    <div class="calc-head">
-      <div class="eyebrow">Calculez en direct</div>
-      <h2>Combien votre food cost vous coûte <em class="grad-text">vraiment</em> ?</h2>
-      <p>Bougez les curseurs avec vos vrais chiffres — la cible métier est fixée à 30%.</p>
-    </div>
-    <div class="calc-body">
-      <div class="calc-inputs">
-        <div class="calc-field">
-          <label>CA mensuel <span class="calc-val" id="caVal">15 000 €</span></label>
-          <input type="range" id="caSlider" min="5000" max="80000" step="1000" value="15000">
-        </div>
-        <div class="calc-field">
-          <label>Food cost actuel <span class="calc-val" id="fcVal">34%</span></label>
-          <input type="range" id="fcSlider" min="20" max="50" step="0.5" value="34">
-        </div>
-      </div>
-      <div class="calc-result" id="calcResultBox">
-        <span class="calc-result-label">Marge perdue chaque année</span>
-        <span class="calc-result-num" id="calcResult">0 €</span>
-        <span class="calc-result-sub" id="calcSub">par rapport à la cible de 30%</span>
-      </div>
-    </div>
-    <div class="calc-cta">
-      <a href="contact.html" class="btn-primary magnetic">Récupérer cette marge →</a>
-    </div>
+<section class="funnel-section">
+  <div class="funnel-card reveal" id="funnelCard">
+    <span class="funnel-glow"></span>
+    <div class="funnel-progress" id="funnelProgress"></div>
+    <div class="funnel-body" id="funnelBody"></div>
   </div>
 </section>
 
 <section>
-  <div class="offer-card tilt reveal">
+  <div class="offer-card reveal">
     <div class="offer-left">
       <h3>Votre DG Resto</h3>
       <div class="offer-price">300€<sup>/mois</sup></div>
@@ -158,50 +124,88 @@
 <script src="script.js"></script>
 <script>
 (function () {
-  const caSlider = document.getElementById('caSlider');
-  const fcSlider = document.getElementById('fcSlider');
-  const caVal = document.getElementById('caVal');
-  const fcVal = document.getElementById('fcVal');
-  const result = document.getElementById('calcResult');
-  const sub = document.getElementById('calcSub');
-  const box = document.getElementById('calcResultBox');
-  const TARGET = 30;
+  const QUESTIONS = [
+    {
+      q: "Combien de temps passez-vous chaque semaine à trier vos factures et vérifier vos chiffres ?",
+      choices: [
+        { label: "Moins d'1h, tout est nickel", need: null },
+        { label: "2 à 5h, à droite à gauche", need: 'factures' },
+        { label: "Je ne compte même plus", need: 'factures' },
+      ]
+    },
+    {
+      q: "Connaissez-vous précisément votre food cost du mois dernier ?",
+      choices: [
+        { label: "Oui, au chiffre près", need: null },
+        { label: "À peu près", need: 'foodcost' },
+        { label: "Pas vraiment", need: 'foodcost' },
+      ]
+    },
+    {
+      q: "Avez-vous un plan d'action suivi chaque semaine, écrit noir sur blanc ?",
+      choices: [
+        { label: "Oui, à jour et suivi", need: null },
+        { label: "Surtout dans ma tête", need: 'pilotage' },
+        { label: "Non, pas vraiment", need: 'pilotage' },
+      ]
+    },
+  ];
+  const NEED_TEXT = {
+    factures: "Vos factures lues et classées automatiquement, tous les jours — plus une minute perdue à trier.",
+    foodcost: "Votre food cost calculé au centime, plat par plat, sans tableur à tenir à jour.",
+    pilotage: "Un plan d'action réel, semaine par semaine, avec quelqu'un qui vous relance avant que ça traîne.",
+  };
+  const SCALE_TEXT = "Vos bases ont l'air solides. DG Resto vous aide à passer à l'étape suivante : dupliquer, ouvrir un second point de vente, franchiser.";
 
-  const fmtEuro = (n) => Math.round(n).toLocaleString('fr-FR') + ' €';
-  let displayed = 0;
-  let raf = null;
+  const progressEl = document.getElementById('funnelProgress');
+  const bodyEl = document.getElementById('funnelBody');
+  let step = 0;
+  const needs = [];
 
-  function animateTo(target) {
-    const start = displayed;
-    const startTime = performance.now();
-    const duration = 380;
-    if (raf) cancelAnimationFrame(raf);
-    function frame(now) {
-      const t = Math.min(1, (now - startTime) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      displayed = start + (target - start) * eased;
-      result.textContent = fmtEuro(displayed);
-      if (t < 1) raf = requestAnimationFrame(frame);
-    }
-    raf = requestAnimationFrame(frame);
+  function renderProgress() {
+    progressEl.innerHTML = QUESTIONS.map((_, i) => `<span class="funnel-dot${i < step ? ' done' : ''}"></span>`).join('');
   }
 
-  function update() {
-    const ca = Number(caSlider.value);
-    const fc = Number(fcSlider.value);
-    caVal.textContent = fmtEuro(ca);
-    fcVal.textContent = fc + '%';
-    const excess = fc - TARGET;
-    const yearlyLoss = Math.max(0, excess) / 100 * ca * 12;
-    animateTo(yearlyLoss);
-    box.classList.remove('calc-danger', 'calc-warn', 'calc-ok');
-    if (excess > 5) { box.classList.add('calc-danger'); sub.textContent = 'Food cost bien au-dessus de la cible de 30%'; }
-    else if (excess > 0) { box.classList.add('calc-warn'); sub.textContent = 'Proche de la cible de 30%, encore un peu de marge à reprendre'; }
-    else { box.classList.add('calc-ok'); sub.textContent = 'Vous êtes déjà dans la cible métier (30%) !'; }
+  function renderQuestion() {
+    renderProgress();
+    const q = QUESTIONS[step];
+    bodyEl.innerHTML = `
+      <div class="funnel-q">${q.q}</div>
+      <div class="funnel-choices">
+        ${q.choices.map((c, i) => `<button type="button" class="funnel-choice" data-i="${i}">${c.label}</button>`).join('')}
+      </div>
+    `;
+    bodyEl.querySelectorAll('.funnel-choice').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const choice = q.choices[Number(btn.dataset.i)];
+        if (choice.need) needs.push(choice.need);
+        step++;
+        if (step < QUESTIONS.length) renderQuestion(); else renderResult();
+      });
+    });
   }
 
-  [caSlider, fcSlider].forEach(el => el.addEventListener('input', update));
-  update();
+  function renderResult() {
+    progressEl.innerHTML = QUESTIONS.map(() => `<span class="funnel-dot done"></span>`).join('');
+    const uniqueNeeds = [...new Set(needs)];
+    const items = uniqueNeeds.length
+      ? uniqueNeeds.map(n => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${NEED_TEXT[n]}</li>`).join('')
+      : `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>${SCALE_TEXT}</li>`;
+    bodyEl.innerHTML = `
+      <div class="funnel-result">
+        <div class="eyebrow funnel-result-eyebrow">Votre diagnostic express</div>
+        <h2>Vous avez besoin de DG Resto pour :</h2>
+        <ul class="funnel-result-list">${items}</ul>
+        <a href="contact.html" class="btn-primary magnetic">Démarrer un audit gratuit →</a>
+        <div><button type="button" class="funnel-restart" id="funnelRestart">Refaire le diagnostic</button></div>
+      </div>
+    `;
+    document.getElementById('funnelRestart').addEventListener('click', () => {
+      step = 0; needs.length = 0; renderQuestion();
+    });
+  }
+
+  renderQuestion();
 })();
 </script>
 </body>
