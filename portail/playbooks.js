@@ -53,6 +53,26 @@ const PLAYBOOKS = {
       ["Premier point mensuel chiffré complet avec le DG.", "Présenter les indicateurs clés du mois (CA, marge, trésorerie).", "Identifier les 2 chiffres les plus préoccupants du mois.", "Identifier les 2 chiffres les plus positifs du mois.", "Décider des ajustements à apporter au tableau de bord.", "Valider le format définitif du tableau pour les mois suivants.", "Fixer les priorités pilotage du mois suivant avec votre DG."]
     ]
   },
+  'Manuel opératoire & fiches process': {
+    objective: "Poser les bases d'un manuel opératoire simple pour rendre l'établissement moins dépendant de vous et prêt à être dupliqué.",
+    kpis: ["[HEBDO] Fiches procédure rédigées", "[HEBDO] Fiches recettes standardisées"],
+    weeks: [
+      ["Lister toutes les tâches d'ouverture, dans l'ordre où elles se déroulent aujourd'hui.", "Lister toutes les tâches de fermeture, dans l'ordre.", "Choisir un format simple de fiche procédure (qui / quoi / comment / fréquence / point de contrôle).", "Rédiger la fiche procédure d'ouverture avec ce format.", "Rédiger la fiche procédure de fermeture avec ce format.", "Rédiger la fiche recette standardisée de votre plat signature (grammages, dressage, temps de préparation).", "Choisir où stocker ces fiches pour qu'elles soient accessibles à toute l'équipe."],
+      ["Rédiger les fiches recettes des 3 autres plats les plus vendus.", "Identifier les 3 postes les plus critiques à documenter en priorité.", "Rédiger une fiche procédure pour le poste le plus critique identifié.", "Définir les standards de présentation et de dressage pour vos plats phares.", "Vérifier que les fiches déjà rédigées sont compréhensibles par quelqu'un qui ne connaît pas le poste.", "Ajouter les points de contrôle qualité sur chaque fiche recette (aspect, température, temps).", "Partager les premières fiches avec l'équipe pour un premier retour."],
+      ["Faire tester une fiche procédure par un collaborateur qui ne fait pas habituellement cette tâche.", "Ajuster la fiche selon les difficultés rencontrées lors du test.", "Rédiger 2 fiches procédures supplémentaires sur des tâches répétitives (réception marchandise, mise en place).", "Identifier les erreurs fréquentes à noter sur chaque fiche pour anticiper les problèmes.", "Définir qui, dans l'équipe, sera responsable de maintenir ces fiches à jour.", "Vérifier la cohérence des fiches recettes avec le suivi food cost déjà en place.", "Compléter le classeur ou dossier avec toutes les fiches validées cette semaine."],
+      ["Faire un bilan : combien de fiches procédures et fiches recettes sont finalisées ce mois-ci.", "Identifier les 3 prochaines fiches prioritaires pour le mois suivant.", "Présenter le manuel opératoire, même incomplet, à toute l'équipe.", "Valider le format définitif des fiches avec votre DG.", "Vérifier que les fiches essentielles (ouverture, fermeture, plats phares) sont bien accessibles à tous.", "Vérifier que les fiches recettes couvrent au moins les plats représentant 70% de votre volume de vente.", "Fixer les priorités manuel opératoire du mois suivant avec votre DG."]
+    ]
+  },
+  'Développement de votre présence sur les réseaux sociaux': {
+    objective: "Créer ou relancer votre présence sur les réseaux sociaux et démarrer une régularité de publication, y compris en vidéo.",
+    kpis: ["[HEBDO] Publications réalisées", "[HEBDO] Vues cumulées"],
+    weeks: [
+      ["Créer ou vérifier vos comptes Instagram et/ou TikTok professionnels.", "Renseigner une bio claire avec votre adresse, vos horaires et un lien vers votre fiche Google.", "Choisir une photo de profil nette et reconnaissable (logo ou devanture).", "Lister 10 idées de contenus simples (coulisses cuisine, dressage d'un plat, portrait d'un membre de l'équipe).", "Filmer et poster une première vidéo courte (moins de 30 secondes) avec votre téléphone.", "Identifier 3 comptes locaux ou concurrents pour observer ce qui fonctionne chez eux.", "Fixer un rythme réaliste de publication pour les semaines à venir."],
+      ["Publier 2 nouveaux contenus (photo ou vidéo) dans la semaine.", "Répondre à tous les commentaires et messages reçus.", "Tester un format \"coulisses\" (préparation d'un plat en accéléré).", "Identifier le meilleur moment de la journée pour publier selon votre activité.", "Ajouter une story ou un post mettant en avant un membre de l'équipe.", "Vérifier que vos informations (horaires, menu, liens) sont identiques sur tous vos comptes.", "Noter le nombre de vues de chaque publication de la semaine."],
+      ["Publier 2 nouveaux contenus dans la semaine, dont au moins une vidéo.", "Tester un format différent de la semaine précédente (avant/après, recette minute, avis client filmé).", "Identifier le contenu ayant obtenu le plus de vues jusqu'ici.", "Reproduire ce qui a le mieux fonctionné avec une variante.", "Solliciter un client satisfait pour un témoignage filmé, avec son accord.", "Mettre à jour votre fiche Google avec 1 à 2 nouvelles photos issues des contenus publiés.", "Continuer à répondre aux commentaires et messages sous 24h."],
+      ["Faire le bilan du mois : nombre de publications, vues cumulées, nouveaux abonnés.", "Identifier les 2 formats de contenu à poursuivre le mois suivant.", "Identifier les formats à abandonner car peu performants.", "Préparer un calendrier de publication pour le mois suivant.", "Vérifier que vos comptes réseaux sociaux et votre fiche Google renvoient bien les uns vers les autres.", "Solliciter un deuxième témoignage client filmé.", "Fixer les priorités réseaux sociaux du mois suivant avec votre DG."]
+    ]
+  },
   'Clarté de vos objectifs chiffrés': {
     objective: "Traduire votre vision en objectifs chiffrés clairs.",
     kpis: ["[HEBDO] Avancement des objectifs du mois"],
@@ -116,35 +136,154 @@ function pickFocusLabel(audit) {
   return allCriteria.slice().sort((a, b) => (a.pct ?? 100) - (b.pct ?? 100))[0].label;
 }
 
-// Reconstruit le mois 1 (objectif + kpis + 4 semaines de 7 tâches) à partir
-// du pilier prioritaire (diagnostic financier ou, à défaut, critère le plus
-// fragile trouvé dans audit.pillars). Utilisé par le bouton "Synchroniser le
-// plan" pour rafraîchir un plan déjà généré sans perdre les cases cochées.
-function syncMonth1FromPlaybook(audit, existingMonth1) {
-  const focusLabel = pickFocusLabel(audit);
-  if (!focusLabel) return null;
-  const playbook = PLAYBOOKS[focusLabel];
-  if (!playbook) return null;
+// Domaines transverses toujours proposés en complément du pilier le plus
+// urgent : duplicabilité (manuel opératoire) et acquisition (réseaux sociaux).
+// Objectif : qu'un mois ne soit jamais 100% focalisé sur un seul sujet (ex.
+// food cost) — le client doit sentir des victoires rapides sur plusieurs
+// fronts dès la semaine 1, comme demandé explicitement par le produit.
+const CROSS_CUTTING_LABELS = ['Manuel opératoire & fiches process', 'Développement de votre présence sur les réseaux sociaux'];
+const WEEK_TASK_SPLIT = [3, 2, 2]; // sur 7 tâches/semaine : 3 sur le pilier prioritaire, 2+2 sur les 2 domaines transverses
 
-  // Préserve les cases déjà cochées : on cherche une tâche au texte identique
-  // dans l'ancien mois 1, où qu'elle soit (peu importe la semaine d'origine).
+// Sélectionne jusqu'à 3 domaines (labels PLAYBOOKS) à mélanger sur un mois :
+// 1) le pilier le plus urgent (diagnostic financier ou critère le plus fragile),
+// 2) puis les domaines transverses (manuel opératoire, réseaux sociaux),
+// 3) puis les autres critères notés, du plus fragile au plus solide,
+// en dédupliquant. Garantit la diversité même si le pilier prioritaire est
+// déjà l'un des domaines transverses (ex. 'Visibilité en ligne').
+function pickFocusLabels(audit) {
+  const primary = pickFocusLabel(audit);
+  const allCriteria = ((audit && audit.pillars) || []).flatMap(p => p.criteria || []);
+  const restSorted = allCriteria.slice().sort((a, b) => (a.pct ?? 100) - (b.pct ?? 100)).map(c => c.label);
+  const candidates = [primary, ...CROSS_CUTTING_LABELS, ...restSorted].filter(l => l && PLAYBOOKS[l]);
+  const picked = [];
+  candidates.forEach(l => { if (!picked.includes(l) && picked.length < 3) picked.push(l); });
+  return picked;
+}
+
+// Construit un mois en mélangeant les tâches de plusieurs playbooks semaine
+// par semaine (au lieu d'un seul playbook filé sur les 4 semaines), pour que
+// chaque semaine combine plusieurs sujets et donne une impression de
+// quick-wins diversifiés plutôt qu'un mois entier sur un seul thème.
+function buildDiversifiedMonth(labels, existingMonth, monthName) {
+  const playbooks = labels.map(l => PLAYBOOKS[l]).filter(Boolean);
+  if (!playbooks.length) return null;
+
+  const split = WEEK_TASK_SPLIT.slice(0, playbooks.length);
+  const total = split.reduce((a, b) => a + b, 0);
+  if (total < 7) split[0] += 7 - total;
+
   const oldTasksByText = {};
-  ((existingMonth1 && existingMonth1.weeks) || []).forEach(w => {
+  ((existingMonth && existingMonth.weeks) || []).forEach(w => {
     (w.tasks || []).forEach(t => { if (t.done) oldTasksByText[t.text] = true; });
   });
 
+  const kpis = [];
+  playbooks.forEach(pb => pb.kpis.forEach(k => { if (kpis.length < 4 && !kpis.includes(k)) kpis.push(k); }));
+
+  const domainNames = labels.map(l => l.split('(')[0].trim());
+  const objective = playbooks.length > 1
+    ? `Avancer en parallèle sur plusieurs fronts pour cumuler des victoires rapides dès les premières semaines : ${domainNames.join(', ')}.`
+    : playbooks[0].objective;
+
+  const weeks = [0, 1, 2, 3].map(i => {
+    const oldWeek = existingMonth && existingMonth.weeks && existingMonth.weeks[i];
+    let tasks = [];
+    playbooks.forEach((pb, di) => { tasks = tasks.concat((pb.weeks[i] || []).slice(0, split[di] || 0)); });
+    return {
+      label: (oldWeek && oldWeek.label) || `Semaine ${i + 1}`,
+      locked: oldWeek ? !!oldWeek.locked : i > 0,
+      tasks: tasks.map(t => ({ text: t, done: !!oldTasksByText[t] }))
+    };
+  });
+
   return {
-    name: (existingMonth1 && existingMonth1.name) || 'Mois 1',
-    current: existingMonth1 ? !!existingMonth1.current : true,
-    objective: playbook.objective,
-    kpis: playbook.kpis.slice(),
-    weeks: playbook.weeks.map((tasks, i) => {
-      const oldWeek = existingMonth1 && existingMonth1.weeks && existingMonth1.weeks[i];
-      return {
-        label: (oldWeek && oldWeek.label) || `Semaine ${i + 1}`,
-        locked: oldWeek ? !!oldWeek.locked : i > 0,
-        tasks: tasks.map(t => ({ text: t, done: !!oldTasksByText[t] }))
-      };
-    })
+    name: (existingMonth && existingMonth.name) || monthName || 'Mois 1',
+    current: existingMonth ? !!existingMonth.current : true,
+    objective, kpis, weeks
   };
+}
+
+// Reconstruit le mois 1 en mélangeant le pilier prioritaire avec les domaines
+// transverses (manuel opératoire, réseaux sociaux). Utilisé par le bouton
+// "Synchroniser le plan" pour rafraîchir un plan déjà généré sans perdre les
+// cases cochées, ET par le générateur d'audit pour le mois 1 initial.
+function syncMonth1FromPlaybook(audit, existingMonth1) {
+  const labels = pickFocusLabels(audit);
+  if (!labels.length) return null;
+  return buildDiversifiedMonth(labels, existingMonth1, (existingMonth1 && existingMonth1.name) || 'Mois 1');
+}
+
+function pbFmt(n) { return Math.round(n).toLocaleString('fr-FR'); }
+function pbClamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+// Construit les 12 mois de vision : deux trames possibles selon que les
+// fondamentaux financiers sont déjà sains ou non.
+// - Normal (par défaut) : réparer les fondamentaux (food cost/masse
+//   salariale = plafonds à faire baisser, EBITDA = plancher à dépasser) +
+//   poser la duplicabilité.
+// - Scale (fd.healthy && pas de levier financier au-dessus du seuil) : les
+//   fondamentaux sont déjà bons, l'objectif 12 mois bascule vers le
+//   développement (franchise/succursale, 2e point de vente, salons pros,
+//   protection de la marque) — cf. demande explicite du produit : "si le food
+//   cost et la masse salariale sont bonnes au bout d'un mois, on développe".
+function buildVision12(ctx) {
+  const { revenue, growth, foodcost, payroll, recurring, involvNow, involvTarget, hardestrole, fd } = ctx;
+  const targetRevenue = revenue * (1 + growth / 100);
+  const targetFoodCost = pbClamp(foodcost - 3, 20, 100);
+  const targetPayroll = pbClamp(payroll - 2, 15, 100);
+  const targetRecurring = pbClamp(recurring + 15, 0, 100);
+  const foodCostSavings = revenue * 0.03;
+  const readyToScale = fd.healthy && !fd.top_lever;
+
+  if (readyToScale) {
+    return [
+      `Vos fondamentaux sont sains (EBITDA ${fd.ebitda_pct}% ≥ ${fd.ebitda_target}%, food cost et masse salariale sous les seuils métier) : l'objectif des 12 prochains mois n'est plus de réparer, c'est de dupliquer.`,
+      `Finaliser votre "pack de duplication" : manuel opératoire complet, fiches recettes standardisées, identité de marque et grille tarifaire prêts à être transmis.`,
+      `Choisir et sécuriser votre mode de développement (franchise, succursale, licence de marque) selon vos moyens et votre appétit pour le pilotage à distance.`,
+      `Repérer et qualifier un 2e emplacement (zone de chalandise, clientèle comparable, loyer soutenable) pour une ouverture dans les 12 mois.`,
+      `Participer à au moins un salon professionnel de la restauration pour vous faire connaître : recrutement de franchisés, repérage d'emplacements, veille concurrentielle.`,
+      `Protéger votre marque (dépôt INPI, nom de domaine, charte graphique) avant toute duplication.`,
+      `Continuer à dépasser ${fd.ebitda_target}% d'EBITDA sur l'établissement actuel — un modèle qu'on duplique doit rester rentable en se dupliquant, pas seulement en solo.`,
+      `Réduire votre implication opérationnelle de ${involvNow}% à ${involvTarget}% pour libérer le temps nécessaire au pilotage du développement.`,
+      `Stabiliser votre équipe actuelle pour qu'elle tienne seule pendant que vous pilotez l'ouverture suivante, en particulier sur le poste de ${hardestrole || 'vos postes clés'}.`,
+    ];
+  }
+  return [
+    `Dépasser durablement ${fd.ebitda_target}% d'EBITDA (actuellement ${fd.ebitda_pct}%) — la vraie cible n'est pas ce chiffre mais le maximum atteignable au-delà.`,
+    `Faire baisser votre food cost le plus possible sous ${targetFoodCost}% (actuellement ${foodcost}%, plafond métier 28-30%), soit environ ${pbFmt(foodCostSavings)}€ de marge récupérée sur l'année si vous tenez ce niveau.`,
+    `Faire baisser votre masse salariale le plus possible sous ${targetPayroll}% du CA (actuellement ${payroll}%, plafond métier ~30%) sans dégrader la qualité de service.`,
+    `Rendre votre activité duplicable : manuel opératoire à jour, rôles clarifiés, process documentés — la base indispensable avant tout second point de vente.`,
+    `Atteindre ${pbFmt(targetRevenue)}€ de chiffre d'affaires annuel (+${growth}%) en sécurisant un flux de clients récurrents.`,
+    `Réduire votre implication opérationnelle de ${involvNow}% à ${involvTarget}% grâce à une équipe autonome et des process clairs.`,
+    `Faire passer votre taux de clients récurrents de ${recurring}% à ${targetRecurring}% grâce à un programme de fidélisation actif.`,
+    `Stabiliser votre équipe pour réduire le turnover, en particulier sur le poste de ${hardestrole || 'vos postes clés'}.`,
+  ];
+}
+
+// Construit les objectifs à 4 mois : même logique de bascule normal/scale.
+function buildPriorities4(ctx) {
+  const { foodcost, involvNow, involvTarget, greviews, grating, hardestrole, fd, weakLabel } = ctx;
+  const targetRating = Math.min(grating + 0.3, 5).toFixed(1);
+  const readyToScale = fd.healthy && !fd.top_lever;
+
+  if (readyToScale) {
+    return [
+      `Réaliser un audit chiffré complet du modèle actuel (food cost, masse salariale, marge, trésorerie) sur les 3 derniers mois pour vérifier qu'il est stable, pas juste bon un mois.`,
+      `Finaliser le manuel opératoire (ouverture, fermeture, fiches recettes, standards de service) — le prérequis n°1 avant toute duplication.`,
+      `Identifier 2 à 3 secteurs géographiques candidats pour un second point de vente ou un premier franchisé.`,
+      `Étudier le mode de développement le plus adapté (franchise / succursale / licence) et ses implications juridiques et financières.`,
+      `Repérer un salon professionnel de la restauration à venir et préparer votre présence (support de présentation, chiffres clés du concept).`,
+      `Sécuriser le financement de l'expansion (apport personnel, prêt, éventuel droit d'entrée franchisé).`,
+      `Continuer le pilotage mensuel chiffré avec votre DG pour garder le modèle actuel rentable pendant la préparation du développement.`,
+    ];
+  }
+  return [
+    `Mettre en place un suivi hebdomadaire du food cost et viser une première baisse de ${foodcost}% à ${pbClamp(foodcost - 1, 20, 100)}%.`,
+    `Lancer un premier palier de délégation : passer de ${involvNow}% à ${Math.max(involvTarget, involvNow - 15)}% d'implication opérationnelle.`,
+    `Passer de ${greviews} à ${greviews + 20} avis Google et viser une note de ${targetRating}/5, en structurant la demande d'avis en fin de service.`,
+    `Clarifier vos indicateurs financiers clés (trésorerie, marge).`,
+    `Sécuriser le poste de ${hardestrole || 'vos postes clés'} pour limiter le risque de départ dans les 4 prochains mois.`,
+    `Réaliser un premier point mensuel chiffré avec votre DG pour ajuster le plan.`,
+    fd && fd.top_lever ? `Prioriser la rentabilité par : ${fd.top_lever.label} — c'est le levier qui pèse le plus sur votre EBITDA aujourd'hui.` : `Prioriser l'amélioration de : ${weakLabel} (identifié comme le point le plus fragile).`,
+  ];
 }

@@ -606,52 +606,41 @@ body{overflow-x:hidden;}
       },
       pillars: buildPillars(ratings),
       selected_problems: problemLabels,
-      selected_goals: f.goalLabels
+      selected_goals: f.goalLabels,
+      // Réponses de la section "vision" non trackées ailleurs (pas de colonne
+      // daily_metrics équivalente) — conservées ici pour que le dashboard puisse
+      // régénérer vision_12m/priorities_4m lors d'un "Synchroniser le plan"
+      // sans redemander ces infos au client.
+      vision_inputs: { growth_target_pct: f.growth, involvement_now_pct: f.involvNow, involvement_target_pct: f.involvTarget }
     };
   }
 
   function buildPlan(f, audit, ratings) {
-    const targetRevenue = f.revenue * (1 + f.growth / 100);
-    const targetFoodCost = clamp(f.foodcost - 3, 20, 100);
-    const foodCostSavings = f.revenue * 0.03;
-    const targetPayroll = clamp(f.payroll - 2, 15, 100);
-    const targetRecurring = clamp(f.recurring + 15, 0, 100);
-    const targetRating = Math.min(f.grating + 0.3, 5).toFixed(1);
     const weak = weakestCriterion(ratings);
     const fd = audit.financial_diagnosis;
-    const focusLabel = pickFocusLabel(audit);
+    const focusLabels = pickFocusLabels(audit);
 
     // Priorité 1 : la rentabilité (EBITDA) n'est pas un chiffre à atteindre puis
     // oublier — c'est un plancher à dépasser autant que possible. Food cost et
     // masse salariale sont des plafonds à faire baisser le plus possible, pas
-    // des cibles à "atteindre pile". Priorité 2 : le côté duplicable — un
-    // restaurant qui tourne sans dépendre en permanence du dirigeant et dont
-    // les process sont documentés est un restaurant qui peut se dupliquer.
-    const vision12 = [
-      `Dépasser durablement ${fd.ebitda_target}% d'EBITDA (actuellement ${fd.ebitda_pct}%) — la vraie cible n'est pas ce chiffre mais le maximum atteignable au-delà.`,
-      `Faire baisser votre food cost le plus possible sous ${targetFoodCost}% (actuellement ${f.foodcost}%, plafond métier 28-30%), soit environ ${fmt(foodCostSavings)}€ de marge récupérée sur l'année si vous tenez ce niveau.`,
-      `Faire baisser votre masse salariale le plus possible sous ${targetPayroll}% du CA (actuellement ${f.payroll}%, plafond métier ~30%) sans dégrader la qualité de service.`,
-      `Rendre votre activité duplicable : manuel opératoire à jour, rôles clarifiés, process documentés — la base indispensable avant tout second point de vente.`,
-      `Atteindre ${fmt(targetRevenue)}€ de chiffre d'affaires annuel (+${f.growth}%) en sécurisant un flux de clients récurrents.`,
-      `Réduire votre implication opérationnelle de ${f.involvNow}% à ${f.involvTarget}% grâce à une équipe autonome et des process clairs.`,
-      `Faire passer votre taux de clients récurrents de ${f.recurring}% à ${targetRecurring}% grâce à un programme de fidélisation actif.`,
-      `Stabiliser votre équipe pour réduire le turnover, en particulier sur le poste de ${f.hardestrole || 'vos postes clés'}.`,
-    ];
+    // des cibles à "atteindre pile". Priorité 2 : le côté duplicable. Si les
+    // fondamentaux sont déjà sains, buildVision12/buildPriorities4 basculent
+    // automatiquement sur une trame développement (franchise, salons, 2e point
+    // de vente) — cf. playbooks.js.
+    const vision12 = buildVision12({
+      revenue: f.revenue, growth: f.growth, foodcost: f.foodcost, payroll: f.payroll, recurring: f.recurring,
+      involvNow: f.involvNow, involvTarget: f.involvTarget, hardestrole: f.hardestrole, fd
+    });
     // On complète avec les objectifs choisis par le client, sans dépasser 9 items au total.
     // Les objectifs tapés à la main passent avant les cases cochées : c'est ce que le
     // client a jugé assez important pour l'écrire lui-même.
     const orderedGoals = f.customGoals.concat(f.goalLabels.filter(g => !f.customGoals.includes(g)));
     orderedGoals.forEach(g => { if (vision12.length < 9 && !vision12.some(v => v.includes(g))) vision12.push(g); });
 
-    const priorities4 = [
-      `Mettre en place un suivi hebdomadaire du food cost et viser une première baisse de ${f.foodcost}% à ${clamp(f.foodcost - 1, 20, 100)}%.`,
-      `Lancer un premier palier de délégation : passer de ${f.involvNow}% à ${Math.max(f.involvTarget, f.involvNow - 15)}% d'implication opérationnelle.`,
-      `Passer de ${f.greviews} à ${f.greviews + 20} avis Google et viser une note de ${targetRating}/5, en structurant la demande d'avis en fin de service.`,
-      `Clarifier vos indicateurs financiers clés (trésorerie, marge).`,
-      `Sécuriser le poste de ${f.hardestrole || 'vos postes clés'} pour limiter le risque de départ dans les 4 prochains mois.`,
-      `Réaliser un premier point mensuel chiffré avec votre DG pour ajuster le plan.`,
-      fd && fd.top_lever ? `Prioriser la rentabilité par : ${fd.top_lever.label} — c'est le levier qui pèse le plus sur votre EBITDA aujourd'hui.` : `Prioriser l'amélioration de : ${weak.label} (identifié comme le point le plus fragile).`,
-    ];
+    const priorities4 = buildPriorities4({
+      foodcost: f.foodcost, involvNow: f.involvNow, involvTarget: f.involvTarget,
+      greviews: f.greviews, grating: f.grating, hardestrole: f.hardestrole, fd, weakLabel: weak.label
+    });
     const customProblemsSet = new Set(f.customProblems);
     const orderedProblems = f.problemLabels.filter(p => customProblemsSet.has(p)).concat(f.problemLabels.filter(p => !customProblemsSet.has(p)));
     orderedProblems.slice(0, 3).forEach(p => { if (priorities4.length < 8) priorities4.push(`Traiter en priorité : ${p}`); });
@@ -668,14 +657,7 @@ body{overflow-x:hidden;}
         actions: [PLAYBOOKS[ratings.vis1.label].objective, PLAYBOOKS[ratings.vis2.label].objective] }
     ];
 
-    const playbook = PLAYBOOKS[focusLabel] || PLAYBOOKS[weak.label];
-    const month1 = {
-      name: 'Mois 1', current: true, objective: playbook.objective, kpis: playbook.kpis,
-      weeks: playbook.weeks.map((tasks, i) => ({
-        label: `Semaine ${i + 1}`, locked: i > 0,
-        tasks: tasks.map(t => ({ text: t, done: false }))
-      }))
-    };
+    const month1 = buildDiversifiedMonth(focusLabels.length ? focusLabels : [weak.label], null, 'Mois 1');
 
     return {
       contract_months: f.contract,

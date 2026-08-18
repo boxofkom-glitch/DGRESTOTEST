@@ -331,6 +331,17 @@ body{overflow-x:hidden;}
 .danger-zone p{font-size:13px;margin-bottom:12px;}
 .btn-danger{background:transparent;border:1px solid rgba(255,80,80,.4);color:#ff8a8a;font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;}
 .btn-danger:hover{background:rgba(255,60,60,.1);}
+
+.metric-entry-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;align-items:end;}
+.metric-entry-form .field{margin-bottom:0;}
+.metric-entry-form .btn-primary{padding:13px 22px;font-size:14px;white-space:nowrap;}
+.hint{font-size:13px;color:var(--muted);}
+.import-stub-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+.import-stub-btn{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-size:13.5px;cursor:pointer;}
+.import-stub-btn:hover{border-color:var(--primary);}
+.import-stub-hint{font-size:12.5px;color:var(--muted-dim);}
+.chip-remove{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;margin-left:auto;}
+.chip-remove:hover{border-color:#ff8a8a;color:#ff8a8a;}
 </style>
 </head>
 <body>
@@ -442,6 +453,21 @@ body{overflow-x:hidden;}
             </div>
           </div>
 
+          <div class="section-block reveal in-view">
+            <div class="section-tag">Saisie</div>
+            <h2>Ajouter vos chiffres du jour</h2>
+            <p class="hint" style="margin:-4px 0 14px;">Le food cost, la masse salariale et les charges se renseignent directement depuis leurs onglets respectifs.</p>
+            <div class="card glow-card reveal in-view">
+              <form id="metricFormOverview" class="metric-entry-form">
+                <div class="field"><label for="mfDateOverview">Date</label><input type="date" id="mfDateOverview" required></div>
+                <div class="field"><label for="mfRevenue">CA du jour (€)</label><input type="number" step="1" id="mfRevenue" placeholder="ex : 2400"></div>
+                <div class="field"><label for="mfRating">Note Google (/5)</label><input type="number" step="0.1" min="0" max="5" id="mfRating" placeholder="ex : 4.3"></div>
+                <div class="field"><label for="mfReviewCount">Nombre d'avis (total à date)</label><input type="number" step="1" id="mfReviewCount" placeholder="ex : 87"></div>
+                <button type="submit" class="btn-primary magnetic">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+
           <div class="stat-grid stat-grid-4" style="margin-bottom:24px;" id="overviewStats"></div>
 
           <div class="card glow-card reveal in-view" id="statusCard" style="margin-bottom:24px;display:none;"></div>
@@ -538,9 +564,23 @@ body{overflow-x:hidden;}
             <div class="trend-chart" id="foodcostSpark"></div>
           </div>
           <div class="section-block reveal in-view">
+            <div class="section-tag">Saisie</div>
+            <h2>Renseigner votre food cost</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <form id="metricFormFoodcost" class="metric-entry-form">
+                <div class="field"><label for="mfDateFoodcost">Date</label><input type="date" id="mfDateFoodcost" required></div>
+                <div class="field"><label for="mfFoodcost">Food cost du jour (%)</label><input type="number" step="0.1" id="mfFoodcost" placeholder="ex : 29.5"></div>
+                <button type="submit" class="btn-primary magnetic">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+          <div class="section-block reveal in-view">
             <div class="section-tag">Factures</div>
             <h2>Documents food cost</h2>
-            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="foodcostDocs"></div></div>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <div id="foodcostDocs"></div>
+              <div class="import-stub-row"><button type="button" class="btn-ghost import-stub-btn" data-import-label="factures food cost">📎 Importer un fichier</button><span class="import-stub-hint">Bientôt : DG Resto IA lira vos factures automatiquement.</span></div>
+            </div>
           </div>
         </section>
 
@@ -553,14 +593,35 @@ body{overflow-x:hidden;}
             <div class="trend-chart" id="rhSpark"></div>
           </div>
           <div class="section-block reveal in-view">
+            <div class="section-tag">Saisie</div>
+            <h2>Renseigner votre masse salariale</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <form id="metricFormRh" class="metric-entry-form">
+                <div class="field"><label for="mfDateRh">Date</label><input type="date" id="mfDateRh" required></div>
+                <div class="field"><label for="mfPayroll">Masse salariale du jour (%)</label><input type="number" step="0.1" id="mfPayroll" placeholder="ex : 28"></div>
+                <button type="submit" class="btn-primary magnetic">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+          <div class="section-block reveal in-view">
             <div class="section-tag">Équipe</div>
             <h2>Votre équipe</h2>
-            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="teamList"></div></div>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <form id="teamFormClient" class="metric-entry-form">
+                <div class="field"><label for="teamNameClient">Nom</label><input id="teamNameClient" placeholder="ex : Sophie"></div>
+                <div class="field"><label for="teamRoleClient">Rôle</label><input id="teamRoleClient" placeholder="ex : Second de cuisine"></div>
+                <button type="submit" class="btn-primary magnetic">+ Ajouter</button>
+              </form>
+              <div id="teamList" style="margin-top:16px;"></div>
+            </div>
           </div>
           <div class="section-block reveal in-view">
             <div class="section-tag">Documents</div>
             <h2>DSN & documents RH</h2>
-            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="rhDocs"></div></div>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <div id="rhDocs"></div>
+              <div class="import-stub-row"><button type="button" class="btn-ghost import-stub-btn" data-import-label="documents RH">📎 Importer un fichier</button><span class="import-stub-hint">Bientôt : DG Resto IA lira vos DSN automatiquement.</span></div>
+            </div>
           </div>
         </section>
 
@@ -573,9 +634,23 @@ body{overflow-x:hidden;}
             <div class="trend-chart" id="chargesfixesSpark"></div>
           </div>
           <div class="section-block reveal in-view">
+            <div class="section-tag">Saisie</div>
+            <h2>Renseigner vos charges fixes</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <form id="metricFormChargesfixes" class="metric-entry-form">
+                <div class="field"><label for="mfDateChargesfixes">Date</label><input type="date" id="mfDateChargesfixes" required></div>
+                <div class="field"><label for="mfChargesfixes">Charges fixes du jour (€)</label><input type="number" step="1" id="mfChargesfixes" placeholder="ex : 340"></div>
+                <button type="submit" class="btn-primary magnetic">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+          <div class="section-block reveal in-view">
             <div class="section-tag">Documents</div>
             <h2>Justificatifs charges fixes</h2>
-            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="chargesfixesDocs"></div></div>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <div id="chargesfixesDocs"></div>
+              <div class="import-stub-row"><button type="button" class="btn-ghost import-stub-btn" data-import-label="justificatifs charges fixes">📎 Importer un fichier</button><span class="import-stub-hint">Bientôt : DG Resto IA lira vos justificatifs automatiquement.</span></div>
+            </div>
           </div>
         </section>
 
@@ -588,9 +663,23 @@ body{overflow-x:hidden;}
             <div class="trend-chart" id="chargesvarSpark"></div>
           </div>
           <div class="section-block reveal in-view">
+            <div class="section-tag">Saisie</div>
+            <h2>Renseigner vos charges variables</h2>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <form id="metricFormChargesvar" class="metric-entry-form">
+                <div class="field"><label for="mfDateChargesvar">Date</label><input type="date" id="mfDateChargesvar" required></div>
+                <div class="field"><label for="mfChargesvar">Charges variables du jour (€)</label><input type="number" step="1" id="mfChargesvar" placeholder="ex : 120"></div>
+                <button type="submit" class="btn-primary magnetic">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+          <div class="section-block reveal in-view">
             <div class="section-tag">Documents</div>
             <h2>Justificatifs charges variables</h2>
-            <div class="card glow-card reveal in-view" style="margin-top:16px;"><div id="chargesvarDocs"></div></div>
+            <div class="card glow-card reveal in-view" style="margin-top:16px;">
+              <div id="chargesvarDocs"></div>
+              <div class="import-stub-row"><button type="button" class="btn-ghost import-stub-btn" data-import-label="justificatifs charges variables">📎 Importer un fichier</button><span class="import-stub-hint">Bientôt : DG Resto IA lira vos justificatifs automatiquement.</span></div>
+            </div>
           </div>
         </section>
 
@@ -1088,10 +1177,11 @@ body{overflow-x:hidden;}
   }
   function renderTeam(list) {
     const el = document.getElementById('teamList');
-    if (!list.length) { el.innerHTML = '<div class="empty-state">Votre DG n\'a pas encore renseigné votre équipe.</div>'; return; }
+    if (!list.length) { el.innerHTML = '<div class="empty-state">Ajoutez les membres de votre équipe ci-dessus.</div>'; return; }
     el.innerHTML = list.map(t => `<div class="doc-item">
         <span class="doc-name"><span class="doc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></span>${esc(t.name)}</span>
         ${t.role ? `<span style="color:var(--muted-dim);font-size:13px;">${esc(t.role)}</span>` : ''}
+        <button type="button" class="chip-remove" data-remove-team="${t.id}">✕</button>
       </div>`).join('');
   }
 
@@ -1297,19 +1387,75 @@ body{overflow-x:hidden;}
     if (error && window.toast) toast(error.message, 'error');
   }
 
-  // ---- Synchroniser le plan : reconstruit le mois 1 depuis playbooks.js
-  // (utile après une mise à jour du contenu des semaines), en gardant les
-  // cases déjà cochées par le client. ----
+  // Recalcule le diagnostic financier à partir des daily_metrics récentes
+  // (30 derniers jours) plutôt que du seul instantané pris à l'onboarding —
+  // c'est ce qui permet au plan de vraiment "se projeter" : si le food cost
+  // et la masse salariale sont redevenus bons, le diagnostic bascule healthy
+  // et la trame développement (franchise, salons...) prend le relais.
+  function liveFinancialDiagnosis(audit, rows) {
+    const recent = rows.slice(-30);
+    const overview = {
+      revenue: sumOf(recent, 'revenue') || (audit.overview && audit.overview.revenue) || 0,
+      fixed_costs: sumOf(recent, 'fixed_costs') || (audit.overview && audit.overview.fixed_costs) || 0
+    };
+    const fcAvg = avgOf(recent, 'food_cost_pct');
+    const prAvg = avgOf(recent, 'payroll_pct');
+    const restaurantMetrics = {
+      food_cost_pct: fcAvg != null ? fcAvg : ((audit.restaurant_metrics && audit.restaurant_metrics.food_cost_pct) || 0),
+      payroll_pct: prAvg != null ? prAvg : ((audit.restaurant_metrics && audit.restaurant_metrics.payroll_pct) || 0)
+    };
+    return { fd: financialDiagnosis(overview, restaurantMetrics), overview, restaurantMetrics };
+  }
+
+  // ---- Synchroniser le plan : reconstruit le mois 1 (mix multi-domaines)
+  // ET la vision 12 mois / les priorités 4 mois depuis playbooks.js, à partir
+  // du diagnostic financier le plus récent — en gardant les cases déjà
+  // cochées par le client. ----
   document.getElementById('syncPlanBtn').addEventListener('click', async () => {
     if (!planRow || !auditData) return;
     const plan = planRow.data;
     plan.cycles = plan.cycles && plan.cycles.length ? plan.cycles : [{ name: 'Cycle 1', active: true, months: [] }];
     plan.cycles[0].months = plan.cycles[0].months || [];
-    const newMonth1 = syncMonth1FromPlaybook(auditData, plan.cycles[0].months[0]);
+
+    const { fd, overview: liveOverview } = liveFinancialDiagnosis(auditData, metricsRows);
+    const wasHealthy = auditData.financial_diagnosis && auditData.financial_diagnosis.healthy && !auditData.financial_diagnosis.top_lever;
+    const nowHealthy = fd.healthy && !fd.top_lever;
+    const liveAudit = Object.assign({}, auditData, { financial_diagnosis: fd });
+
+    const newMonth1 = syncMonth1FromPlaybook(liveAudit, plan.cycles[0].months[0]);
     if (!newMonth1) { if (window.toast) toast('Synchronisation impossible : audit incomplet.', 'error'); return; }
     plan.cycles[0].months[0] = newMonth1;
+
+    const vi = auditData.vision_inputs || {};
+    const weak = (auditData.pillars || []).flatMap(p => p.criteria || []).sort((a, b) => (a.pct ?? 100) - (b.pct ?? 100))[0] || { label: 'vos fondamentaux' };
+    const vision12 = buildVision12({
+      revenue: liveOverview.revenue || (auditData.overview && auditData.overview.revenue) || 0,
+      growth: vi.growth_target_pct ?? 10,
+      foodcost: (auditData.restaurant_metrics && auditData.restaurant_metrics.food_cost_pct) || 0,
+      payroll: (auditData.restaurant_metrics && auditData.restaurant_metrics.payroll_pct) || 0,
+      recurring: (auditData.acquisition && auditData.acquisition.recurring_clients_pct) || 0,
+      involvNow: vi.involvement_now_pct ?? 50, involvTarget: vi.involvement_target_pct ?? 50,
+      hardestrole: (auditData.team && auditData.team.hardest_role) || '', fd
+    });
+    const priorities4 = buildPriorities4({
+      foodcost: (auditData.restaurant_metrics && auditData.restaurant_metrics.food_cost_pct) || 0,
+      involvNow: vi.involvement_now_pct ?? 50, involvTarget: vi.involvement_target_pct ?? 50,
+      greviews: (auditData.acquisition && auditData.acquisition.google_reviews) || 0,
+      grating: (auditData.acquisition && auditData.acquisition.google_rating) || 0,
+      hardestrole: (auditData.team && auditData.team.hardest_role) || '', fd, weakLabel: weak.label
+    });
+    // Préserve les cases déjà cochées : si le texte d'un objectif n'a pas changé
+    // entre deux synchronisations, on garde son statut "fait".
+    const oldVisionDone = new Set(((plan.vision_12m && plan.vision_12m.items) || []).filter(t => t.done).map(t => t.text));
+    const oldPrioritiesDone = new Set(((plan.priorities_4m && plan.priorities_4m.items) || []).filter(t => t.done).map(t => t.text));
+    plan.vision_12m = { title: 'Objectifs pour les 12 prochains mois', items: vision12.map(t => ({ text: t, done: oldVisionDone.has(t) })) };
+    plan.priorities_4m = { title: 'Objectifs pour les 4 prochains mois', items: priorities4.map(t => ({ text: t, done: oldPrioritiesDone.has(t) })) };
+
     await savePlan();
-    if (window.toast) toast('Plan synchronisé avec les dernières tâches !', 'ok');
+    if (window.toast) {
+      if (!wasHealthy && nowHealthy) toast('Vos fondamentaux sont bons : le plan bascule en mode développement !', 'ok');
+      else toast('Plan synchronisé avec les dernières tâches !', 'ok');
+    }
     renderPlan(plan);
     renderOverview(plan);
   });
@@ -1545,8 +1691,73 @@ body{overflow-x:hidden;}
     renderMetricCategory({ statsEl: 'chargesfixesStats', sparkEl: 'chargesfixesSpark', field: 'fixed_costs', unit: '€', target: '—' });
     renderMetricCategory({ statsEl: 'chargesvarStats', sparkEl: 'chargesvarSpark', field: 'variable_costs', unit: '€', target: '—' });
 
+    // ---- Saisie manuelle client : food cost / RH / charges / CA / avis ----
+    // Un upsert par formulaire ne touche que les colonnes renseignées dans CE
+    // formulaire (ON CONFLICT ne met à jour que les clés présentes dans le
+    // payload) : remplir le food cost depuis l'onglet Food cost n'efface pas
+    // la masse salariale déjà saisie le même jour depuis l'onglet RH.
+    document.querySelectorAll('.metric-entry-form input[type="date"]').forEach(el => { el.value = isoDaysAgo(0); });
+    async function submitMetricPartial(row) {
+      const { error } = await supabaseClient.from('daily_metrics').upsert(row, { onConflict: 'user_id,date' });
+      if (error) { if (window.toast) toast(error.message, 'error'); return; }
+      metricsRows = await loadMetrics();
+      renderKpi();
+      renderMetricCategory({ statsEl: 'foodcostStats', sparkEl: 'foodcostSpark', field: 'food_cost_pct', unit: '%', target: '28-30%' });
+      renderMetricCategory({ statsEl: 'rhStats', sparkEl: 'rhSpark', field: 'payroll_pct', unit: '%', target: '~30%' });
+      renderMetricCategory({ statsEl: 'chargesfixesStats', sparkEl: 'chargesfixesSpark', field: 'fixed_costs', unit: '€', target: '—' });
+      renderMetricCategory({ statsEl: 'chargesvarStats', sparkEl: 'chargesvarSpark', field: 'variable_costs', unit: '€', target: '—' });
+      if (window.toast) toast('Enregistré !', 'ok');
+    }
+    document.getElementById('metricFormOverview').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitMetricPartial({
+        user_id: user.id, date: document.getElementById('mfDateOverview').value,
+        revenue: document.getElementById('mfRevenue').value || null,
+        google_rating: document.getElementById('mfRating').value || null,
+        google_review_count: document.getElementById('mfReviewCount').value || null,
+      });
+    });
+    document.getElementById('metricFormFoodcost').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitMetricPartial({ user_id: user.id, date: document.getElementById('mfDateFoodcost').value, food_cost_pct: document.getElementById('mfFoodcost').value || null });
+    });
+    document.getElementById('metricFormRh').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitMetricPartial({ user_id: user.id, date: document.getElementById('mfDateRh').value, payroll_pct: document.getElementById('mfPayroll').value || null });
+    });
+    document.getElementById('metricFormChargesfixes').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitMetricPartial({ user_id: user.id, date: document.getElementById('mfDateChargesfixes').value, fixed_costs: document.getElementById('mfChargesfixes').value || null });
+    });
+    document.getElementById('metricFormChargesvar').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitMetricPartial({ user_id: user.id, date: document.getElementById('mfDateChargesvar').value, variable_costs: document.getElementById('mfChargesvar').value || null });
+    });
+
+    // ---- Import de fichiers : bouton d'appel, pas encore de traitement
+    // automatique (arrivera avec l'IA DG Resto). ----
+    document.querySelectorAll('.import-stub-btn').forEach(btn => {
+      btn.addEventListener('click', () => { if (window.toast) toast(`Bientôt disponible : DG Resto IA lira vos ${btn.dataset.importLabel} automatiquement.`, 'ok'); });
+    });
+
     const team = await loadTeam();
     renderTeam(team);
+    document.getElementById('teamFormClient').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('teamNameClient').value.trim();
+      if (!name) return;
+      const role = document.getElementById('teamRoleClient').value.trim();
+      const { error } = await supabaseClient.from('team_members').insert({ user_id: user.id, name, role: role || null });
+      if (error) { if (window.toast) toast(error.message, 'error'); return; }
+      document.getElementById('teamNameClient').value = ''; document.getElementById('teamRoleClient').value = '';
+      renderTeam(await loadTeam());
+    });
+    document.getElementById('teamList').addEventListener('click', async (e) => {
+      const id = e.target.dataset.removeTeam;
+      if (!id) return;
+      await supabaseClient.from('team_members').delete().eq('id', id);
+      renderTeam(await loadTeam());
+    });
 
     const audit = await loadAudit();
     auditData = audit;
